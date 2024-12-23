@@ -5,6 +5,5 @@ build/
 firebase-debug.log
 firebase.json
 .firebaserc
-firebase-hosting-merge.yml
-firebase-hosting-pull-request.yml
+
 firebase_config.js
