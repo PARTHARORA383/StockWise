@@ -12,6 +12,7 @@ import ProductForm from './Components/ProductForm';
 import SalesForm from './Components/SalesForm';
 import SalesList from './Components/SalesList';
 import SelectCompany from './Components/SelectCompany';
+import Signup from './Pages/Signup';
 
 
 function App() {
@@ -24,11 +25,11 @@ function App() {
     <CompanyProvider>
 
     <BrowserRouter>
-    
-    <div className='flex h-screen'>
-      <div className='w-34 fixed h-full '>
+    {/* <div className='w-34 fixed h-full '>
     <SidebarWrapper/>
-      </div>
+      </div> */}
+    <div className='flex h-screen'>
+    
     <div className=' ml-64 flex-grow overflow-y-auto'>
     <Routes>
       <Route path = {`/Purchase/:companyid`} element ={<PurchaseList/>} />
@@ -38,6 +39,7 @@ function App() {
       <Route path = "/ProductForm/:companyid" element ={<ProductForm/>} />
       <Route path = "/SalesForm/:companyid" element ={<SalesForm/>} />
       <Route path = "/Sales/:companyid" element ={<SalesList/>} />
+      <Route path = "/Signup" element ={<Signup/>} />
     
     </Routes>
     </div>
