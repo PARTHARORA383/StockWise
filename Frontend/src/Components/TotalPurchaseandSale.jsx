@@ -4,6 +4,8 @@ import axios from "axios";
 import { useCompany } from "./Companycontext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign, faPlus, faSearch } from '@fortawesome/free-solid-svg-icons'
+
+
 const Totalpurchaseandsale = ({ purchase, sale }) => {
   const [purchases, setPurchases] = useState([]);
   const [sales, setSales] = useState([]);
@@ -13,7 +15,7 @@ const Totalpurchaseandsale = ({ purchase, sale }) => {
   const Profit_loss = totalSaleAmount-totalPurchaseAmount || 0
 
   const [CheckProfitorLoss , setCheckProfitorLoss] = useState(false)
-
+const uid = JSON.parse(localStorage.getItem("uid"))
 
   const handleProfitandLoss = ()=>{
 
@@ -26,7 +28,7 @@ const Totalpurchaseandsale = ({ purchase, sale }) => {
   useEffect(() => {
     const fetchPurchases = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/Purchase/${selectedCompany}`);
+        const response = await axios.get(`http://localhost:3000/Purchase/${uid}/${selectedCompany}`);
         setPurchases(response.data);
       } catch (error) {
         console.error("Error fetching purchase data:", error);
@@ -41,7 +43,7 @@ const Totalpurchaseandsale = ({ purchase, sale }) => {
   useEffect(() => {
     const FetchSales = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/Sales/${selectedCompany}`)
+        const response = await axios.get(`http://localhost:3000/Sales/${uid}/${selectedCompany}`)
         setSales(response.data)
       } catch (e) {
         alert("error fetching sales")

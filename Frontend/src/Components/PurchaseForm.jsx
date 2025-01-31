@@ -3,7 +3,7 @@ import { useState ,useRef  , useEffect} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import UseRawmaterial from "../Hooks/UseRawmaterial";
 import { useCompany } from "./Companycontext";
-
+import useCreateRawmaterial from "../Hooks/useCreateRawmaterial";
 
 
 const PurchaseForm = () => {
@@ -16,13 +16,16 @@ const PurchaseForm = () => {
   const [rate, setRate] = useState("");
   const [isFocused, setisFocused] = useState("");
 
-  const { selectedrawmaterial, setSelectedrawmaterial } = useCompany();
+  const { selectedrawmaterial, setSelectedrawmaterial   } = useCompany();
   const { selectedsubrawmaterial, setSelectedsubrawmaterial } = useCompany();
   const [showProductList, setShowProductList] = useState(false);
   const [showDealerList, setShowDealerList] = useState(false);
   const[confirmationbox , setConfirmationbox] = useState(false)
 
-  const { companyid } = useParams();
+  const { companyid , uid } = useParams();
+
+
+  const {fetchRawMaterials , addRawMaterial  ,rawmaterial , categories  , rawmaterialid , submaterial , FetchParticularRawmaterial } = useCreateRawmaterial(uid , companyid)
 
    // Create refs for input fields
 
@@ -41,9 +44,11 @@ const PurchaseForm = () => {
    }
 
   const navigate = useNavigate();
+
+  //Adding Purchase
   const AddPurchase = async () => {
     try {
-      const response = await axios.post(`http://localhost:3000/purchase/${companyid}`, {
+      const response = await axios.post(`http://localhost:3000/purchase/${uid}/${companyid}`, {
         billing_number: billingNumber,
         Product:{
           category : selectedrawmaterial?.catogory ||category ,
@@ -53,13 +58,15 @@ const PurchaseForm = () => {
         quantity: Number(quantity),
         rate: Number(rate),
         total_amount: Number(quantity) * Number(rate),
+        
       });
+
+
       console.log(response.data);
 
       if(response.status == 200){
-      
-        
         alert("Purchase added successfully!");
+        CreateSubmaterial();
        AddtoInventory();
       }
     } catch (e) {
@@ -68,23 +75,27 @@ const PurchaseForm = () => {
     }
   };
 
-  const AddtoInventory = async ()=>{
+  const CreateSubmaterial = async ()=>{
+    addRawMaterial(category , item)
+  }
+
+  
+  //Adding to Inventory 
+  const AddtoInventory = async ( rawmaterialid , submaterial)=>{
 
   try{
-    const response = await axios.put(`http://localhost:3000/rawmaterial/${companyid}/${selectedrawmaterial._id}/${selectedsubrawmaterial._id}` , {
+    const response = await axios.put(`http://localhost:3000/rawmaterial/${uid}/${companyid}/${selectedrawmaterial._id || rawmaterialid}/${selectedsubrawmaterial._id || submaterial}` , {
       updatedquantity : parseInt(quantity)
     })
 
     if(response.status == 200){
       setSelectedrawmaterial();
       setSelectedsubrawmaterial();
-      navigate(`/Purchase/${companyid}`)
-
+      navigate(`/Purchase/${uid}/${companyid}`)
     }
 
-      
   }catch(e){
-alert("Error updating inventory")
+  alert("Error updating inventory")
   }
   }
 

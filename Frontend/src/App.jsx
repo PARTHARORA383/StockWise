@@ -13,41 +13,61 @@ import SalesForm from './Components/SalesForm';
 import SalesList from './Components/SalesList';
 import SelectCompany from './Components/SelectCompany';
 import Signup from './Pages/Signup';
+import Registercompany from './Pages/RegisterComapany';
+import { Outlet } from "react-router-dom";
+import Signin from './Pages/Signin';
+import AuthOnChange from './Authentication/AuthOnChange';
 
 
 function App() {
-
-  const[companyid , setCompanyid] = useState("");
-  const {rendercompany , setRendercompany} = useCompany()
-
   return (
-    <>
-    <CompanyProvider>
+    <CompanyProvider> 
 
-    <BrowserRouter>
-    {/* <div className='w-34 fixed h-full '>
-    <SidebarWrapper/>
-      </div> */}
-    <div className='flex h-screen'>
-    
-    <div className=' ml-64 flex-grow overflow-y-auto'>
-    <Routes>
-      <Route path = {`/Purchase/:companyid`} element ={<PurchaseList/>} />
-      <Route path = "/Purchaseform/:companyid" element ={<PurchaseForm/>} />
-      <Route path = "/Dashboard/:companyid" element ={<Dashboard/>} />
-      <Route path = "/Inventory/:companyid" element ={<Inventory/>} />
-      <Route path = "/ProductForm/:companyid" element ={<ProductForm/>} />
-      <Route path = "/SalesForm/:companyid" element ={<SalesForm/>} />
-      <Route path = "/Sales/:companyid" element ={<SalesList/>} />
-      <Route path = "/Signup" element ={<Signup/>} />
-    
-    </Routes>
-    </div>
-    </div>
-    </BrowserRouter>
+      <BrowserRouter>
+      <AuthOnChange />
+        <div className="flex h-screen">
+          <div className="flex-grow overflow-y-auto">
+            <Routes>
+              <Route element={<WithSidebarLayout />}>
+                <Route path="/Purchase/:uid/:companyid" element={<PurchaseList />} />
+                <Route path="/Purchaseform/:uid/:companyid" element={<PurchaseForm />} />
+                <Route path="/Dashboard/:uid/:companyid" element={<Dashboard />} />
+                <Route path="/Inventory/:uid/:companyid" element={<Inventory />} />
+                <Route path="/ProductForm/:uid/:companyid" element={<ProductForm />} />
+                <Route path="/SalesForm/:uid/:companyid" element={<SalesForm />} />
+                <Route path="/Sales/:uid/:companyid" element={<SalesList />} />
+              </Route>
+
+              <Route element={<WithoutSidebarLayout />}>
+                <Route path="/Signup" element={<Signup />} />
+                <Route path="/Signin" element={<Signin />} />
+                <Route path="/getting_started/:uid" element={<Registercompany />} />
+              </Route>
+            </Routes>
+          </div>
+        </div>
+      </BrowserRouter>
     </CompanyProvider>
-    </>
-  )
+  );
+}
+
+
+function WithSidebarLayout() {
+  return (
+    <div className="flex h-screen">
+      <div className="w-34 fixed h-full">
+        <SidebarWrapper />
+      </div>
+      <div className="ml-64 flex-grow overflow-y-auto">
+        <Outlet />
+      </div>
+    </div>
+  );
+}
+
+
+function WithoutSidebarLayout() {
+  return <Outlet />;
 }
 
 function SidebarWrapper() {

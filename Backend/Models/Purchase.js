@@ -4,6 +4,7 @@ const {rawmaterial} = require('./RawMaterial')
 
 const PurchaseSchema = new mongoose.Schema({
   date: { type: Date, default: () => new Date().setHours(0, 0, 0, 0) },
+
   billing_number: { type: String, required: true },
   Product: { 
     category: {
@@ -18,6 +19,7 @@ const PurchaseSchema = new mongoose.Schema({
   rate: { type: Number, required: true, min: 0 },
   total_amount: { type: Number },
   company: { type: String, required: true, ref: 'company' },
+  userid  : {type : String , ref : 'user'},
   archived : {type : Boolean , default : false} ,
 
   // ledgeraccount : {

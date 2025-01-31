@@ -4,11 +4,14 @@ const router = express.Router();
 
 //Request for Creating , updating , Deleting and accessing the company list
 
-router.post('/', async (req, res) => {
+router.post('/:uid', async (req, res) => {
+
+  const uid = req.params.uid
 
   try {
 
     const company = await Company.findById({
+      userid : uid , 
       _id: req.body.id
     })
 
@@ -16,14 +19,7 @@ router.post('/', async (req, res) => {
       const new_company = new Company({
         _id: req.body.id,
         name: req.body.name,
-        owner : req.body.owner,
-        address: {
-          country: req.body.address.country || "Unknown", // Default for country
-          state: req.body.address.state,
-          local: req.body.address.local || ""
-        } ,
-        startdate : req.body.startdate ,
-        enddate : req.body.enddate
+        userid : uid
       })
 
       await new_company.save();
@@ -43,10 +39,12 @@ router.post('/', async (req, res) => {
     res.status(400).json("Invalid company ")
     console.log(e.message)
   }
-}).get("/", async (req, res) => {
+}).get("/:uid", async (req, res) => {
+
+  const uid = req.params.uid
 
   try {
-    const companylist = await Company.find();
+    const companylist = await Company.find({userid  : uid});
     res.status(200).json(companylist);
   }
   catch (e) {
@@ -56,14 +54,15 @@ router.post('/', async (req, res) => {
     })
   }
 
-}).put("/:companyid" , async (req , res)=>{
+}).put("/:uid/:companyid" , async (req , res)=>{
 
   const companyid = req.params.companyid;
+  const uid = req.params.uid
   const updates = req.body ;
 
 try{
 
-  const updateddetails =await  Company.findByIdAndUpdate(companyid , updates ,{
+  const updateddetails =await  Company.findOneAndUpdate( {userid : uid} , {companyid : companyid} , updates ,{
     new: true, // Return the updated document
     runValidators: true 
   }
@@ -89,12 +88,12 @@ else{
 
 })
 
-router.get("/:companyid" , async(req , res)=>{
+router.get("/:uid/:companyid" , async(req , res)=>{
 
-  const {companyid} = req.params;
+  const {companyid , uid} = req.params;
 
   try{
-    const company = await Company.findOne({_id : companyid})
+    const company = await Company.findOne({ userid:uid , _id : companyid})
      return res.status(200).json(company);
   }catch(e){
 
@@ -105,11 +104,11 @@ router.get("/:companyid" , async(req , res)=>{
   }
 })
 
-router.delete("/:companyid" , async (req, res)=>{
-  const {companyid} = req.params;
+router.delete("/:uid/:companyid" , async (req, res)=>{
+  const {companyid , uid} = req.params;
 
   try{
-    const company = await Company.deleteOne({_id : companyid})
+    const company = await Company.deleteOne({ userid : uid , _id : companyid})
 
     if(company.deletedCount === 0){
       return res.status(401).json({

@@ -5,18 +5,20 @@ import PurchaseTrends from "../Components/PurchaseTrends";
 import { useEffect, useState } from "react";
 import { useCompany } from "../Components/Companycontext";
 import Totalpurchaseandsale from "../Components/TotalPurchaseandSale";
+import { useParams } from "react-router-dom";
 
 
 const Dashboard = () => {
 
   const [ownername, setOwnername] = useState("")
-  const { selectedCompany, selectedrange, setSelectedrange, totalPurchaseAmount, totalSaleAmount } = useCompany()
+  const { selectedCompany, selectedrange, setSelectedrange, totalPurchaseAmount, totalSaleAmount , uid } = useCompany()
+
 
   useEffect(() => {
 
     const FetchCompany = async () => {
 
-      const response = await axios.get(`http://localhost:3000/company/${selectedCompany}`)
+      const response = await axios.get(`http://localhost:3000/company/${uid}/${selectedCompany}`)
       setOwnername(response.data.owner)
 
     }

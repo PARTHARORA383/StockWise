@@ -15,6 +15,8 @@ import {
 ChartJS.register(BarElement, LinearScale, Title, Tooltip, Legend, CategoryScale);
 
 const PurchaseTrends = () => {
+
+  const uid = JSON.parse(localStorage.getItem("uid"))
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { selectedCompany } = useCompany();
@@ -24,10 +26,10 @@ const PurchaseTrends = () => {
       try {
         // Fetch purchase and sales data
         const purchaseResponse = await axios.get(
-          `http://localhost:3000/Purchase/${selectedCompany}`
+          `http://localhost:3000/Purchase/${uid}/${selectedCompany}`
         );
         const salesResponse = await axios.get(
-          `http://localhost:3000/Sales/${selectedCompany}`
+          `http://localhost:3000/Sales/${uid}/${selectedCompany}`
         );
 
         // Group data by month

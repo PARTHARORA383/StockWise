@@ -1,7 +1,7 @@
 import axios from "axios"
 
-import { useState, useRef } from "react"
-import { useParams } from "react-router-dom"
+import { useState, useRef, useEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 
 import GetProduct from "../Hooks/UseProduct"
 import { useCompany } from "./Companycontext";
@@ -22,16 +22,22 @@ const SalesForm = () => {
   const [showProductList, setShowProductList] = useState(false);
   const [showDealerList, setShowDealerList] = useState(false);
   const [confirmationbox, setConfirmationbox] = useState(false)
+  const [AddMoreSale, setAddMoreSale] = useState(false)
+   
   const {selectedProduct , setSelectedProduct} = useCompany()
   const {selectedProductid , setSelectedProductid} = useCompany()
+  
 
 
-  const { companyid } = useParams()
+  const { companyid  } = useParams()
+  const navigate = useNavigate()
 
 
+  const uid = JSON.parse(localStorage.getItem("uid"));
 
 
   const dealerRef = useRef(null);
+  const saleRef = useRef(null);
 
   const Productref = useRef(null);
   const rateRef = useRef(null);
@@ -48,15 +54,10 @@ const SalesForm = () => {
 
   const AddSale = async () => {
 
-
-    if(!BillNumber || ! selectedProduct || !selectedProductid || !dealer || !quantity || !rate){
-      alert("Invalid inputs")
-    }
-
     const newsale = {
       billNumber: BillNumber,
-      Product: selectedProductid,
-      Productname : selectedProduct,
+      Product: selectedProductid || null,
+      Productname : selectedProduct || Product,
       dealer: dealer,
       quantity: Number(quantity),
       rate: Number(rate),
@@ -64,22 +65,21 @@ const SalesForm = () => {
     }
 
     try {
-      const response = await axios.post(`http://localhost:3000/Sales/${companyid}`, newsale)
+      const response = await axios.post(`http://localhost:3000/Sales/${uid}/${companyid}`, newsale)
       console.log(response.data)
 
       if (response.status == 200) {
         setConfirmationbox(false)
         alert("Sale listed")
-        setSelectedProduct()
-        setSelectedProductid()
+        setAddMoreSale(true)
       }
 
 
     } catch (e) {
       alert("error Listing sale")
       setConfirmationbox(false)
-      setSelectedProduct()
-      setSelectedProductid()
+      setSelectedProduct(null)
+      setSelectedProductid(null)
     }
   }
 
@@ -89,15 +89,43 @@ const SalesForm = () => {
   }
 
   const handlecancel = () => {
-
     setConfirmationbox(false)
   }
 
 
+  const resetform = ()=>{
+    setBillNumber("")
+    setDealer("")
+    setProduct('')
+    setSelectedProduct(null)
+    setSelectedProductid(null)
+    setRate("")
+    setQuantity('')
+    
+  }
+
+
+  const handleaddmoresale = ()=>{
+    setAddMoreSale(false)
+    resetform()
+  }
+
+  const handlenotaddsale = ()=>{
+    navigate(`/Sales/${uid}/${companyid}`)
+  }
+
+  useEffect(() => {
+    // When the confirmation box appears, set focus on the modal
+    if (confirmationbox) {
+      modalRef.current?.focus();
+    }
+    if(AddMoreSale){
+      saleRef.current?.focus()
+    }
+  }, [confirmationbox , AddMoreSale]);
+
+
   return <div className="">
-
-
-
     <div className=" grid grid-cols-12 h-full">
 
 
@@ -120,14 +148,46 @@ const SalesForm = () => {
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:opacity-90"
               onClick={handleconfirm}
-
-
             >
               Yes
             </button>
             <button
               className="bg-blue-500 hover:opacity-90 text-white px-4 py-2 rounded mr-2"
               onClick={handlecancel}
+            >
+              No
+            </button>
+
+
+          </div>
+        </div>
+      )}
+
+
+
+      {AddMoreSale && (
+        <div className="absolute z-50 inset-0 h-screen w-full flex justify-center items-center bg-black bg-opacity-50 transition duration-300 ease-in-out  "
+          ref={saleRef}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleaddmoresale()
+            }
+            if (e.key === "Escape") {
+              handlenotaddsale()
+            }
+          }}
+          tabIndex="0" >
+          <div className=" text-center bg-white p-5 rounded-lg shadow-lg w-96" >
+            <h2 className="text-xl mb-4">Do you want to add more sale</h2>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:opacity-90"
+              onClick={handleaddmoresale}
+            >
+              Yes
+            </button>
+            <button
+              className="bg-blue-500 hover:opacity-90 text-white px-4 py-2 rounded mr-2"
+              onClick={handlenotaddsale}
             >
               No
             </button>
@@ -198,7 +258,7 @@ const SalesForm = () => {
               className={`text-lg w-full rounded-lg border-gray-200 border p-3 focus:outline-none focus:ring-blue-500 ${Product.length > 0 ? 'bg-gray-300 bg-opacity-20' : 'bg-white'}`}
               id="Product"
               ref={Productref}
-              value={selectedProduct || ""}
+              value={selectedProduct || Product}
               placeholder="Select Your Product"
       
               onFocus={() => {
@@ -206,6 +266,11 @@ const SalesForm = () => {
                 setShowProductList(true)
               }}
               onKeyDown={(e) => {handleonkeydown(e, rateRef) }}
+              onChange={(e)=>{
+                setProduct(e.target.value)
+                setSelectedProduct()
+                setSelectedProductid()
+                            }}
             />
 
           </div>

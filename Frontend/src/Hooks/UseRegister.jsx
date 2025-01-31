@@ -9,7 +9,7 @@ import { useCompany } from "../Components/Companycontext";
 const UseRegister = (prop) => {
 
 
-  const {  setSelectedCompany ,Registercompany, setRegistercompany } = useCompany()
+  const {SelectedCompany ,Registercompany, setRegistercompany } = useCompany()
   const [country, setCountry] = useState("")
   const [region, setRegion] = useState("")
   const [registerdate, setRegisterDate] = useState(null)
@@ -100,7 +100,7 @@ const UseRegister = (prop) => {
 
   return (
     <>
-      <div className=" z-50  top-0  absolute  w-1/2 bg-white p-10 rounded-lg shadow-lg transition duration-300 ease-in-out mb-10 max-h-screen" style={{height : "950px"}}>
+      <div className="w-full rounded-lg transition duration-300 ease-in-out mb-10 " >
         {/* Form Heading */}
         <div className="text-2xl text-center mb-3">
           <h2>Register Your Company</h2>
@@ -116,7 +116,7 @@ const UseRegister = (prop) => {
         {/* Form Fields */}
         <div className="mb-3 p-3 border-b-2 border-gray-300" >
           <label htmlFor="companyid" className="block mb-2 text-lg font-medium text-gray-900">
-            Company ID
+            GSTIN
           </label>
           <input
             type="text"
@@ -199,29 +199,7 @@ const UseRegister = (prop) => {
           </div>
         </div>
 
-        {/* Date Pickers */}
-        <div className="flex items-center justify-between mb-5 p-3">
-          <div>
-            <h1 className="text-lg font-medium">Registration Date:</h1>
-            <DatePicker
-              selected={registerdate}
-              onChange={(date) => setRegisterDate(date)}
-              dateFormat="yyyy-MM-dd"
-              placeholderText=" Select a date"
-              className="h-10 rounded-lg w-full p-2 mt-2 border"
-            />
-          </div>
-          <div>
-            <h1 className="text-lg font-medium">Renew Date:</h1>
-            <DatePicker
-              selected={renewdate}
-              onChange={(date) => setRenewDate(date)}
-              dateFormat="yyyy-MM-dd"
-              placeholderText=" Select a date"
-              className="h-10 rounded-lg w-full p-2 mt-2 border"
-            />
-          </div>
-        </div>
+       
 
         {/* Submit Button */}
         <div className="w-full flex justify-center">

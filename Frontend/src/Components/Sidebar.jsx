@@ -5,16 +5,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useCompany } from "./Companycontext";
 import SelectCompany from "./SelectCompany";
 import { createPortal } from "react-dom";
+import Logout from "../Authentication/Logout";
 
 const Sidebar = ({ companyname }) => {
 
 
-  const { selectedCompany , rendercompany , setRendercompany } = useCompany()
+  const { selectedCompany , rendercompany , setRendercompany  } = useCompany()
   
   console.log("This is companyname", companyname)
   const { companyid } = useParams()
 
   const navigate = useNavigate()
+  const uid = JSON.parse(localStorage.getItem("uid"))
 
   const handlecompanyrender = ()=>{
     setRendercompany(true)
@@ -43,14 +45,14 @@ const Sidebar = ({ companyname }) => {
       </div>
 
       <div className="flex hover:cursor-pointer w-64 rounded-xl justify-start hover:bg-teal-700  hover:text-white p-4 mt-5 items-center" onClick={() => {
-        navigate(`/Dashboard/${selectedCompany}`)
+        navigate(`/Dashboard/${uid}/${selectedCompany}`)
       }}>
         <FontAwesomeIcon icon={faHome} className="text-lg" />
         <div className="pl-3 text-xl"> Dashboard</div>
       </div>
 
       <div className="flex hover:cursor-pointer w-64 rounded-xl justify-start hover:bg-teal-700  hover:text-white p-4 items-center " onClick={() => {
-        navigate(`/Purchase/${selectedCompany}`)
+        navigate(`/Purchase/${uid}/${selectedCompany}`)
       }}>
         <FontAwesomeIcon icon={faCartArrowDown} className="text-lg pt-1" />
         <div className="pl-3 text-xl"> Purchase</div>
@@ -58,23 +60,27 @@ const Sidebar = ({ companyname }) => {
 
       
       <div className="flex hover:cursor-pointer w-64 rounded-xl justify-start hover:bg-teal-700  hover:text-white p-4 items-center  " onClick={() => {
-        navigate(`/Inventory/${selectedCompany}`)
+        navigate(`/Inventory/${uid}/${selectedCompany}`)
       }}>
         <FontAwesomeIcon icon={faWarehouse} className="text-lg" />
         <div className="pl-3 text-xl"> Inventory</div>
       </div>
 
       <div className="flex hover:cursor-pointer w-64 rounded-xl justify-start hover:bg-teal-700  hover:text-white p-4 items-center  " onClick={() => {
-        navigate(`/ProductForm/${selectedCompany}`)
+        navigate(`/ProductForm/${uid}/${selectedCompany}`)
       }}>
         <FontAwesomeIcon icon={faHome} className="text-lg" />
         <div className="pl-3 text-xl"> ProductForm</div>
       </div>
       <div className="flex hover:cursor-pointer w-64 rounded-xl justify-start hover:bg-teal-700  hover:text-white p-4  items-center" onClick={() => {
-        navigate(`/Sales/${selectedCompany}`)
+        navigate(`/Sales/${uid}/${selectedCompany}`)
       }}>
         <FontAwesomeIcon icon={faHome} className="text-lg" />
         <div className="pl-3 text-xl"> Sales</div>
+      </div>
+      <div className="flex hover:cursor-pointer w-64 rounded-xl justify-start hover:bg-teal-700  hover:text-white p-4  items-center" >
+        <FontAwesomeIcon icon={faHome} className="text-lg" />
+        <div className="pl-3 text-xl"><Logout/></div>
       </div>
 
 

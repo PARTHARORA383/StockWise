@@ -18,7 +18,7 @@ const PurchaseList = () => {
   const [search, setSearch] = useState("");
   const [selectedPurchase, setSelectedPurchase] = useState()
   const [renderPurchaseInfo, setRenderPurchaseInfo] = useState(false)
-  const { companyid } = useParams();
+  const { companyid , uid  } = useParams();
   const [BillNumber, setBillNumber] = useState("");
 
   const [dealer, setDealer] = useState("");
@@ -28,7 +28,6 @@ const PurchaseList = () => {
   const [quantity, setQuantity] = useState("");
   const [rate, setRate] = useState("");
 
-  const { selectedCompany, setSelectedCompany } = useCompany()
   const[confirmationbox , setConfirmationbox] = useState(false)
   const[DeleteBox , setDeleteBox] = useState(false)
 
@@ -42,9 +41,10 @@ const PurchaseList = () => {
 
   
       const fetch = async () => {
-        const response = await axios.get(`http://localhost:3000/purchase/${companyid}`)
+        const response = await axios.get(`http://localhost:3000/purchase/${uid}/${companyid}`)
         setPurchases(response.data);
       }
+
   useEffect(() => {
 
     fetch();
@@ -67,7 +67,7 @@ const PurchaseList = () => {
 
     try{
 
-      const DeletePurchase = await axios.delete(`http://localhost:3000/purchase/${companyid}/${selectedPurchase.billing_number}
+      const DeletePurchase = await axios.delete(`http://localhost:3000/purchase/${uid}/${companyid}/${selectedPurchase.billing_number}
 `)
 
       if(DeletePurchase.status === 200){
@@ -113,7 +113,7 @@ const PurchaseList = () => {
 
 
   const navigatetoform = () => {
-    navigate(`/Purchaseform/${companyid}`)
+    navigate(`/Purchaseform/${uid}/${companyid}`)
   }
 
 

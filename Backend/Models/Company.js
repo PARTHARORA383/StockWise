@@ -11,13 +11,13 @@ local : {type : String}
 
 const companySchema = new mongoose.Schema({
   _id: { type: String, required: true }, 
-  userid : {type : mongoose.Schema.Types.ObjectId , ref : 'user'
+  userid : {type : String , ref : 'user'
    },
   name: { type: String, required: true },
-  owner :{type : String , required : true},
+  owner :{type : String},
   address: { type: addressSchema },
   startdate : {type : Date, default : Date.now}
-  ,enddate : {type : Date, required : true}
+  ,enddate : {type : Date}
 
 
 });

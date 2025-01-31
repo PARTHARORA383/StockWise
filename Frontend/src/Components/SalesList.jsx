@@ -11,7 +11,7 @@ const SalesList = () => {
 
 
   const [sales, setSales] = useState([])
-  const { companyid } = useParams()
+  const { companyid , uid } = useParams()
   const [search, setSearch] = useState("");
   const navigate = useNavigate()
 
@@ -22,7 +22,7 @@ const SalesList = () => {
 
       try {
 
-        const response = await axios.get(`http://localhost:3000/Sales/${companyid}`)
+        const response = await axios.get(`http://localhost:3000/Sales/${uid}/${companyid}`)
         setSales(response.data);
 
       } catch (e) {
@@ -41,13 +41,16 @@ const SalesList = () => {
   }
 
   const navigatetoform = () => {
-    navigate(`/SalesForm/${companyid}`)
+    navigate(`/SalesForm/${uid}/${companyid}`)
   }
 
   const filteredsale = sales.filter((sale) => {
     return (
       sale.billNumber.toLowerCase().includes(search.toLowerCase()) ||
-      sale.dealer.toLowerCase().includes(search.toLowerCase())     )
+      sale.dealer.toLowerCase().includes(search.toLowerCase()) ||
+    sale.Productname.toLowerCase().includes(search.toLowerCase()) 
+)
+
   })
 
   const totalamount = filteredsale.reduce((acc, sale) =>
@@ -152,7 +155,7 @@ const SalesList = () => {
           </div>
           <div className="flex-1 mx-2">
           <h2 className="text-lg font-semibold">
-            <p>{"empty"}</p>
+            <p>{new Date(sale.date).toLocaleDateString('en-CA') || ""}</p>
           </h2>
         </div>
           <div className="flex-1 mx-2">

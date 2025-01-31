@@ -11,6 +11,7 @@ const SalesSchema = new mongoose.Schema({
   quantity: { type: Number, required: true, min: 0 },
   rate: { type: Number, required: true, min: 0 },
   total_amount: { type: Number },
+  userid : {type : String ,  ref  : 'user'},
   company: { type: String, required: true, ref: 'company' },
   archived : {type : Boolean , default : false} ,
 })

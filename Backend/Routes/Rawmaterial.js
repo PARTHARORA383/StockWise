@@ -4,17 +4,18 @@ const router = express.Router();
 
 
 //CREATING A RAW MATERIAL 
-router.post("/:companyid", async (req, res) => {
-  const companyid = req.params.companyid;
+router.post("/:uid/:companyid", async (req, res) => {
+  const {companyid , uid } = req.params;
   const { catogory, subrawmaterial } = req.body;
 
   try {
     // Check if the raw material already exists for the company
-    const alreadyexist = await rawmaterial.findOne({ catogory: catogory, company: companyid });
+    const alreadyexist = await rawmaterial.findOne({ userid : uid , catogory: catogory, company: companyid });
 
-    if (!alreadyexist) {
+    if(!alreadyexist) {
       const newRawmaterial = new rawmaterial({
         catogory: catogory,
+        userid : uid,
         company: companyid
       });
 
@@ -26,9 +27,9 @@ router.post("/:companyid", async (req, res) => {
       // Loop through the subrawmaterial array
       for (const sub of subrawmaterial) {
         // Check if the submaterial already exists
-        let subrawmaterialsexist = await submaterial.findOne({ name: sub.name, rawmaterial: newRawmaterial._id });
+        let subrawmaterialsexist = await submaterial.findOne({ name: sub.name, rawmaterial: newRawmaterial._id});
 
-        if (!subrawmaterialsexist) {
+        if(!subrawmaterialsexist) {
           // Create a new submaterial if it doesn't exist
           const submaterialnew = new submaterial({
             name: sub.name,
@@ -36,17 +37,16 @@ router.post("/:companyid", async (req, res) => {
             unit : sub.unit,
             rawmaterial: newRawmaterial._id,
             company: companyid
-
           });
 
-          // Save the submaterial to the database
+
+          //Save the submaterial to the database
           await submaterialnew.save();
 
-          // Add the submaterial to the newSubmaterials array
+          //Add the submaterial to the newSubmaterials array
           newSubmaterials.push(submaterialnew._id);
         } else {
           newSubmaterials.push(subrawmaterialsexist._id)
-
         }
       }
 
@@ -69,16 +69,16 @@ router.post("/:companyid", async (req, res) => {
 });
 
 //UPDATE RAW MATERIAL TO ADD A NEW SUB MATERIAL 
-router.put('/:companyid/:rawmaterialid', async (req, res) => {
+router.put('/:uid/:companyid/:rawmaterialid', async (req, res) => {
 
-  const { companyid, rawmaterialid } = req.params
+  const { companyid, rawmaterialid  , uid} = req.params
   const { subrawmaterial } = req.body
 
 
   try {
 
       //Check if the rawmaterial exists or not
-    const rawmaterialexist = await rawmaterial.findOne({ company: companyid, _id: rawmaterialid })
+    const rawmaterialexist = await rawmaterial.findOne({ userid : uid , company: companyid, _id: rawmaterialid })
 
 
     if (!rawmaterialexist) {
@@ -91,7 +91,7 @@ router.put('/:companyid/:rawmaterialid', async (req, res) => {
     //Loop through the inputs 
     for (const sub of subrawmaterial) {
 
-      const subrawmaterialsexist = await submaterial.findOne({ rawmaterial: rawmaterialid, name: sub.name })
+      const subrawmaterialsexist = await submaterial.findOne({  userid : uid , company : companyid , rawmaterial: rawmaterialid, name: sub.name })
 
       if (!subrawmaterialsexist) {
 
@@ -100,6 +100,8 @@ router.put('/:companyid/:rawmaterialid', async (req, res) => {
           quantity : sub.quantity,
           unit : sub.unit,
           rawmaterial: rawmaterialid,
+          userid : uid ,
+          company : companyid
           
         })
 
@@ -110,7 +112,6 @@ router.put('/:companyid/:rawmaterialid', async (req, res) => {
           console.log("not an array")
           return res.status(400)
         }
-
         rawmaterialexist.submaterial.push(updatesubmaterial._id);
 
         await rawmaterialexist.save();
@@ -136,12 +137,12 @@ router.put('/:companyid/:rawmaterialid', async (req, res) => {
 
 //UPDATE SUBMATERIAL FOR ITS QUANTITY WHEN I ADD A NEW PURCHASE OR I SELL A PRODUCT
 
-router.put("/:companyid/:rawmaterialid/:subrawmaterialid" , async (req , res)=>{
+router.put("/:uid/:companyid/:rawmaterialid/:subrawmaterialid" , async (req , res)=>{
 
-  const {companyid , rawmaterialid , subrawmaterialid} = req.params
+  const { uid , companyid , rawmaterialid , subrawmaterialid} = req.params
   const {updatedquantity}  = req.body
 
-  const existingsubmaterial = await submaterial.findOne({ rawmaterial : rawmaterialid , _id : subrawmaterialid})
+  const existingsubmaterial = await submaterial.findOne({  userid : uid ,  company : companyid ,rawmaterial : rawmaterialid , _id : subrawmaterialid})
 
   if(!existingsubmaterial){
     return res.status(404).json({
@@ -149,7 +150,7 @@ router.put("/:companyid/:rawmaterialid/:subrawmaterialid" , async (req , res)=>{
     })
   }
 
-  const updatesubmaterial = await submaterial.findOneAndUpdate({rawmaterial : rawmaterialid, _id : subrawmaterialid} ,{
+  const updatesubmaterial = await submaterial.findOneAndUpdate({ userid : uid ,  company : companyid , rawmaterial : rawmaterialid, _id : subrawmaterialid} ,{
      $inc :  {quantity : updatedquantity}
   } , {new : true})
 
@@ -166,13 +167,14 @@ else{
 })
 
 
-router.get('/:companyid', async (req, res) => {
-  const { companyid } = req.params;
+
+router.get('/:uid/:companyid', async (req, res) => {
+  const { uid , companyid } = req.params;
   
   try {
     // Find rawmaterial for the given company and populate submaterial details
     const getRawmaterial = await rawmaterial
-    .find({ company: companyid })
+    .find({ userid : uid , company: companyid })
     .populate({
       path: 'submaterial', // Populate the 'submaterial' field
       model: 'submaterial', // Use the submaterial model to get submaterial data
@@ -187,17 +189,54 @@ router.get('/:companyid', async (req, res) => {
   }
 });
 
+router.get('/:uid/:companyid/:catogory/:item' , async (req , res)=>{
+  const { uid , companyid , catogory , item} = req.params
+  
+
+  try{
+
+    const existingrawmaterial = await rawmaterial.findOne({ userid : uid ,  company : companyid , catogory : catogory })
+    
+    const id = existingrawmaterial._id
+    
+    
+    if(existingrawmaterial){
+      const existingsubmaterial = await submaterial.findOne({  userid : uid ,  company : companyid , rawmaterial : id , name : item})
+   
+      const submaterialId = existingsubmaterial._id
+      if(existingsubmaterial){
+        return res.status(200).json({
+           submaterialId , id
+        })
+      }
+    }
+    else{
+      res.status(400).json({msg:"Cannot fetch rawmaterial"})
+    }
+
+
+
+  }catch(e){
+    res.status(400).json({
+      msg : "error fetching rawmaterials",
+      error : e.message
+    })
+  }
+
+  
+})
+
 
 //DELETE SUB MATERIAL AND DELETE RAW MATERIAL
-router.delete("/:companyid/:rawmaterialid" , async (req , res)=>{
+router.delete("/:uid/:companyid/:rawmaterialid" , async (req , res)=>{
 
 
-  const {companyid , rawmaterialid } = req.params
+  const { uid , companyid , rawmaterialid } = req.params
 
   try{
 
     
-    const DeleteRawmaterial  = await rawmaterial.deleteOne({ _id : rawmaterialid} )
+    const DeleteRawmaterial  = await rawmaterial.deleteOne({ userid : uid , company : companyid , _id : rawmaterialid} )
     
     
     
@@ -220,15 +259,15 @@ router.delete("/:companyid/:rawmaterialid" , async (req , res)=>{
 })
 
 
-router.delete("/:companyid/:rawmaterialid/:submaterialid" , async (req, res)=>{
+router.delete("/:uid/:companyid/:rawmaterialid/:submaterialid" , async (req, res)=>{
 
-  const {companyid , rawmaterialid ,submaterialid} = req.params
+  const { uid , companyid , rawmaterialid ,submaterialid} = req.params
 
 
   try{
 
     
-    const Deletesubmaterial = await submaterial.deleteOne({ rawmaterial : rawmaterialid , _id : submaterialid  })
+    const Deletesubmaterial = await submaterial.deleteOne({userid : uid ,  company : companyid , rawmaterial : rawmaterialid , _id : submaterialid  })
   
     
     if( Deletesubmaterial.deletedCount === 0){

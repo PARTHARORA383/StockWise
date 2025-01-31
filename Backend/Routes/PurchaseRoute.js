@@ -4,8 +4,9 @@ const router = express.Router();
 const {rawmaterial , submaterial} = require('../Models/RawMaterial')
 
 
-router.post("/:companyid", async function(req, res) {
-  const companyid = req.params.companyid;
+router.post("/:uid/:companyid", async function(req, res) {
+  const{ companyid , uid }= req.params
+  
   const { billing_number, dealer, quantity, rate, Product } = req.body;
   const { category, item } = Product || {};
 
@@ -24,7 +25,7 @@ router.post("/:companyid", async function(req, res) {
       });
     } 
 
-    const checkifbillnumberexist = await Purchase.findOne({billing_number : billing_number})
+    const checkifbillnumberexist = await Purchase.findOne({userid:uid , company : companyid , billing_number : billing_number})
     if(checkifbillnumberexist){
       return res.status(400).json({
         msg : "Invoive number already exist"
@@ -47,6 +48,7 @@ router.post("/:companyid", async function(req, res) {
           rate,
           quantity,
           company: companyid,
+          userid : uid 
           
         });
 
@@ -67,7 +69,7 @@ router.post("/:companyid", async function(req, res) {
 
 
 
-router.put("/:companyid/:billing_number" , async(req , res)=>{
+router.put("/:uid/:companyid/:billing_number" , async(req , res)=>{
 
   const { companyid , billing_number} = req.params
   const { BillNumber ,dealer, quantity, rate, Product } = req.body;
@@ -100,12 +102,12 @@ router.put("/:companyid/:billing_number" , async(req , res)=>{
 })
 
 
-router.get(`/:companyid` ,async (req , res)=>{
-  const companyid = req.params.companyid;
+router.get(`/:uid/:companyid` ,async (req , res)=>{
+  const{ companyid , uid }= req.params
   
   
   try {
-    const purchases = await Purchase.find({ company: companyid });
+    const purchases = await Purchase.find({userid : uid , company: companyid });
     res.status(200).json(purchases);
   } catch (error) {
     console.error('Error fetching purchases:', error);
@@ -113,7 +115,7 @@ router.get(`/:companyid` ,async (req , res)=>{
   }
 })
 
-router.delete("/:companyid/:billing_number" , async (req , res)=>{
+router.delete("/:uid/:companyid/:billing_number" , async (req , res)=>{
   const {companyid , billing_number}  = req.params
     console.log(billing_number)
 
