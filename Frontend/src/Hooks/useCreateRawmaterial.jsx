@@ -3,7 +3,9 @@ import axios from "axios";
 
 const useCreateRawmaterial = (uid, companyid) => {
   const [rawmaterial, setRawmaterial] = useState([]);
+  const [submaterials , setSubmaterials] = useState([])
   const [categories, setCategories] = useState([]);
+  const [items , setItems] = useState([])
   const [rawmaterialid , setRawmaterialid] = useState("")
   const [submaterial , setSubmaterial] = useState("")
 
@@ -20,13 +22,23 @@ const useCreateRawmaterial = (uid, companyid) => {
   };
 
   const addRawMaterial = async (category, item) => {
-    const existingCategory = rawmaterial.find((mat) => mat.catogory === category);
-
+    const existingCategory = rawmaterial.find((mat) => mat.catogory.toLowerCase() === category.toLowerCase());
+     
     try {
       if (existingCategory) {
+
+        
+        
+
+
+
+
+
+
+
         const response = await axios.put(
           `http://localhost:3000/rawmaterial/${uid}/${companyid}/${existingCategory._id}`,
-          { catogory: category, subrawmaterial: [{ name: item }] }
+          { catogory: category.toLowerCase(), subrawmaterial: [{ name: item.toLowerCase() }] }
         );
         if (response.status === 200) {
           alert("Product successfully added");
@@ -34,8 +46,8 @@ const useCreateRawmaterial = (uid, companyid) => {
         }
       } else {
         const response = await axios.post(`http://localhost:3000/rawmaterial/${uid}/${companyid}`, {
-          catogory: category,
-          subrawmaterial: [{ name: item }],
+          catogory: category.toLowerCase(),
+          subrawmaterial: [{ name: item.toLowerCase() }],
         });
         if (response.status === 201) {
           alert("Product successfully added");
