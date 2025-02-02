@@ -30,11 +30,11 @@ const Registercompany = () => {
       }
     )
 
-    if (response.status == 201){
+    if (response.status == 201){    
      setSelectedCompany(companyid)
 
 
-     const response = await axios.put(`http://localhost:3000/auth/${uid}/Signup` ,
+     const response1 = await axios.put(`http://localhost:3000/auth/${uid}/Signup` ,
       {
         companyid : companyid
       }
@@ -46,6 +46,7 @@ const Registercompany = () => {
       }
      )
 
+    
      setTimeout(() => {
       navigate(`/Dashboard/${uid}/${selectedCompany}`)
      }, 1000);

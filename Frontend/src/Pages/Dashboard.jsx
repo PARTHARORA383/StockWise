@@ -11,8 +11,8 @@ import { useParams } from "react-router-dom";
 const Dashboard = () => {
 
   const [ownername, setOwnername] = useState("")
-  const { selectedCompany, selectedrange, setSelectedrange, totalPurchaseAmount, totalSaleAmount , uid } = useCompany()
-
+  const { selectedCompany, selectedrange, setSelectedrange, totalPurchaseAmount, totalSaleAmount  } = useCompany()
+  const uid = JSON.parse(localStorage.getItem("uid"))
 
   useEffect(() => {
 

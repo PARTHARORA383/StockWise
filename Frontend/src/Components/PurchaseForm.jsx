@@ -21,6 +21,8 @@ const PurchaseForm = () => {
   const [showProductList, setShowProductList] = useState(false);
   const [showDealerList, setShowDealerList] = useState(false);
   const[confirmationbox , setConfirmationbox] = useState(false)
+  const [AddMorePurchase, setAddMorePurchase] = useState(false)
+
 
   const { companyid , uid } = useParams();
 
@@ -30,7 +32,7 @@ const PurchaseForm = () => {
    // Create refs for input fields
 
    const dealerRef = useRef(null);
-   
+   const purchasRef = useRef(null)
    const itemRef = useRef(null);
    const rateRef = useRef(null);
    const quantityRef = useRef(null);
@@ -66,8 +68,9 @@ const PurchaseForm = () => {
 
       if(response.status == 200){
         alert("Purchase added successfully!");
-        CreateSubmaterial();
-       AddtoInventory();
+        await CreateSubmaterial();
+        setAddMorePurchase(true)
+        // AddtoInventory(rawmaterialid , submaterial);
       }
     } catch (e) {
       console.error("Error adding purchase:", e);
@@ -76,28 +79,30 @@ const PurchaseForm = () => {
   };
 
   const CreateSubmaterial = async ()=>{
-    addRawMaterial(category , item)
+    addRawMaterial(category , item , quantity)
+    await fetchRawMaterials()
   }
 
   
-  //Adding to Inventory 
-  const AddtoInventory = async ( rawmaterialid , submaterial)=>{
+  // //Adding to Inventory 
+  // const AddtoInventory = async (rawmaterialid , submaterial)=>{
+  //   console.log(rawmaterialid , submaterial)
+  // try{
+  //   const response = await axios.put(`http://localhost:3000/rawmaterial/${uid}/${companyid}/${selectedrawmaterial._id || rawmaterialid}/${selectedsubrawmaterial._id || submaterial}` , {
+  //     updatedquantity : parseInt(quantity)
+  //   })
 
-  try{
-    const response = await axios.put(`http://localhost:3000/rawmaterial/${uid}/${companyid}/${selectedrawmaterial._id || rawmaterialid}/${selectedsubrawmaterial._id || submaterial}` , {
-      updatedquantity : parseInt(quantity)
-    })
+  //   if(response.status == 200){
+  //     setSelectedrawmaterial();
+  //     setSelectedsubrawmaterial();
+  //     setAddMorePurchase(true)
 
-    if(response.status == 200){
-      setSelectedrawmaterial();
-      setSelectedsubrawmaterial();
-      navigate(`/Purchase/${uid}/${companyid}`)
-    }
+  //   }
 
-  }catch(e){
-  alert("Error updating inventory")
-  }
-  }
+  // }catch(e){
+  // alert("Error updating inventory")
+  // }
+  // }
 
   const handleconfirm = ()=>{
     AddPurchase()
@@ -114,7 +119,35 @@ const PurchaseForm = () => {
     if (confirmationbox) {
       modalRef.current?.focus();
     }
-  }, [confirmationbox]);
+    if(AddMorePurchase){
+      purchasRef.current?.focus()
+    }
+  }, [confirmationbox , AddMorePurchase]);
+
+  
+
+  const resetform = ()=>{
+    setBillingNumber("")
+    setDealer("")
+    setCategory('')
+    setItem('')
+    setSelectedrawmaterial(null)
+    setSelectedsubrawmaterial(null)
+    setRate('')
+    setQuantity('')
+    
+  }
+  
+  const handleaddmorepurchase = ()=>{
+    setAddMorePurchase(false)
+    resetform()
+    fetchRawMaterials()
+  }
+
+  const handlenotaddpurchase = ()=>{
+    navigate(`/Purchase/${uid}/${companyid}`)
+  }
+
 
   return (<div className=" ml-8 z-10">
 
@@ -124,6 +157,9 @@ const PurchaseForm = () => {
    
 
     <div className=" grid grid-cols-12 h-full bg-gray-100">
+
+
+
 
 
     {confirmationbox && (
@@ -159,6 +195,39 @@ const PurchaseForm = () => {
               </div>
             </div>
           )}
+
+
+{AddMorePurchase && (
+        <div className="absolute z-50 inset-0 h-screen w-full flex justify-center items-center bg-black bg-opacity-50 transition duration-300 ease-in-out  "
+          ref={purchasRef}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleaddmorepurchase()
+            }
+            if (e.key === "Escape") {
+            handlenotaddpurchase()
+            }
+          }}
+          tabIndex="0" >
+          <div className=" text-center bg-white p-5 rounded-lg shadow-lg w-96" >
+            <h2 className="text-xl mb-4">Do you want to add more Purchase</h2>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:opacity-90"
+              onClick={handleaddmorepurchase}
+            >
+              Yes
+            </button>
+            <button
+              className="bg-blue-500 hover:opacity-90 text-white px-4 py-2 rounded mr-2"
+              onClick={handlenotaddpurchase}
+            >
+              No
+            </button>
+
+
+          </div>
+        </div>
+      )}
 
 
       {//PurchaseForm Component 
@@ -314,7 +383,7 @@ const PurchaseForm = () => {
            
            {showProductList && (
 
-             <div className="hidden lg:block col-span-3 h-full bg-white shadow-md  w-1/5 transition delay-300 ease-in-out overflow-y-auto fixed right-0 top-15 z-50 pb-1 ">
+             <div className="hidden lg:block col-span-3 h-full bg-white shadow-md  w-1/5 transition delay-300 ease-in-out overflow-y-auto fixed right-0 top-15 z-10 pb-1 ">
         {/* This side section can display accounts or other relevant information */}
         <UseRawmaterial />
         {/* Display product list or other data here */}

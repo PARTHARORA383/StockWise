@@ -26,8 +26,10 @@ const AuthOnChange = () => {
                 setSelectedCompany(response.data.user.companyid);
               }
             }
-
-            localStorage.setItem("uid", JSON.stringify(user.uid));
+            localStorage.removeItem("uid")
+            localStorage.removeItem("token")
+            localStorage.setItem("uid"  , JSON.stringify(user.uid))
+            localStorage.setItem("token"  , JSON.stringify(user.accessToken))
 
 
             // Navigate to dashboard only if company is selected

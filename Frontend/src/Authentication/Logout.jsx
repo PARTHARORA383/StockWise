@@ -20,6 +20,8 @@ const signout = async ()=>{
   await signOut(auth)
   localStorage.removeItem("uid")
   localStorage.removeItem("selectedCompany")
+  localStorage.removeItem("token")
+
   
   navigate('/Signin')
 }

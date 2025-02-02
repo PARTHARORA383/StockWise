@@ -37,24 +37,30 @@ const handleSignin =  async ()=>{
     })
 
     if(response.status == 200){
+    
       navigate(`/getting_started/${user.uid}`) 
+      localStorage.setItem("uid"  , JSON.stringify(user.uid))
+      localStorage.setItem("token"  , JSON.stringify(user.accessToken))
     }
   } else {
 
-const response = await axios.get(`http://localhost:3000/auth/${user.uid}/GoogleSignin` , {
+  const response = await axios.get(`http://localhost:3000/auth/${user.uid}/GoogleSignin` , {
   params : {
     email : user.email
   }
 })
 if(response.status == 201){
+  localStorage.setItem("uid"  , JSON.stringify(user.uid))
+  localStorage.setItem("token"  , JSON.stringify(user.accessToken))
   navigate(`/getting_started/${user.uid}`) 
 }
 else{
 
   setUserObj(response.data.user)
   setSelectedCompany(response.data.user.companyid)
-  localStorage.setItem("uid "  , JSON.stringify(user.uid))
-  localStorage.setItem("token "  , JSON.stringify(user.accessToken))
+  localStorage.setItem("uid"  , JSON.stringify(user.uid))
+  localStorage.setItem("token"  , JSON.stringify(user.accessToken))
+ 
 }
   }
 }

@@ -44,8 +44,8 @@ const Signincomponent = () => {
         await axios.get(`http://localhost:3000/auth/${user.uid}/Signin` )
        setUserObj(response.data.user)
        setSelectedCompany(response.data.user.companyid)
-      localStorage.setItem("uid"  , JSON.stringify(user.uid))
-      localStorage.setItem("token"  , JSON.stringify(user.accessToken))
+       localStorage.setItem("uid"  , JSON.stringify(user.uid))
+       localStorage.setItem("token"  , JSON.stringify(user.accessToken))
    
       setUid(user.uid)
     } catch (error) {

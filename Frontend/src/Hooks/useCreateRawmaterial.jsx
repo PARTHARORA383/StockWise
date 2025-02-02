@@ -3,11 +3,12 @@ import axios from "axios";
 
 const useCreateRawmaterial = (uid, companyid) => {
   const [rawmaterial, setRawmaterial] = useState([]);
-  const [submaterials , setSubmaterials] = useState([])
+  const [submaterials, setSubmaterials] = useState([])
   const [categories, setCategories] = useState([]);
-  const [items , setItems] = useState([])
-  const [rawmaterialid , setRawmaterialid] = useState("")
-  const [submaterial , setSubmaterial] = useState("")
+  const [items, setItems] = useState([])
+  const [rawmaterialid, setRawmaterialid] = useState("")
+  const [submaterial, setSubmaterial] = useState("")
+  const [forceupdate , setForceupdate] = useState(0)
 
   const fetchRawMaterials = async () => {
     try {
@@ -16,33 +17,51 @@ const useCreateRawmaterial = (uid, companyid) => {
 
       const uniqueCategories = [...new Set(response.data.map((item) => item.catogory))];
       setCategories(uniqueCategories);
+
+
     } catch (error) {
       console.error("Error fetching raw materials:", error);
     }
   };
 
-  const addRawMaterial = async (category, item) => {
+  const addRawMaterial = async (category, item, quantity = 0) => {
     const existingCategory = rawmaterial.find((mat) => mat.catogory.toLowerCase() === category.toLowerCase());
-     
+  
     try {
       if (existingCategory) {
-
-        
-        
-
-
-
-
-
-
-
-        const response = await axios.put(
-          `http://localhost:3000/rawmaterial/${uid}/${companyid}/${existingCategory._id}`,
-          { catogory: category.toLowerCase(), subrawmaterial: [{ name: item.toLowerCase() }] }
-        );
-        if (response.status === 200) {
+        let existingsubmaterial = null;
+  
+        try {
+          existingsubmaterial = await axios.get(`http://localhost:3000/rawmaterial/${uid}/${companyid}/${category}/${item}`);
+        } catch (error) {
+          if (error.response && error.response.status === 404) {
+            console.log("Submaterial not found, adding new submaterial.");
+          } else {
+            console.error("Error fetching submaterial:", error);
+            return;
+          }
+        }
+  
+        if (existingsubmaterial && existingsubmaterial.status === 200) {
+          await axios.put(
+            `http://localhost:3000/rawmaterial/${uid}/${companyid}/${existingsubmaterial.data.rawmaterialId}/${existingsubmaterial.data.submaterialId}`,
+            { updatedquantity: Number(quantity) }
+          );
           alert("Product successfully added");
           fetchRawMaterials();
+          setForceupdate((prev)=>prev + 1)
+
+        } else {
+          const response = await axios.put(
+            `http://localhost:3000/rawmaterial/${uid}/${companyid}/${existingCategory._id}`,
+            { subrawmaterial: [{ name: item.toLowerCase() }] }
+          );
+          if (response.status === 200) {
+            alert("Product successfully added");
+            fetchRawMaterials();
+            setForceupdate((prev)=>prev + 1)
+
+          }
         }
       } else {
         const response = await axios.post(`http://localhost:3000/rawmaterial/${uid}/${companyid}`, {
@@ -51,20 +70,21 @@ const useCreateRawmaterial = (uid, companyid) => {
         });
         if (response.status === 201) {
           alert("Product successfully added");
-          fetchRawMaterials();
-          FetchParticularRawmaterial(category , item)
+           fetchRawMaterials();
+           setForceupdate((prev)=>prev + 1)
+          FetchParticularRawmaterial(category, item);
         }
       }
     } catch (e) {
       alert("Error adding raw material. Try again.");
     }
   };
-
-  const FetchParticularRawmaterial = async (category , item)=>{
+  
+  const FetchParticularRawmaterial = async (category, item) => {
 
     const response = await axios.get(`http://localhost:3000/rawmaterial/${uid}/${companyid}/${category}/${item}`)
 
-    if(response.status === 200){
+    if (response.status === 200) {
       setRawmaterialid(response.data.id)
       setSubmaterial(response.data.submaterial)
     }
@@ -73,9 +93,9 @@ const useCreateRawmaterial = (uid, companyid) => {
 
   useEffect(() => {
     fetchRawMaterials();
-  }, [companyid]);
+  }, [companyid , forceupdate]);
 
-  return { rawmaterial, categories, fetchRawMaterials, addRawMaterial   , rawmaterialid , submaterial ,FetchParticularRawmaterial };
+  return { rawmaterial, categories, fetchRawMaterials, addRawMaterial, rawmaterialid, submaterial, FetchParticularRawmaterial };
 };
 
 export default useCreateRawmaterial;
