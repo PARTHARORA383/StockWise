@@ -7,7 +7,7 @@ const {rawmaterial , submaterial} = require('../Models/RawMaterial')
 router.post("/:uid/:companyid", async function(req, res) {
   const{ companyid , uid }= req.params
   
-  const { billing_number, dealer, quantity, rate, Product } = req.body;
+  const { billing_number, dealer, quantity, rate, Product , date } = req.body;
   const { category, item } = Product || {};
 
   try {
@@ -39,6 +39,7 @@ router.post("/:uid/:companyid", async function(req, res) {
       
         // Create a new purchase if submaterial doesn't exist
         const new_purchase = new Purchase({
+          date : date ,
           billing_number,
           dealer,
           Product: {
@@ -107,7 +108,7 @@ router.get(`/:uid/:companyid` ,async (req , res)=>{
   
   
   try {
-    const purchases = await Purchase.find({userid : uid , company: companyid });
+    const purchases = await Purchase.find({userid : uid , company: companyid }).sort({ date: -1 }); //;
     res.status(200).json(purchases);
   } catch (error) {
     console.error('Error fetching purchases:', error);

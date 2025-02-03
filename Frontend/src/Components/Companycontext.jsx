@@ -23,6 +23,7 @@ export const CompanyProvider = ({ children }) => {
   const[totalSaleAmount, setTotalSaleAmount] = useState(0)
   const [rendercompany , setRendercompany] = useState(false)
   const[uid , setUid] = useState("")
+  const[selectedDates , setSelectedDates] = useState(new Date())
   
   useEffect(() => {
     // Store selectedCompany in localStorage whenever it changes
@@ -34,7 +35,7 @@ export const CompanyProvider = ({ children }) => {
 
 
   return (
-    <CompanyContext.Provider value={{ selected , setSelected,  selectedCompany, setSelectedCompany  , Registercompany , setRegistercompany , Purchase , setPurchase , selectedsubrawmaterial , setSelectedsubrawmaterial , selectedrawmaterial , setSelectedrawmaterial , selectedProductid , setSelectedProductid , selectedProduct , setSelectedProduct , selectedrange, setSelectedrange , totalPurchaseAmount, setTotalPurchaseAmount  , totalSaleAmount, setTotalSaleAmount , rendercompany , setRendercompany , uid , setUid}}>
+    <CompanyContext.Provider value={{ selected , setSelected,  selectedCompany, setSelectedCompany  , Registercompany , setRegistercompany , Purchase , setPurchase , selectedsubrawmaterial , setSelectedsubrawmaterial , selectedrawmaterial , setSelectedrawmaterial , selectedProductid , setSelectedProductid , selectedProduct , setSelectedProduct , selectedrange, setSelectedrange , totalPurchaseAmount, setTotalPurchaseAmount  , totalSaleAmount, setTotalSaleAmount , rendercompany , setRendercompany , uid , setUid , selectedDates  , setSelectedDates} }>
       {children}
     </CompanyContext.Provider>
   );
