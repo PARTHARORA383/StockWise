@@ -36,10 +36,6 @@ const PurchaseList = () => {
   const modalRef = useRef(null)
 
     
-
-
-
-  
       const fetch = async () => {
         const response = await axios.get(`http://localhost:3000/purchase/${uid}/${companyid}`)
         setPurchases(response.data);
@@ -126,8 +122,6 @@ const PurchaseList = () => {
       purchase.billing_number.toLowerCase().includes(search.toLowerCase()) ||
       purchase.dealer.toLowerCase().includes(search.toLowerCase()) ||
       purchase.Product.item.toLowerCase().includes(search.toLowerCase())
-
-
     );
   });
 
@@ -313,16 +307,16 @@ handleDeletePurchase()
 
 
 
-      <div className={`flex flex-col justify-start text-3xl col-span-2 border-r-2 `}>
-        <div className="text-xl font-regular  text-gray-600 p-3">
+      <div className={`flex flex-col justify-start text-3xl col-span-3  bg-gradient-to-l from-teal-600 to-teal-800 rounded-xl  text-white px-4 py-2.5 hover:scale-105 transition-transform duration-200`}>
+        <div className="text-xl font-light  text-white p-3">
           <h2>Total Purchase Value</h2>
         </div>
-        <div className="font-semibold text-3xl pl-5">
+        <div className="font-normal text-3xl pl-5">
           <h2> <FontAwesomeIcon icon={faIndianRupeeSign} />{"  " + totalamount}</h2>
         </div>
       </div>
-      <div className=" col-span-9">
-        Products
+      <div className=" col-span-8">
+      
       </div>
     </div>
 

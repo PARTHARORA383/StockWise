@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const {rawmaterial} = require('./RawMaterial')
 
 
 const PurchaseSchema = new mongoose.Schema({
