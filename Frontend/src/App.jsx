@@ -17,6 +17,7 @@ import Registercompany from './Pages/RegisterComapany';
 import { Outlet } from "react-router-dom";
 import Signin from './Pages/Signin';
 import AuthOnChange from './Authentication/AuthOnChange';
+import Expenses from './Pages/Expense';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/ProductForm/:uid/:companyid" element={<ProductForm />} />
                 <Route path="/SalesForm/:uid/:companyid" element={<SalesForm />} />
                 <Route path="/Sales/:uid/:companyid" element={<SalesList />} />
+                <Route path="/Expenses/:uid/:companyid" element={<Expenses />} />
               </Route>
 
               <Route element={<WithoutSidebarLayout />}>

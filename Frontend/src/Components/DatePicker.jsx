@@ -27,6 +27,7 @@ const CustomDatePicker = () => {
   const handleDateChange = (day) => {
     const newDate = new Date(selectedYear, selectedMonth, day);
     setSelectedDate(newDate);
+    setShowDatePicker(false)
   };
 
   const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
@@ -51,23 +52,21 @@ const CustomDatePicker = () => {
 
   return (<div className="relative " ref={ref}>
 
-<div className="flex justify-center items-center space-x-4 border border-gray-400  py-1.5 rounded-xl w-5/6">
+<div className="flex justify-center items-center space-x-1 border border-gray-400  py-1.5 rounded-xl ">
         <input
           type="text"
+          readOnly
           value={format(selectedDate, "dd/MM/yyyy")}
-          className="rounded  text-xl focus:outline-none flex justify-center w-1/3 " 
-      
-          onChange={(e)=>{
-              const updateddate = e.target.value
-          }}
+          className="rounded  text-xl focus:outline-none  flex justify-end items-center " style={{width:"120px"}}
+
           onClick={()=>{
             setShowDatePicker(true)
-          }} 
+          }}
           />
-          <FontAwesomeIcon icon={faCalendarAlt} className=" text-xl hover : cursor-pointer" onClick={()=>{
-            setShowDatePicker(true) 
+          <FontAwesomeIcon icon={faCalendarAlt} className=" text-xl hover : cursor-pointer hover:text-blue-800 text-blue-600" onClick={()=>{
+            setShowDatePicker(true)
           }}/>
-        <button
+        {/* <button
           className="bg-blue-600 text-white px-9 py-2 rounded hover:bg-blue-700"
           onClick={(e)=>{
             const formatedDate = format(selectedDate , "yyyy-MM-dd")
@@ -75,16 +74,16 @@ const CustomDatePicker = () => {
             setShowDatePicker(false)
           }}
           >
-          Select 
-        </button>
+          Select
+        </button> */}
       </div>
-     
-    
+
+
     {showDatePicker &&  (
 
-<div className="absolute z-20 p-4  mx-auto bg-white rounded-2xl shadow-md" >
+<div className="absolute z-20 p-5 mx-auto bg-white rounded-2xl shadow-md right-0 " style={{width : "350px" , height : "350px"}} >
 {/* Month & Year Select */}
-<div className="flex justify-between mt-4 space-x-4">
+<div className="flex justify-between mt-4  space-x-4">
   <select
     value={selectedMonth}
     onChange={(e) => setSelectedMonth(Number(e.target.value))}
@@ -96,7 +95,7 @@ const CustomDatePicker = () => {
       </option>
     ))}
   </select>
-    
+
   <select
     value={selectedYear}
     onChange={(e) => setSelectedYear(Number(e.target.value))}
@@ -111,7 +110,7 @@ const CustomDatePicker = () => {
 </div>
 
 {/* Days */}
-<div className="grid grid-cols-7 gap-2 mt-4">
+<div className="grid grid-cols-7 gap-3 mt-4">
   {Array.from({ length: daysInMonth }, (_, index) => (
     <button
     key={index}
@@ -134,10 +133,10 @@ const CustomDatePicker = () => {
     )}
 
 
- 
+
 </div>
 
-    
+
   );
 };
 

@@ -43,12 +43,22 @@ export default {
           '100%' : {opacity : '1'}, 
           "0%" : {opacity : '0'}
           
-        }
+        },
+        slideIn: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        slideOut: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
       },
       animation: {
-        fadeIn: 'fadeIn 0.8s ease-in-out',
+        slideIn: 'slideIn 0.6s ease-out forwards',
+        slideOut: 'slideOut 0.6s ease-out forwards',
+        fadeIn: 'fadeIn 0.6s ease-in-out',
         popIn : 'popIn 0.3s ease-in-out',
-        fadeOut : 'fadeOut 0.3s ease-out',
+        fadeOut : 'fadeOut 0.6s ease-out',
         popOut : 'popOut 0.3s ease-in-out'
       },
     },

@@ -302,7 +302,7 @@ handleDeletePurchase()
       Stocks
     </div>
 
-    <div className="grid grid-cols-12 bg-white p-14 border-t-2 border-b-2">
+    <div className="grid grid-cols-12 bg-gray-100 p-14 border-t-2 border-b-2 border-gray-800">
 
 
 

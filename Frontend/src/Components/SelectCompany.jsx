@@ -31,9 +31,11 @@ const SelectCompany = () => {
   const [DeleteBox, setDeleteBox] = useState(false)
   const [Deletecompanyname, setDeletecompanyname] = useState('')
 
+  const uid = JSON.parse(localStorage.getItem("uid"))
+
   const getCompany = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/company`);
+      const response = await axios.get(`http://localhost:3000/${uid}`);
       if (response.status === 200) {
         setCompanies(response.data);
       }

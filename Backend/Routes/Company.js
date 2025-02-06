@@ -44,7 +44,7 @@ router.post('/:uid', async (req, res) => {
   const uid = req.params.uid
 
   try {
-    const companylist = await Company.find({userid  : uid});
+    const companylist = await Company.find({userid : uid});
     res.status(200).json(companylist);
   }
   catch (e) {
