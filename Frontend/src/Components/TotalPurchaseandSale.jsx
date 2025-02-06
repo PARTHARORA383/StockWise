@@ -143,13 +143,12 @@ const uid = JSON.parse(localStorage.getItem("uid"))
 <div className=" h-32 bg-gradient-to-r from-teal-800 to-teal-600 md:w-1/3  w-full  m-5 p-3 mr-8 rounded-xl transition-transform transform hover:scale-105">
 
 <div className=" flex flex-col pl-3">
-
-  <h2 className="text-lg text-opacity-90 text-white pb-7 pt-2">{CheckProfitorLoss ? (<h1>PROFIT</h1>) : (<h1>LOSS</h1>)
+  <h2 className="text-lg text-opacity-90 text-white pb-7 pt-2">{CheckProfitorLoss ? (<h1> GROSS PROFIT</h1>) : (<h1> GROSS LOSS</h1>)
 }</h2>
   <h2 className=" text-3xl   text-white pb-2 "> <FontAwesomeIcon icon = {faIndianRupeeSign}/>{ " "+ Profit_loss}</h2>
+  </div>
+  </div>
 </div>
-</div>
-    </div>
 
   );
 };

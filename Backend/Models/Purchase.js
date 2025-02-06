@@ -13,7 +13,7 @@ const PurchaseSchema = new mongoose.Schema({
     type : String 
   }
 } ,
-  dealer: { type: String, required: true },
+  dealer: { type: String, ref : "vendor" },
   quantity: { type: Number, required: true, min: 0 },
   rate: { type: Number, required: true, min: 0 },
   total_amount: { type: Number },

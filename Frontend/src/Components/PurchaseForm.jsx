@@ -442,7 +442,7 @@ const PurchaseForm = () => {
         <div className="hidden lg:block col-span-3 h-full bg-white shadow-md  w-1/5 transition delay-300 ease-in-out overflow-y-auto fixed right-0 top-15 z-50 pb-16">
           {/* This side section can display accounts or other relevant information */}
           {/* Display product list or other data here */}
-          Dealer
+          <useDealer/>
         </div>
       )}
     </div>

@@ -1,14 +1,16 @@
 const express = require("express");
-const {Purchase} = require('../Models/Purchase')
+const { Purchase } = require('../Models/Purchase')
 const router = express.Router();
-const {rawmaterial , submaterial} = require('../Models/RawMaterial')
+const { vendor } = require('../Models/Vendor')
+const { rawmaterial, submaterial } = require('../Models/RawMaterial')
 
 
-router.post("/:uid/:companyid", async function(req, res) {
-  const{ companyid , uid }= req.params
-  
-  const { billing_number, dealer, quantity, rate, Product , date } = req.body;
+router.post("/:uid/:companyid", async function (req, res) {
+  const { companyid, uid } = req.params
+
+  const { billing_number,  quantity, rate, Product, date } = req.body;
   const { category, item } = Product || {};
+  const dealer = req.body.dealer.trim().replace(/\s/g, "")
 
   try {
     // Validate the company ID
@@ -19,47 +21,64 @@ router.post("/:uid/:companyid", async function(req, res) {
     }
 
     // Validate all required fields
-    if (!billing_number || !category || !item || !dealer || !quantity || !rate ) {
-      return res.status(401).json({
-        msg: 'All fields are required',
-      });
-    } 
+    
 
-    const checkifbillnumberexist = await Purchase.findOne({userid:uid , company : companyid , billing_number : billing_number})
-    if(checkifbillnumberexist){
+    const checkifbillnumberexist = await Purchase.findOne({ userid: uid, company: companyid, billing_number: billing_number })
+    if (checkifbillnumberexist) {
       return res.status(400).json({
-        msg : "Invoive number already exist"
+        msg: "Invoive number already exist"
       })
     }
 
-    // Check if rawmaterial (category) exists
 
+    // Create a new purchase if submaterial doesn't exist
+    const new_purchase = new Purchase({
+      date: date,
+      billing_number,
+      dealer,
+      Product: {
+        category,
+        item,
+      },
+      rate,
+      quantity,
+      company: companyid,
+      userid: uid
 
+    });
 
-      
-        // Create a new purchase if submaterial doesn't exist
-        const new_purchase = new Purchase({
-          date : date ,
-          billing_number,
-          dealer,
-          Product: {
-            category,
-            item,
-          },
-          rate,
-          quantity,
-          company: companyid,
-          userid : uid 
-          
-        });
+    await new_purchase.save();
 
-        await new_purchase.save();
+    if (new_purchase) {
 
-        return res.status(200).json({
-          message: "Purchase complete",
-        });
-     
-     
+      // Check if Dealer exists
+
+      const checkifVendorExist = await vendor.findOne({ userid: uid, company: companyid, name: { $regex: new RegExp(`^${dealer}$`, 'i') } })
+
+      if (checkifVendorExist){
+        const updatebalance = await vendor.findOneAndUpdate({ userid: uid, company: companyid, name: { $regex: new RegExp(`^${dealer}$`, 'i') }  }, {
+          $inc: { current_balance: rate * quantity }
+        })
+        if(updatebalance){
+          return res.status(200).json({
+            message: "Purchase complete and balance updated",
+          });
+        }
+      }
+      else{
+        const newVendor = await vendor.create({userid:uid , company : companyid ,
+          name : dealer,
+          current_balance : rate*quantity,
+          dealer_type : "Purchase"
+        })
+
+        if(newVendor){
+          return res.status(200).json({
+            msg : "Purchase complete and vendor also created"
+          })
+        }
+      }
+    }
   } catch (e) {
     console.error(e);
     return res.status(500).json({
@@ -70,19 +89,20 @@ router.post("/:uid/:companyid", async function(req, res) {
 
 
 
-router.put("/:uid/:companyid/:billing_number" , async(req , res)=>{
+router.put("/:uid/:companyid/:billing_number", async (req, res) => {
 
-  const { companyid , billing_number} = req.params
-  const { BillNumber ,dealer, quantity, rate, Product } = req.body;
+  const { companyid, billing_number } = req.params
+  const { BillNumber, dealer, quantity, rate, Product } = req.body;
   const { category, item } = Product || {};
 
-  try{
+  try {
 
-    
-    const updatePurchase = await Purchase.findOneAndUpdate({company: companyid , billing_number : billing_number ,
-      
-    },{
-      billing_number : BillNumber ,
+
+    const updatePurchase = await Purchase.findOneAndUpdate({
+      company: companyid, billing_number: billing_number,
+
+    }, {
+      billing_number: BillNumber,
       dealer,
       Product: {
         category,
@@ -91,24 +111,24 @@ router.put("/:uid/:companyid/:billing_number" , async(req , res)=>{
       rate,
       quantity,
     })
-    
-    if(updatePurchase){
 
-      return res.status(200).json({msg : "Purchase updated"})
+    if (updatePurchase) {
+
+      return res.status(200).json({ msg: "Purchase updated" })
     }
-  }catch(e){
-    res.status(401).json({msg : "update failed"})
+  } catch (e) {
+    res.status(401).json({ msg: "update failed" })
   }
 
 })
 
 
-router.get(`/:uid/:companyid` ,async (req , res)=>{
-  const{ companyid , uid }= req.params
-  
-  
+router.get(`/:uid/:companyid`, async (req, res) => {
+  const { companyid, uid } = req.params
+
+
   try {
-    const purchases = await Purchase.find({userid : uid , company: companyid }).sort({ date: -1 }); //;
+    const purchases = await Purchase.find({ userid: uid, company: companyid }).sort({ date: -1 }); //;
     res.status(200).json(purchases);
   } catch (error) {
     console.error('Error fetching purchases:', error);
@@ -116,22 +136,22 @@ router.get(`/:uid/:companyid` ,async (req , res)=>{
   }
 })
 
-router.delete("/:uid/:companyid/:billing_number" , async (req , res)=>{
-  const {companyid , billing_number}  = req.params
-    console.log(billing_number)
+router.delete("/:uid/:companyid/:billing_number", async (req, res) => {
+  const { companyid, billing_number } = req.params
+  console.log(billing_number)
 
-  try{
+  try {
 
-    const DeletePurchase = await Purchase.findOneAndDelete({ company : companyid , billing_number : billing_number})
-    
-    if(DeletePurchase){
+    const DeletePurchase = await Purchase.findOneAndDelete({ company: companyid, billing_number: billing_number })
+
+    if (DeletePurchase) {
       return res.status(200).json({
-        msg : " Purchase Deleted"
+        msg: " Purchase Deleted"
       })
     }
-  }catch(e){
+  } catch (e) {
     return res.status(400).json({
-      msg : "error Deleting Purchase"
+      msg: "error Deleting Purchase"
     })
   }
 

@@ -33,7 +33,7 @@ try{
       name : expensename
     }
     )
-
+    
     await creating_category.save();
     console.log("this block of code is running" + expenseid)
     expenseid = creating_category._id;
@@ -70,7 +70,7 @@ router.get('/:uid/:companyid' , async(req , res)=>{
   const {uid , companyid} = req.params
   try{
   const fetchCategories = await expensetype.find({userid:uid, company:companyid})
-  const fetchExpenses  = await expense.find({userid : uid  , company : companyid})
+  const fetchExpenses  = await expense.find({userid : uid  , company : companyid}).sort({date : -1})
   
   if(fetchExpenses){
     res.status(200).json({
