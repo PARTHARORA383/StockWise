@@ -18,7 +18,7 @@ const VendorSchema = new mongoose.Schema({
   dealer_type : {type : String ,  enum : ['Purchase' , 'Sale' , 'Other']},
   current_balance : {type : Number},
   GSTIN : {type : String},
-  address : {type : Dealer_address},
+  address : {type : String},
   phone_number : {type : Number},
   date : {type : Date , default : Date.now()},
   description : {type : String},

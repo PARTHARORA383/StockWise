@@ -18,6 +18,7 @@ import { Outlet } from "react-router-dom";
 import Signin from './Pages/Signin';
 import AuthOnChange from './Authentication/AuthOnChange';
 import Expenses from './Pages/Expense';
+import Vendors from './Pages/Vendors';
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
                 <Route path="/SalesForm/:uid/:companyid" element={<SalesForm />} />
                 <Route path="/Sales/:uid/:companyid" element={<SalesList />} />
                 <Route path="/Expenses/:uid/:companyid" element={<Expenses />} />
+                <Route path="/Vendors/:uid/:companyid" element={<Vendors />} />
               </Route>
 
               <Route element={<WithoutSidebarLayout />}>

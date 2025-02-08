@@ -79,6 +79,12 @@ const Sidebar = () => {
         <FontAwesomeIcon icon={faHome} className="text-lg" />
         <div className="pl-3 text-xl"> Expenses</div>
       </div>
+      <div className="flex hover:cursor-pointer w-64 rounded-xl justify-start hover:bg-teal-700  hover:text-white p-4  items-center" onClick={() => {
+        navigate(`/Vendors/${uid}/${selectedCompany}`)
+      }}>
+        <FontAwesomeIcon icon={faHome} className="text-lg" />
+        <div className="pl-3 text-xl"> Vendors</div>
+      </div>
       <div className="flex hover:cursor-pointer w-64 rounded-xl justify-start hover:bg-teal-700  hover:text-white p-4  items-center" >
         <FontAwesomeIcon icon={faHome} className="text-lg" />
         <div className="pl-3 text-xl"><Logout/></div>

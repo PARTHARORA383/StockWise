@@ -7,6 +7,7 @@ import useCreateRawmaterial from "../Hooks/useCreateRawmaterial";
 import CustomDatePicker from "./DatePicker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import Dealer from "../Hooks/useDealer";
 
 
 const PurchaseForm = () => {
@@ -19,7 +20,7 @@ const PurchaseForm = () => {
   const [rate, setRate] = useState("");
   const [isFocused, setisFocused] = useState("");
 
-  const { selectedrawmaterial, setSelectedrawmaterial, selectedDates, setSelectedDates } = useCompany();
+  const { selectedrawmaterial, setSelectedrawmaterial, selectedDates, setSelectedDates , vendor , setVendor } = useCompany();
   const { selectedsubrawmaterial, setSelectedsubrawmaterial } = useCompany();
   const [showProductList, setShowProductList] = useState(false);
   const [showDealerList, setShowDealerList] = useState(false);
@@ -59,7 +60,7 @@ const PurchaseForm = () => {
           category: selectedrawmaterial?.catogory || category,
           item: selectedsubrawmaterial?.name || item
         },
-        dealer: dealer,
+        dealer: vendor?.name || dealer,
         quantity: Number(quantity),
         rate: Number(rate),
         total_amount: Number(quantity) * Number(rate),
@@ -292,9 +293,12 @@ const PurchaseForm = () => {
               className={`text-xl w-full rounded-lg border-gray-200 border p-3 focus:outline-none focus:ring-blue-500 ${isFocused === 'dealer' ? "bg-blue-300" : "bg-white"} ${dealer.length > 0 ? 'bg-gray-300 bg-opacity-20' : 'bg-white'}`}
               id="Dealer"
               ref={dealerRef}
-              value={dealer}
+              value={vendor?.name || dealer }
               placeholder="Enter Dealer Name"
-              onChange={(e) => setDealer(e.target.value)}
+              onChange={(e) => {
+                setDealer(e.target.value)
+               setVendor()}
+              }
               onFocus={() => {
                 setisFocused("dealer")
                 setShowDealerList(true)
@@ -442,7 +446,7 @@ const PurchaseForm = () => {
         <div className="hidden lg:block col-span-3 h-full bg-white shadow-md  w-1/5 transition delay-300 ease-in-out overflow-y-auto fixed right-0 top-15 z-50 pb-16">
           {/* This side section can display accounts or other relevant information */}
           {/* Display product list or other data here */}
-          <useDealer/>
+          <Dealer/>
         </div>
       )}
     </div>

@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/:uid/:companyid' , async (req , res)=>{
 
 const {uid , companyid} = req.params;
-const { current_balance , dealer_type , address , GSTIN , Phone_number } = req.body
+const { current_balance , dealer_type , address , GSTIN , Phone_number  ,description} = req.body
 const name = req.body.name.trim().replace(/\s+/g, "") 
 
 try{
@@ -37,7 +37,8 @@ else{
     dealer_type : dealer_type,
     address : address,
     GSTIN : GSTIN,
-    Phone_number : Phone_number,
+    phone_number : Phone_number,
+    description : description,
     userid : uid ,
     company : companyid
   })
