@@ -1,12 +1,13 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBuilding, faBuildingFlag, faIndianRupeeSign, faMoneyBill, faMoneyBillAlt, faMoneyBillTrendUp, faMoneyBillWave, faMultiply, faPerson, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { use } from "react"
 import CustomDatePicker from "../Components/DatePicker"
 import { useCompany } from "../Components/Companycontext"
 import { add } from "date-fns"
+
 const Vendors = () => {
 
   const [Vendorslist, setVendorList] = useState([])
@@ -30,6 +31,10 @@ const Vendors = () => {
   const uid = JSON.parse(localStorage.getItem("uid"))
   const { companyid } = useParams()
   const {selectedDates , setSelectedDates} = useCompany()
+
+
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const handleFetchvendors = async () => {
 
@@ -69,6 +74,7 @@ const Vendors = () => {
       setAddDealer(false)
       handleFetchvendors()
       alert("Dealer Created")
+      handleGoBack()
 
     }
   }catch(e){
@@ -77,6 +83,14 @@ const Vendors = () => {
   }
 
   }
+
+  
+  const handleGoBack = () => {
+    if (location.state?.from === `/PurchaseForm/${uid}/${companyid}`) {
+      navigate(-1); // Navigate back only if user came from HomePage
+    }
+  };
+
 
   const handleanimating = (closeFunction)=>{
 

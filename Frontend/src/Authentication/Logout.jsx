@@ -66,7 +66,7 @@ const confirmation = ()=>{
 }
 
   return <div>
-  <button className="text-black hover:text-white text-xl " onClick={()=>{setcomfirmationbox(true)}}>Log Out</button>
+  <button className="text-black hover:text-white text-xl " onClick={()=>{setcomfirmationbox(true)}}>    Log Out</button>
   {confirmationbox && confirmation()}
   </div>
 }

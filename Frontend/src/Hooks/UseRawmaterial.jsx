@@ -3,11 +3,13 @@ import { useParams } from "react-router-dom";
 import { useCompany } from "../Components/Companycontext";
 import { createPortal } from "react-dom";
 import useCreateRawmaterial from "./useCreateRawmaterial";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMultiply } from "@fortawesome/free-solid-svg-icons";
 
 const UseRawmaterial = () => {
   const { companyid } = useParams();
-  const { selectedrawmaterial, setSelectedrawmaterial } = useCompany();
-  const { selectedsubrawmaterial, setSelectedsubrawmaterial } = useCompany();
+  const { selectedrawmaterial, setSelectedrawmaterial } = useCompany();  
+  const { selectedsubrawmaterial, setSelectedsubrawmaterial , showProductList , setShowProductlist } = useCompany();
   const uid = JSON.parse(localStorage.getItem("uid"));
 
   const { rawmaterial, categories, fetchRawMaterials, addRawMaterial } = useCreateRawmaterial(uid, companyid);
@@ -19,6 +21,7 @@ const UseRawmaterial = () => {
   const selectSubMaterial = (submaterial, rawmaterial) => {
     setSelectedsubrawmaterial(submaterial);
     setSelectedrawmaterial(rawmaterial);
+    setShowProductlist(false)
   };
 
   const renderAddRawmaterialModal = () =>
@@ -73,15 +76,20 @@ const UseRawmaterial = () => {
     <div className="w-full bg-gray-100 border-l-2 min-h-screen">
       <div className="flex justify-between">
         {showAddRawmaterial && renderAddRawmaterialModal()}
-
+        
+          <div className="text-2xl m-4 top-0 right-0 fixed hover:bg-gray-200 hover : bg-opacity-5 hover:text-red-500 cursor-pointer mr-5 mt-3 w-10 h-10 flex items-center justify-center  " onClick= {()=>{
+            setShowProductlist(false)
+            console.log(showProductList)
+          }}><FontAwesomeIcon icon={faMultiply} />
+                  </div>
         <div className="text-xl p-6 pb-2 font-semibold text-gray-800">List of all rawmaterials</div>
-        <button
-          type="button"
+        {/* <button
+          type="button" fda
           className="px-5 me-2 mb-2 mt-2 text-md font-medium bg-gray-200 rounded-full"
           onClick={() => setShowAddRawmaterial(true)}
         >
           Create
-        </button>
+        </button> */}
       </div>
 
       <div className="h-1 bg-gradient-to-r from-blue-500 to-green-400"></div>
@@ -99,7 +107,11 @@ const UseRawmaterial = () => {
                   <div
                     className="p-4 hover:bg-blue-100 cursor-pointer"
                     key={sub._id}
-                    onClick={() => selectSubMaterial(sub, item)}
+                    onClick={() => {
+                      selectSubMaterial(sub, item)
+                  }
+                    }
+                    
                   >
                     <span className="text-blue-800 font-medium">{sub.name}</span>
                   </div>

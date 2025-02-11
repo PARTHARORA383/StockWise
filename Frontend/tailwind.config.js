@@ -12,6 +12,12 @@ export default {
       },
       colors: {
         'custom-lavender': '#b1a4d8',  // Adding your color with a custom name
+
+        supabaseGray: {
+          DEFAULT: '#1A1A1A',
+          dark: '#121212',
+          light: '#2E2E2E',
+        },
       },
       keyframes: {
         fadeIn: {

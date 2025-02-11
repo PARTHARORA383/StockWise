@@ -119,7 +119,6 @@ const PurchaseList = () => {
 
   const filteredPurchase = purchases.filter((purchase) => {
     return (
-      purchase.billing_number.toLowerCase().includes(search.toLowerCase()) ||
       purchase.dealer.toLowerCase().includes(search.toLowerCase()) ||
       purchase.Product.item.toLowerCase().includes(search.toLowerCase())
     );
@@ -298,9 +297,6 @@ handleDeletePurchase()
     )}
 
 
-    <div className="h-14 text-2xl font-semibold">
-      Stocks
-    </div>
 
     <div className="grid grid-cols-12 bg-gray-100 p-14 border-t-2 border-b-2 border-gray-800">
 
@@ -346,15 +342,13 @@ handleDeletePurchase()
 
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className=" flex justify-center bgiwhite rounded-lg shadow-lg p-4 mb-6 text-gray-950 ">
+        
         <div className="flex-1 mx-2">
-          <h2 className="text-xl font-semibold">Invoice no.</h2>
-        </div>
-        <div className="flex-1 mx-2">
-          <h2 className="text-xl font-semibold">Vendor</h2>
+          <h2 className="text-xl font-semibold">Date</h2>
 
         </div>
         <div className="flex-1 mx-2">
-          <h2 className="text-xl font-semibold">Date</h2>
+          <h2 className="text-xl font-semibold">Vendor</h2>
 
         </div>
         <div className="flex-1 mx-2">
@@ -381,19 +375,15 @@ handleDeletePurchase()
             setSelectedPurchase(purchase)
             setRenderPurchaseInfo(true)
           }} >
+          
           <div className="flex-1 mx-2">
-            <h2 className=" text-lg font-semibold ">
-              <p>{purchase.billing_number}</p>
+            <h2 className="text-lg font-semibold">
+              <p>{new Date(purchase.date).toLocaleDateString('en-CA')}</p>
             </h2>
           </div>
           <div className="flex-1 mx-2">
             <h2 className="text-lg font-semibold">
               <p><FontAwesomeIcon icon={faBuilding} />{" " + purchase.dealer}</p>
-            </h2>
-          </div>
-          <div className="flex-1 mx-2">
-            <h2 className="text-lg font-semibold">
-              <p>{new Date(purchase.date).toLocaleDateString('en-CA')}</p>
             </h2>
           </div>
           <div className="flex-1 mx-2">

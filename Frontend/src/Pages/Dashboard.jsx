@@ -31,12 +31,11 @@ const Dashboard = () => {
 
 
   return <div className="h-full bg-gray-100  ml-8 mr-10">
-    <div className="border-b-2 h-12 text-xl">Stocks</div>
 
     <div className="m-10 ml-10 flex  items-center justify-between">
       <div>
 
-        <h2 className="text-3xl font-medium ml-6"> {"Good Morning, " + ownername + " !"}</h2>
+        <h2 className="text-3xl font-medium ml-6"> {"Hello, " + ownername + " !"}</h2>
         <div className="text-lg ml-6"> Welcome to your Analysis Dashboard</div>
       </div>
       <div>

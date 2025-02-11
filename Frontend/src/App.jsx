@@ -19,6 +19,7 @@ import Signin from './Pages/Signin';
 import AuthOnChange from './Authentication/AuthOnChange';
 import Expenses from './Pages/Expense';
 import Vendors from './Pages/Vendors';
+import Navbar from './Components/Navbar';
 
 
 function App() {

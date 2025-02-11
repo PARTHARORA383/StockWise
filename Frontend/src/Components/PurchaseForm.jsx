@@ -6,7 +6,7 @@ import { useCompany } from "./Companycontext";
 import useCreateRawmaterial from "../Hooks/useCreateRawmaterial";
 import CustomDatePicker from "./DatePicker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faGreaterThan, faMinus, faMultiply, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Dealer from "../Hooks/useDealer";
 
 
@@ -15,14 +15,21 @@ const PurchaseForm = () => {
   const [dealer, setDealer] = useState("");
   const [category, setCategory] = useState("")
   const [item, setItem] = useState("")
+  const [description, setDescription] = useState("")
+  const [paymentType, setPaymentType] = useState("Cash")
+  const [gstRate, setGstRate] = useState("")
+  const [isCustomGst, setisCustomGst] = useState(false)
 
   const [quantity, setQuantity] = useState("");
   const [rate, setRate] = useState("");
+  const [expenseCategory, setExpenseCategory] = useState("")
+  const [expenseAmount, setExpenseAmount] = useState()
   const [isFocused, setisFocused] = useState("");
+  const [Vendorslist, setVendorList] = useState([])
 
-  const { selectedrawmaterial, setSelectedrawmaterial, selectedDates, setSelectedDates , vendor , setVendor } = useCompany();
+  const { selectedrawmaterial, setSelectedrawmaterial, selectedDates, setSelectedDates, vendor, setVendor, showProductList, setShowProductList } = useCompany();
   const { selectedsubrawmaterial, setSelectedsubrawmaterial } = useCompany();
-  const [showProductList, setShowProductList] = useState(false);
+
   const [showDealerList, setShowDealerList] = useState(false);
   const [confirmationbox, setConfirmationbox] = useState(false)
   const [AddMorePurchase, setAddMorePurchase] = useState(false)
@@ -40,11 +47,20 @@ const PurchaseForm = () => {
   const itemRef = useRef(null);
   const rateRef = useRef(null);
   const quantityRef = useRef(null);
+  const categoryref = useRef(null);
+  const billingNumberref = useRef(null);
+  const descriptionRef = useRef(null);
+
+  const ExpenseRef = useRef(null);
   const modalRef = useRef(null)
-  const handleonkeydown = (e, nextRef) => {
+  const handleonkeydown = (e, nextRef, prevRef) => {
     if (e.key == 'Enter') {
       e.preventDefault()
       nextRef.current.focus()
+    }
+    else if (e.key === 'Backspace' && e.target.value === '') {
+      e.preventDefault();
+      prevRef.current?.focus();
     }
 
   }
@@ -64,9 +80,15 @@ const PurchaseForm = () => {
         quantity: Number(quantity),
         rate: Number(rate),
         total_amount: Number(quantity) * Number(rate),
-        date: selectedDates
+        date: selectedDates,
+        paymentType: paymentType,
+        gstRate: gstRate,
+        description: description,
+
 
       });
+
+
 
 
 
@@ -90,7 +112,22 @@ const PurchaseForm = () => {
   }
 
 
-  // //Adding to Inventory 
+
+
+  const handleFetchvendors = async () => {
+
+    const response = await axios.get(`http://localhost:3000/vendor/${uid}/${companyid}`)
+    setVendorList(response.data.fetchVendors)
+    console.log("vendors are " + Vendorslist)
+
+  }
+
+  useEffect(() => {
+    handleFetchvendors()
+  }, [companyid])
+
+
+  // //Adding to Inventory
   // const AddtoInventory = async (rawmaterialid , submaterial)=>{
   //   console.log(rawmaterialid , submaterial)
   // try{
@@ -169,15 +206,32 @@ const PurchaseForm = () => {
     }
   }
 
-  return (<div className=" ml-8 z-10">
-
-    <div className="h-14 border-b-2 border-black text-xl flex items-center p-2">
-      Stocks
-    </div>
 
 
-    <div className=" grid grid-cols-12 h-full bg-gray-100">
+  const selectSubMaterial = (submaterial, rawmaterial) => {
+    setSelectedsubrawmaterial(submaterial);
+    setSelectedrawmaterial(rawmaterial);
+    setShowProductList(false)
+  };
 
+  return (<div className="relative ml-8 z-10">
+
+
+
+    <div className="h-full bg-gray-100">
+      <div></div>
+      <div className=" sticky z-20 border-b-2 top-0 bg-white h-16 text-supabaseGray-dark text-2xl flex items-center justify-between">
+        <div className="w-1/4 ml-5">Add Purchase</div>
+        <div className=" w-1/5 text-center mr-2">
+
+          <button
+            onClick={() => { setConfirmationbox(true) }}
+            className="bg-blue-500 hover:bg-blue-600 text-white text-xl py-2 rounded-lg shadow-md  transition duration-300  w-full"
+          >
+            Add Purchase
+          </button>
+        </div>
+      </div>
 
 
 
@@ -250,113 +304,117 @@ const PurchaseForm = () => {
       )}
 
 
-      {//PurchaseForm Component 
+      {//PurchaseForm Component
       }
 
-      <div className=" fixed w-2/3 col-span-full lg:col-span-9 h-full flex justify-center items-center border-r-2 bg-gray-200 z-10 pb-24 pt-10 pr-20 pl-20 ">
+      <div className="grid grid-cols-12 h-full  border-r-2 bg-gray-200  pb-24 pt-10 pr-20 pl-10 ">
 
         {
           //Pop up Form
         }
-        <div className=" relative bg-white shadow-lg rounded-lg p-10 flex flex-col w-full  inset-0 " style={{ height: "800px" }}>
+        <div className=" col-span-10 relative bg-white shadow-lg rounded-lg p-10 flex flex-col w-full  inset-0 mt-14" style={{ height: "720px" }}>
 
-          <div className=" text-center text-2xl mb-20"> Register Your Daily Purchase</div>
-          <div className=" absolute top-0 right-0  mt-24 mr-2 flex">
-
-            <div><CustomDatePicker /></div>
-
-
+          <div className="text-2xl "> Register Purchase</div>
+          <div className="text-xl mb-10 text-gray-500"> Easily register your daily purchases to keep your inventory updated</div>
+          <div className=" absolute top-0 right-0  mt-24 mr-2 flex w-52 ">
+            <CustomDatePicker />
           </div>
-          <div className=" mt-6 flex w-full mb-4 items-center">
-            <label className=" text-gray-700 text-xl font-medium mb-1 w-1/3">
+
+
+          <div className="mt-5 w-full mb-4 items-center space-y-2">
+            <label className="text-gray-700 text-xl font-medium  ">
               Bill Number :
             </label>
             <input
-
-              className={`text-xl w-full rounded-lg border-gray-200  border p-3 focus:outline-none focus:ring-blue-500 ${billingNumber.length > 0 ? 'bg-blue-300 bg-opacity-20' : 'bg-white'}`}
+              ref={billingNumberref}
+              className={`text-xl w-full rounded-lg border-gray-200  border p-3.5 mt-2 focus:outline-blue-300 focus:ring-blue-500 ${billingNumber.length > 0 ? 'bg-gray-300 bg-opacity-20 ' : 'bg-white'}`}
               id="billingNumber"
               value={billingNumber}
               placeholder="Enter Bill Number"
               onChange={(e) => setBillingNumber(e.target.value)}
-              onFocus={() => setisFocused("billingNumber")}
+              onFocus={() =>
+                setShowProductList(false)
+              }
               onBlur={() => { setisFocused("") }}
-              onKeyDown={(e) => { handleonkeydown(e, dealerRef) }}
+              onKeyDown={(e) => { handleonkeydown(e, dealerRef, null) }}
               required
             />
           </div>
 
 
-          <div className=" flex w-full mb-4 items-center">
-            <label className="text-xl text-gray-700 font-medium mb-1 w-1/3">Vendor :</label>
+          <div className=" mt-2 w-full mb-4 items-center space-y-2">
+            <label className="text-xl text-gray-700 font-medium mb-1 ">Vendor :</label>
             <input
 
-              className={`text-xl w-full rounded-lg border-gray-200 border p-3 focus:outline-none focus:ring-blue-500 ${isFocused === 'dealer' ? "bg-blue-300" : "bg-white"} ${dealer.length > 0 ? 'bg-gray-300 bg-opacity-20' : 'bg-white'}`}
+              className={`text-xl w-full rounded-lg border-gray-200 border p-3.5 focus:outline-blue-300 focus:ring-blue-500 ${isFocused === 'dealer' ? "bg-blue-300" : "bg-white"} ${dealer.length > 0 ? 'bg-gray-300 bg-opacity-20' : 'bg-white'}`}
               id="Dealer"
               ref={dealerRef}
-              value={vendor?.name || dealer }
+              value={vendor?.name || dealer}
               placeholder="Enter Dealer Name"
+              onClick={handleFetchvendors}
               onChange={(e) => {
                 setDealer(e.target.value)
-               setVendor()}
+
+              }
               }
               onFocus={() => {
                 setisFocused("dealer")
                 setShowDealerList(true)
-                showProductList(false)
+                setShowProductList(false)
+
               }}
               onBlur={() => { setisFocused("") }}
-              onKeyDown={(e) => { handleonkeydown(e, itemRef) }}
+              onKeyDown={(e) => { handleonkeydown(e, categoryref, billingNumberref) }}
             />
           </div>
 
 
-          <div className="w-full mb-4">
+          <div className="w-full mb-4 ">
 
 
-            <label className="block text-gray-700 font-medium mb-1 text-xl">
-              Product
-            </label>
+            <div className="flex space-x-20 items-center">
 
-            <div className="flex space-x-4 items-center">
-
-              <div className="flex items-center justify-normal w-1/2">
+              <div className=" flex flex-col space-y-2  w-1/2">
 
                 <label className="text-xl w-1/3">Category :</label>
 
                 <input
-                  className={`text-xl  rounded-lg border-gray-200  border p-3 focus:border-blue-500 focus:ring-1 focus : outline-none focus:ring-blue-500  w-2/3 ${selectedrawmaterial ? "bg-gray-300 bg-opacity-20 " : "bg-white  "}`}
+                  ref={categoryref}
+                  className={`text-xl  rounded-lg border-gray-200  border p-3.5 focus:border-blue-500 focus:ring-1 focus : outline-blue-300 ${selectedrawmaterial ? "bg-gray-300 bg-opacity-20 " : "bg-white  "}`}
                   id="Product"
                   value={selectedrawmaterial?.catogory || category}
                   placeholder="Select Catogory"
-                  onClick={() => {
-                    setShowProductList(true)
+
+                  onFocus={() => {
+                    setisFocused(true)
                     setShowDealerList(false)
+                    setShowProductList(true)
+
                   }}
-                  onFocus={() => setisFocused(true)}
+
                   onBlur={() => {
                     setisFocused(false)
 
 
                   }}
+
                   onChange={(e) => {
                     setCategory(e.target.value), setSelectedrawmaterial()
                   }
                   }
+                  onKeyDown={(e) => { handleonkeydown(e, itemRef, dealerRef) }}
                 />
               </div>
 
-              <div className="flex items-center  w-1/2" >
+              <div className=" flex flex-col space-y-2  w-1/2" >
                 <label className="text-xl w-1/3">Item :</label>
                 <input
-                  className={`text-xl w-2/3 rounded-lg border-gray-200 border  p-3 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 ${selectedsubrawmaterial ? "bg-gray-300 bg-opacity-20" : "bg-white"}`}
+                  className={`text-xl rounded-lg border-gray-200 border  p-3.5 focus:border-blue-500 focus:ring-1  focus:outline-blue-300 focus:ring-blue-500 ${selectedsubrawmaterial ? "bg-gray-300 bg-opacity-20" : "bg-white"}`}
                   id="Product"
                   ref={itemRef}
                   value={selectedsubrawmaterial?.name || item}
                   placeholder="Select Product"
-                  onClick={() => {
-                    setShowProductList(true)
-                    setShowDealerList(false)
-                  }}
+
 
                   onFocus={() => {
                     setisFocused(true)
@@ -367,86 +425,213 @@ const PurchaseForm = () => {
                     setisFocused(false)
 
                   }}
-                  onKeyDown={(e) => { handleonkeydown(e, rateRef) }}
+                  onKeyDown={(e) => { handleonkeydown(e, rateRef, categoryref) }}
                   onChange={(e) => { setItem(e.target.value), setSelectedsubrawmaterial() }}
                 />
               </div>
             </div>
           </div>
 
-          <div className="w-full flex items-center mb-4">
+          <div className="w-full mb-4 items-center space-y-2">
             <label className="block text-gray-700 font-medium mb-1 w-1/3 text-xl">Rate :</label>
             <input
-              className={`text-xl w-full rounded-lg border-gray-200 border p-3 focus:border-blue-500 focus:outline-none focus:ring-blue-500 ${rate.length > 0 ? "bg-gray-300 bg-opacity-20" : "bg-white"}`}
+              className={`text-xl w-full rounded-lg border-gray-200 border p-3.5 focus:border-blue-500 focus:outline-none focus:ring-blue-500 ${rate.length > 0 ? "bg-gray-300 bg-opacity-20" : "bg-white"}`}
               ref={rateRef}
               id="Rate"
               value={rate}
               placeholder="Enter Rate"
               onChange={(e) => setRate(e.target.value)}
-              onFocus={() => setisFocused(true)}
+              onFocus={() => {
+
+                setisFocused(true)
+                setShowProductList(false)
+                setShowDealerList(false)
+              }
+              }
               onBlur={() => { setisFocused(false) }}
-              onKeyDown={(e) => { handleonkeydown(e, quantityRef) }}
+              onKeyDown={(e) => { handleonkeydown(e, quantityRef, itemRef) }}
             />
           </div>
           <div className=" flex w-2/3 mb-6  items-center">
-            <label className="block text-gray-700 font-medium mb-1 w-1/3 text-xl">
+            <label className="block text-gray-700 font-medium mb-1  text-xl">
               Quantity :
             </label>
-            <div className=" w-full flex items-center justify-center">
+            <div className=" flex items-center justify-center">
 
               <input
-                className={`text-xl w-1/2 rounded-lg border-gray-200  border p-3 ml-5 mr-5 focus:border-blue-500 focus:outline-none focus:ring-blue-500${quantity.length > 0 ? " bg-blue-300 bg-opacity-20" : "bg-white"} `}
+                className={`text-xl w-1/2 rounded-lg border-gray-200  border p-3.5 ml-5 mr-5 focus:border-blue-500 focus:outline-none focus:ring-blue-500${quantity.length > 0 ? " bg-blue-300 bg-opacity-20" : "bg-white"} `}
                 ref={quantityRef}
                 id="quantity"
                 value={quantity}
                 placeholder="Enter Quantity"
                 onChange={(e) => setQuantity(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key == 'Enter') {
-                    setConfirmationbox(true);
-                  }
+                  handleonkeydown(e, descriptionRef, rateRef)
                 }}
 
               />
               <div className="flex space-x-3">
-                <div className="bg-teal-600 hover:bg-teal-800 active:bg-teal-700 rounded-full h-10 w-10 flex items-center justify-center transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95"  onClick={qualitycounterminus} >
+                <div className="bg-teal-600 hover:bg-teal-800 active:bg-teal-700 rounded-full h-10 w-10 flex items-center justify-center transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95" onClick={qualitycounterminus} >
                   <FontAwesomeIcon icon={faMinus} className="text-xl text-white" />
                 </div>
                 <div className="bg-teal-600 hover:bg-teal-800 active:bg-teal-700 rounded-full h-10 w-10 flex items-center justify-center transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95" onClick={qualitycounterplus}>
-                  <FontAwesomeIcon icon={faPlus}  className="text-xl text-white" />
+                  <FontAwesomeIcon icon={faPlus} className="text-xl text-white" />
                 </div>
               </div>
 
             </div>
           </div>
 
-          <div className=" w-full text-center mt-5">
 
+        </div>
+
+        <div className=" mt-4 col-span-10 bg-white shadow-lg rounded-lg p-10 flex inset-0 space-x-4 items-center  " style={{ height: "100px" }}>
+          <div className="text-xl font-medium">Payment Method :</div>
+          <select className="text-xl bg-supabaseGray-light text-white  w-1/6 text-center h-10 rounded-lg" value={paymentType}
+            onChange={(e) => {
+              setPaymentType(e.target.value)
+            }}>
+            <option>Cash</option>
+            <option>Online</option>
+          </select>
+        </div>
+        <div className=" mt-4 col-span-10 bg-white shadow-lg rounded-lg p-10 flex flex-col inset-0  space-y-2 justify-center items-start" style={{ height: "150px" }}>
+          <div className="text-xl font-medium"> GST:</div>
+          <div className="w-full space-x-4">
+
+            {isCustomGst ? (
+              <input
+                type="number"
+                value={gstRate}
+                onChange={(e) => setGstRate(parseFloat(e.target.value))}
+                className="border  text-xl rounded-lg w-1/3 p-3"
+                placeholder="Enter custom GST % "
+              />
+            ) : (
+              <select
+                value={gstRate}
+                onChange={(e) => setGstRate(parseFloat(e.target.value))}
+                className="border p-3 text-xl rounded-lg bg-supabaseGray-light text-white w-1/3"
+              >
+                <option value={5}>5%</option>
+                <option value={12}>12%</option>
+                <option value={18}>18%</option>
+              </select>
+            )}
             <button
-              onClick={() => { setConfirmationbox(true) }}
-              className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 rounded-lg shadow-md w-1/3 transition duration-300"
+              onClick={() => setisCustomGst(!isCustomGst)}
+              className="mt-2 text-lg text-teal-600 underline"
             >
-              Add Purchase
+              {isCustomGst ? "Select from dropdown" : "Enter custom GST"}
             </button>
           </div>
         </div>
+
+        <div className=" mt-4 col-span-10 bg-white shadow-lg rounded-lg p-10 flex  flex-col inset-0  justify-start items-start  space-y-2 " style={{ height: "250px" }}>
+          <div className="text-xl font-medium">Description</div>
+          <textarea
+            className={`text-xl w-full rounded-lg border-gray-200  border p-3.5 mr-5 focus:border-blue-500 focus:outline-none focus:ring-blue-500 h-52 ${description.length > 0 ? " bg-blue-300 bg-opacity-20" : "bg-white"} `}
+            ref={descriptionRef}
+            id="description"
+            value={description}
+            placeholder="Enter Description"
+            onChange={(e) => setDescription(e.target.value)}
+            onKeyDown={(e) => {
+              handleonkeydown(e, null, rateRef)
+            }}
+
+          />
+        </div>
+        <div className="col-span-10 rounded-lg pt-6 flex items-center justify-end">
+
+
+          <button
+            onClick={() => { setConfirmationbox(true) }}
+            className="bg-blue-500 hover:bg-blue-600 text-white text-xl py-2 rounded-lg shadow-lg  transition duration-300  w-1/4"
+          >
+            Add Purchase
+          </button>
+        </div>
       </div>
+
+
+
+
 
       {showProductList && (
 
-        <div className="hidden lg:block col-span-3 h-full bg-white shadow-md  w-1/5 transition delay-300 ease-in-out overflow-y-auto fixed right-0 top-15 z-10 pb-1 ">
-          {/* This side section can display accounts or other relevant information */}
-          <UseRawmaterial />
-          {/* Display product list or other data here */}
+        <div className="fixed inset-0 bg-black bg-opacity-30 z-50">
+          <div className="hidden lg:block  h-full bg-white  shadow-md  w-1/4 transition delay-300 ease-in-out overflow-y-auto fixed right-0 top-15 z-50 pb-1 animate-slideIn">
+            {/* This side section can display accounts or other relevant information */}
+            <div className="text-2xl m-4 top-0 right-0 fixed hover:bg-gray-200 hover : bg-opacity-5 hover:text-red-500 cursor-pointer mr-5 mt-3 w-10 h-10 flex items-center justify-center  " onClick={() =>
+              setShowProductList(false)
+
+            } ><FontAwesomeIcon icon={faMultiply} />
+            </div>
+
+            {rawmaterial.map((item) => (
+              <div className="bg-white shadow-md overflow-hidden" key={item._id}>
+                <div className="bg-gradient-to-tr from-teal-800 to-teal-600 text-gray-200 text-xl font-medium p-4">
+                  {item.catogory}
+                </div>
+                <div className="divide-y divide-gray-200">
+                  {item.submaterial.length > 0 ? (
+                    item.submaterial.map((sub) => (
+                      <div
+                        className="p-4 hover:bg-blue-100 cursor-pointer"
+                        key={sub._id}
+                        onClick={() => {
+                          selectSubMaterial(sub, item)
+                        }
+                        }
+
+                      >
+                        <span className="text-blue-800 font-medium">{sub.name}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-4 text-gray-500">No submaterials available.</div>
+                  )}
+                </div>
+              </div>
+            ))}
+            {/* Display product list or other data here */}
+          </div>
         </div>
       )}
 
       {showDealerList && (
+        <div className="bg-black fixed inset-0 bg-opacity-30 z-50">
+          <div className="hidden lg:block h-full bg-white shadow-md  w-1/4 transition delay-300 ease-in-out overflow-y-auto fixed right-0 top-15 z-50 pb-16 animate-slideIn">
+            <div className="text-2xl text-supabaseGray-dark m-4 text-bold mt-6 text-center"> Vendors</div>
+            <div className="text-2xl m-4 top-0 right-0 fixed hover:bg-gray-200 hover : bg-opacity-5 hover:text-red-500 cursor-pointer mr-5 mt-3 w-10 h-10 flex items-center justify-center  " onClick={() => {
+              setShowDealerList(false)
 
-        <div className="hidden lg:block col-span-3 h-full bg-white shadow-md  w-1/5 transition delay-300 ease-in-out overflow-y-auto fixed right-0 top-15 z-50 pb-16">
-          {/* This side section can display accounts or other relevant information */}
-          {/* Display product list or other data here */}
-          <Dealer/>
+            }} ><FontAwesomeIcon icon={faMultiply} />
+            </div>
+            <div className="ml-10 mb-4 h-12 bg-blue-500 hover:bg-blue-700  rounded-xl flex items-center justify-center text-lg text-white cursor-pointer" style={{ width: "400px" }}>
+              <FontAwesomeIcon icon={faPlus} className="mr-2" onClick={() => {
+                navigate(`/Vendors/${uid}/${companyid}`, { state: { from: `/PurchaseForm/${uid}/${companyid}` } })
+              }} />
+              Create a New Vendor
+
+
+            </div>
+            {Vendorslist.length > 0 ? (
+              <div>
+                {Vendorslist.map((vendor) => (
+                  <div className="bg-gradient-to-tr  text-black text-xl  p-4 hover:bg-blue-300 hover:bg-opacity-30 " key={vendor._id} onClick={(
+
+                  ) => {
+                    setVendor(vendor)
+                    setShowDealerList(false)
+                  }}>
+                    {vendor.name}
+                  </div>
+                ))}
+              </div>
+            ) : (<div className="text-supabaseGray-light text-xl text-center mt-6">Please Add a Vendor To continue</div>)}
+          </div>
         </div>
       )}
     </div>

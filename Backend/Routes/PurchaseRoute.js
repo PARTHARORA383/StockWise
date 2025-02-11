@@ -8,7 +8,7 @@ const { rawmaterial, submaterial } = require('../Models/RawMaterial')
 router.post("/:uid/:companyid", async function (req, res) {
   const { companyid, uid } = req.params
 
-  const { billing_number,  quantity, rate, Product, date } = req.body;
+  const { billing_number,  quantity, rate, Product, date , paymentType , gstRate } = req.body;
   const { category, item } = Product || {};
   const dealer = req.body.dealer.trim().replace(/\s/g, "")
 
@@ -23,15 +23,14 @@ router.post("/:uid/:companyid", async function (req, res) {
     // Validate all required fields
     
 
-    const checkifbillnumberexist = await Purchase.findOne({ userid: uid, company: companyid, billing_number: billing_number })
-    if (checkifbillnumberexist) {
-      return res.status(400).json({
-        msg: "Invoive number already exist"
-      })
-    }
+    // const checkifbillnumberexist = await Purchase.findOne({ userid: uid, company: companyid, billing_number: billing_number })
+    // if (checkifbillnumberexist) {
+    //   return res.status(400).json({
+    //     msg: "Invoive number already exist"
+    //   })
+    // }
 
 
-    // Create a new purchase if submaterial doesn't exist
     const new_purchase = new Purchase({
       date: date,
       billing_number,
@@ -42,6 +41,8 @@ router.post("/:uid/:companyid", async function (req, res) {
       },
       rate,
       quantity,
+      paymentType ,
+      gstRate : gstRate,
       company: companyid,
       userid: uid
 
@@ -92,7 +93,7 @@ router.post("/:uid/:companyid", async function (req, res) {
 router.put("/:uid/:companyid/:billing_number", async (req, res) => {
 
   const { companyid, billing_number } = req.params
-  const { BillNumber, dealer, quantity, rate, Product } = req.body;
+  const { BillNumber, dealer, quantity, rate, Product  } = req.body;
   const { category, item } = Product || {};
 
   try {
