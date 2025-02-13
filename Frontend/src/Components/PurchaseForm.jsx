@@ -17,13 +17,11 @@ const PurchaseForm = () => {
   const [item, setItem] = useState("")
   const [description, setDescription] = useState("")
   const [paymentType, setPaymentType] = useState("Cash")
-  const [gstRate, setGstRate] = useState("")
+  const [gstRate, setGstRate] = useState("5")
   const [isCustomGst, setisCustomGst] = useState(false)
 
   const [quantity, setQuantity] = useState("");
   const [rate, setRate] = useState("");
-  const [expenseCategory, setExpenseCategory] = useState("")
-  const [expenseAmount, setExpenseAmount] = useState()
   const [isFocused, setisFocused] = useState("");
   const [Vendorslist, setVendorList] = useState([])
 
@@ -219,14 +217,15 @@ const PurchaseForm = () => {
 
 
     <div className="h-full bg-gray-100">
+
       <div></div>
-      <div className=" sticky z-20 border-b-2 top-0 bg-white h-16 text-supabaseGray-dark text-2xl flex items-center justify-between">
+<div className=" sticky z-20 border-b-2 top-0 bg-white h-16 text-supabaseGray-dark text-2xl flex items-center justify-between">
         <div className="w-1/4 ml-5">Add Purchase</div>
         <div className=" w-1/5 text-center mr-2">
 
           <button
             onClick={() => { setConfirmationbox(true) }}
-            className="bg-blue-500 hover:bg-blue-600 text-white text-xl py-2 rounded-lg shadow-md  transition duration-300  w-full"
+            className="bg-blue-500 hover:bg-blue-600 text-white text-xl py-2 roun      ded-lg shadow-md  transition duration-300  w-full"
           >
             Add Purchase
           </button>

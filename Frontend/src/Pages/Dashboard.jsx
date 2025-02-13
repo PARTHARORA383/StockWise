@@ -30,12 +30,17 @@ const Dashboard = () => {
 
 
 
-  return <div className="h-full bg-gray-100  ml-8 mr-10">
+  return <div className="h-full bg-gray-100  ml-8 ">
 
-    <div className="m-10 ml-10 flex  items-center justify-between">
+<div className=" sticky z-20 border-b-2 top-0 bg-white h-16 text-supabaseGray-dark text-2xl flex items-center justify-between">
+        <div className="w-1/4 ml-5 text-3xl text-supabaseGray-dark font-medium">StockWise</div>
+ 
+      </div>
+
+    <div className="m-10 ml-10 mr-16  flex  items-center justify-between">
       <div>
 
-        <h2 className="text-3xl font-medium ml-6"> {"Hello, " + ownername + " !"}</h2>
+        <h2 className="text-3xl font-medium ml-6 mr-8 "> {"Hello, " + ownername + " !"}</h2>
         <div className="text-lg ml-6"> Welcome to your Analysis Dashboard</div>
       </div>
       <div>
@@ -51,14 +56,14 @@ const Dashboard = () => {
     </div>
 
 
-    <div className=" ml-6  ">
+    <div className=" ml-6 mr-8 ">
       <Totalpurchaseandsale purchase={true} sale={true} />
     </div>
 
 
-    <div className=" flex">
+    <div className=" flex mr-8">
 
-      <div className="lg:w-2/3 w-full  rounded-xl bg-white m-5 ml-10">
+      <div className="lg:w-2/3 w-full  rounded-xl bg-white m-5 ml-10 ">
         <PurchaseTrends />
       </div>
 

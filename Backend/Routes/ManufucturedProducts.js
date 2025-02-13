@@ -9,15 +9,15 @@ const {submaterial} = require('../Models/RawMaterial')
 const {manufacturedProducts} = require('../Models/ManufacturedProducts')
 
 
-router.post('/:companyid' , async (req , res)=>{
+router.post('/:uid/:companyid' , async (req , res)=>{
 
-  const {companyid} = req.params
+  const {companyid , uid} = req.params
 
   const {Productname , Productcomposition , quantity }  = req.body
 
     try{
 
-      const existproduct = await manufacturedProducts.find({ company : companyid , Productname : Productname})
+      const existproduct = await manufacturedProducts.find({ userid : uid , company : companyid , Productname : Productname})
       
       if(!existproduct){
         res.status(404).json({
@@ -34,6 +34,7 @@ router.post('/:companyid' , async (req , res)=>{
             Productname : Productname,
             Productcomposition : Productcomposition,
             quantity : quantity,
+            userid : uid,
             company : companyid
           })
           await Product.save();
@@ -56,11 +57,11 @@ router.post('/:companyid' , async (req , res)=>{
 
 
 
-router.get("/:companyid" , async(req , res)=>{
+router.get("/:uid/:companyid" , async(req , res)=>{
 
-  const {companyid} = req.params
+  const {companyid , uid} = req.params
 
-  const existproduct = await manufacturedProducts.find({company : companyid})
+  const existproduct = await manufacturedProducts.find({ userid : uid ,company : companyid})
   
   if(existproduct){
     return res.status(200).json(existproduct)
@@ -74,14 +75,14 @@ router.get("/:companyid" , async(req , res)=>{
 
 
 
-router.put('/:companyid/:manufacturingid' , async(req , res)=>{
+router.put('/:uid/:companyid/:manufacturingid' , async(req , res)=>{
 
-  const {companyid , manufacturingid } = req.params;
+  const {companyid , manufacturingid  , uid} = req.params;
   const {updatedquantity} = req.body
 
   try{
 
-    const checkifexistproduct = await manufacturedProducts.findOne({ company : companyid  , _id : manufacturingid})
+    const checkifexistproduct = await manufacturedProducts.findOne({ userid : uid , company : companyid  , _id : manufacturingid})
     
     if(checkifexistproduct){
       

@@ -14,7 +14,7 @@ const Expenses = () => {
   const [expensename , setExpenseName] = useState("")
   const [expenseAmount, setExpenseAmount] = useState()
   const [expenseDate, setExpenseDate] = useState(new Date())
-  const [paymentType, setPaymentType] = useState("")
+  const [paymentType, setPaymentType] = useState("Cash")
   const [description, setDescription] = useState("")
   const [renderExpense, setRenderExpense] = useState(false)
   const [search, setSearch] = useState("")

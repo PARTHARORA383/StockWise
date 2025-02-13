@@ -8,7 +8,7 @@ const { rawmaterial, submaterial } = require('../Models/RawMaterial')
 router.post("/:uid/:companyid", async function (req, res) {
   const { companyid, uid } = req.params
 
-  const { billing_number,  quantity, rate, Product, date , paymentType , gstRate } = req.body;
+  const { billing_number,  quantity, rate, Product, date , paymentType , gstRate , description } = req.body;
   const { category, item } = Product || {};
   const dealer = req.body.dealer.trim().replace(/\s/g, "")
 
@@ -42,6 +42,7 @@ router.post("/:uid/:companyid", async function (req, res) {
       rate,
       quantity,
       paymentType ,
+      description ,
       gstRate : gstRate,
       company: companyid,
       userid: uid

@@ -11,6 +11,7 @@ const ManufuctureProducts = new mongoose.Schema({
       unit: { type: String, required: true }   
   }],
   quantity : {type : Number},
+  userid : {type : String , ref : 'user'} ,
   company : {type : String, ref : 'company'}
 })
 

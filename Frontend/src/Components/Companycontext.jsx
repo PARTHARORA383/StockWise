@@ -21,6 +21,7 @@ export const CompanyProvider = ({ children }) => {
   const[selectedrange, setSelectedrange] = useState("")  
   const[totalPurchaseAmount, setTotalPurchaseAmount] = useState(0)
   const[totalSaleAmount, setTotalSaleAmount] = useState(0)
+  const[totalExpenseAmount, setTotalExpenseAmount] = useState(0)
   const [rendercompany , setRendercompany] = useState(false)
   const [showProductList , setShowProductList] = useState(false)
   const [showVendor , setShowVendor] = useState(false)
@@ -38,7 +39,7 @@ export const CompanyProvider = ({ children }) => {
 
 
   return (
-    <CompanyContext.Provider value={{ selected , setSelected,  selectedCompany, setSelectedCompany  , Registercompany , setRegistercompany , Purchase , setPurchase , selectedsubrawmaterial , setSelectedsubrawmaterial , selectedrawmaterial , setSelectedrawmaterial , selectedProductid , setSelectedProductid , selectedProduct , setSelectedProduct , selectedrange, setSelectedrange , totalPurchaseAmount, setTotalPurchaseAmount  , totalSaleAmount, setTotalSaleAmount , rendercompany , setRendercompany , uid , setUid , selectedDates  , setSelectedDates , vendor , setVendor , showProductList , setShowProductList , showVendor , setShowVendor } }>
+    <CompanyContext.Provider value={{ selected , setSelected,  selectedCompany, setSelectedCompany  , Registercompany , setRegistercompany , Purchase , setPurchase , selectedsubrawmaterial , setSelectedsubrawmaterial , selectedrawmaterial , setSelectedrawmaterial , selectedProductid , setSelectedProductid , selectedProduct , setSelectedProduct , selectedrange, setSelectedrange , totalPurchaseAmount, setTotalPurchaseAmount  , totalSaleAmount, setTotalSaleAmount , totalExpenseAmount, setTotalExpenseAmount, rendercompany , setRendercompany , uid , setUid , selectedDates  , setSelectedDates , vendor , setVendor , showProductList , setShowProductList , showVendor , setShowVendor } }>
       {children}
     </CompanyContext.Provider>
   );

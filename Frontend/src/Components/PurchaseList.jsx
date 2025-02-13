@@ -20,7 +20,7 @@ const PurchaseList = () => {
   const [renderPurchaseInfo, setRenderPurchaseInfo] = useState(false)
   const { companyid , uid  } = useParams();
   const [BillNumber, setBillNumber] = useState("");
-
+  const [ isClosing  , setIsClosing] = useState(false)
   const [dealer, setDealer] = useState("");
 
   const [item, setItem] = useState("")
@@ -137,10 +137,31 @@ handleDeletePurchase()
     
 }
 
-  const totalamount = filteredPurchase.reduce((acc, purchase) => acc + purchase.rate * purchase.quantity
+  const totalamount = filteredPurchase.reduce((acc, purchase) => acc + purchase.rate * purchase.quantity 
     , 0);
+
+  const total_amount_postGst = filteredPurchase.reduce((acc, purchase) => acc + 
+  purchase.total_amount_postGst
+    , 0);
+
+
+    
+
+    const handleanimating = (closeFunction)=>{
+
+      setIsClosing(true)
+      setTimeout(()=>{
+        closeFunction(false)
+        setIsClosing(false)
+      },600)
+  }
+
   return <div className={`ml-8 `}>
       
+      <div className=" sticky z-20  top-0  bg-gray-100 h-16 text-supabaseGray-dark text-4xl flex items-center justify-between font-sans font-medium">
+        <div className="w-1/4 ml-5 text-supabaseGray-dark">Purchases</div>
+     
+      </div>
 
         
       {DeleteBox && (
@@ -207,7 +228,7 @@ handleDeletePurchase()
 
 
 
-    {renderPurchaseInfo && (
+    {/* {renderPurchaseInfo && (
       <div className="bg-black bg-opacity-60  z-10 fixed inset-0 h-screen  transition-transform  duration-300" >
         <div className="fixed top-0 right-0 bg-white h-full" style={{ width: "600px" }}>
           <div className="flex justify-between items-center">
@@ -294,13 +315,104 @@ handleDeletePurchase()
           </div>
         </div>
       </div>
+    )} */}
+
+
+
+{renderPurchaseInfo && (
+      
+      <div className={`z-30 fixed inset-0  h-screen bg-black bg-opacity-30 transition-transform duration-300 ${isClosing ? "animate-fadeOut" : "animate-fadeIn"}`}>
+        <div className={`fixed z-30 top-0 right-0 h-screen bg-white overflow-y-auto  overflow-x-hidden shadow-lg ${isClosing ? "animate-slideOut" : "animate-slideIn"} `}style={{ width: "600px"}}>
+
+          <div className="text-2xl m-4 top-0 right-0 fixed hover:bg-gray-200 hover : bg-opacity-5 hover:text-red-500 cursor-pointer mr-5 mt-3 w-10 h-10 flex items-center justify-center " onClick={() => {
+            handleanimating(setRenderPurchaseInfo)
+          }} ><FontAwesomeIcon icon={faMultiply} /></div>
+          <div className="text-2xl text-center mt-10">
+            Purchase
+          </div>
+
+          <div className="text-2xl ml-4 mt-4 mb-1s font-bold">{}</div>
+         
+
+          <div className="flex justify-between items-center m-4">
+            <div className="text-xl "> Purchase Date :</div>
+            <div className="text-xl ml-4 text-gray-700 ">{new Date(selectedPurchase.date).toLocaleDateString('en-CA')}</div>
+          </div>
+
+          <div className="flex justify-between items-center m-4">
+            <div className="text-xl ">  Invoice No. :</div>
+            <div className=" text-xl mr-4  text-gray-700"> {selectedPurchase.billing_number}</div>
+          </div>
+
+          <div className="flex justify-between items-center m-4">
+            <div className="text-xl ">  Vendor :</div>
+            <div className=" text-xl mr-4  text-gray-700"> {selectedPurchase.dealer}</div>
+          </div>
+          
+
+          <div className="flex justify-between items-center m-4">
+            <div className="text-xl ">  Product :</div>
+            <div className=" text-xl mr-4  text-gray-700"> {selectedPurchase.Product.item}</div>
+          </div>
+
+          <div className="flex justify-between items-center m-4">
+            <div className="text-xl "> Payment Method :</div>
+            <div className=" text-xl mr-4  text-gray-700"> {selectedPurchase.paymentType}</div>
+          </div>
+
+          <div className="flex justify-between items-center m-4">
+            <div className="text-xl ">  Rate :</div>
+            <div className=" text-xl mr-4  text-gray-700"> {selectedPurchase.rate}</div>
+          </div>
+
+          <div className="flex justify-between items-center m-4">
+            <div className="text-xl ">  Quantity :</div>
+            <div className=" text-xl mr-4  text-gray-700"> {selectedPurchase.quantity}</div>
+          </div>
+
+
+          <div className="m-4">
+            <div className="text-xl "> Description : </div>
+            <div className=" text-xl mr-4   break-words text-justify text-gray-700 "> {selectedPurchase.description}</div>
+          </div>
+          <div className="flex justify-between items-center m-4 mt-5 border-t-2 border-gray-700">
+            <div className="text-xl mt-2"> {"Sub Total (excl. gst)"}</div>
+            <div className=" text-xl mr-4 mt-2  text-gray-700"> {selectedPurchase.total_amount}</div>
+          </div>
+          <div className="flex justify-between items-center m-4 border-gray-700">
+          <div className="text-xl mt-2">GST :</div>
+
+            <div className=" text-xl mr-4 mt-2  text-gray-700"> { selectedPurchase.gstRate}</div>
+          </div>
+          <div className="flex justify-between items-center m-4 mt-5 border-t-2 border-gray-700">
+            <div className="text-xl mt-2">Total amount</div>
+            <div className=" text-xl mr-4 mt-2  text-gray-700"> {selectedPurchase.total_amount_postGst}</div>
+          </div>
+
+
+
+
+        </div>
+      </div>
     )}
+ 
 
 
 
-    <div className="grid grid-cols-12 bg-gray-100 p-14 border-t-2 border-b-2 border-gray-800">
+    <div className="grid grid-cols-12 bg-gray-100 p-14 border-t-2 border-b-2 border-supabaseGray-light">
 
 
+
+
+      <div className={`flex flex-col justify-start text-3xl col-span-3  bg-gradient-to-l from-teal-600 to-teal-800 rounded-xl  text-white px-4 py-2.5 hover:scale-105 transition-transform duration-200`}>
+        <div className="text-xl font-light  text-white p-3">
+          <h2>Gross Purchase Value</h2>
+        </div>
+        <div className="font-normal text-3xl pl-5">
+          <h2> <FontAwesomeIcon icon={faIndianRupeeSign} />{"  " + totalamount}</h2>
+        </div>
+      </div>
+      <div className="col-span-3 ml-6">
 
 
       <div className={`flex flex-col justify-start text-3xl col-span-3  bg-gradient-to-l from-teal-600 to-teal-800 rounded-xl  text-white px-4 py-2.5 hover:scale-105 transition-transform duration-200`}>
@@ -308,10 +420,9 @@ handleDeletePurchase()
           <h2>Total Purchase Value</h2>
         </div>
         <div className="font-normal text-3xl pl-5">
-          <h2> <FontAwesomeIcon icon={faIndianRupeeSign} />{"  " + totalamount}</h2>
+          <h2> <FontAwesomeIcon icon={faIndianRupeeSign} />{"  " + total_amount_postGst}</h2>
         </div>
       </div>
-      <div className=" col-span-8">
       
       </div>
     </div>
@@ -363,7 +474,7 @@ handleDeletePurchase()
 
         </div>
         <div className="flex-1 mx-2">
-          <h2 className="text-xl font-semibold">Amount</h2>
+          <h2 className="text-xl font-semibold">Total Amount</h2>
         </div>
       </div>
 
@@ -407,7 +518,7 @@ handleDeletePurchase()
           <div className="flex-1 mx-2">
             <h2 className="text-lg font-semibold">
 
-              <p><FontAwesomeIcon icon={faIndianRupeeSign} />{"  " + purchase.rate * purchase.quantity}</p>
+              <p><FontAwesomeIcon icon={faIndianRupeeSign} />{"  " + purchase.total_amount_postGst}</p>
             </h2>
           </div>
         </div>

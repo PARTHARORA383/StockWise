@@ -17,8 +17,9 @@ const PurchaseSchema = new mongoose.Schema({
   quantity: { type: Number, required: true, min: 0 },
   rate: { type: Number, required: true, min: 0 },
   gstRate : {type : Number},
+  description : {type : String},
   total_amount: { type: Number },
-  total_amount_postGSt : {type : Number},
+  total_amount_postGst : {type : Number},
   paymentType : {type : String , enum : ["Cash" , "Online"]},
   company: { type: String, required: true, ref: 'company' },
   userid  : {type : String , ref : 'user'},
@@ -33,7 +34,7 @@ const PurchaseSchema = new mongoose.Schema({
 // Pre-save hook to calculate total_amount before saving
 PurchaseSchema.pre('save', function (next) {
   this.total_amount = this.quantity * this.rate;
-  this.total_amount_postGSt = this.total_amount + (this.total_amount * this.gstRate/100)
+  this.total_amount_postGst = this.total_amount + (this.total_amount * this.gstRate/100)
   next();
 });
 

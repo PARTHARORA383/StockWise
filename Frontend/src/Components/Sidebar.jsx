@@ -35,11 +35,16 @@ const Sidebar = () => {
     
     <div className="w-72 min-h-screen bg-supabaseGray text-white flex flex-col  items-center justify-start  border-r-2 border-gray-100">
 
+      
+
+
+
       <div className="flex hover:cursor-pointer w-64 rounded-xl justify-start hover:bg-teal-700 hover:text-white p-4 mt-40" >
         <div className="pl-3 text-xl">{companyname}</div> 
       </div>
 
-      <div className="flex hover:cursor-pointer w-64 rounded-xl justify-start hover:bg-teal-700  hover:text-white p-4 mt-5 items-center" onClick={() => {
+
+      <div className="flex hover:cursor-pointer w-64 rounded-xl justify-start hover:bg-teal-700  hover:text-white p-4 mt-5 items-center " onClick={() => {
         navigate(`/Dashboard/${uid}/${selectedCompany}`)
       }}>
         <FontAwesomeIcon icon={faHome} className="text-lg" />
@@ -85,7 +90,7 @@ const Sidebar = () => {
         <FontAwesomeIcon icon={faHome} className="text-lg" />
         <div className="pl-3 text-xl"> Vendors</div>
       </div>
-      <div className="flex hover:cursor-pointer w-64 rounded-xl justify-start hover:bg-teal-700  hover:text-white p-4  items-center" >
+      <div className="flex hover:cursor-pointer w-64 rounded-xl justify-start hover:bg-teal-700  hover:text-white p-4  items-center " >
         <FontAwesomeIcon icon={faHome} className="text-lg" />
         <div className="pl-3 text-xl"><Logout/></div>
       </div>

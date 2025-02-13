@@ -8,22 +8,22 @@ const router = express.Router();
 router.post('/:uid/:companyid' , async (req , res)=>{
 
   const {companyid , uid } = req.params;
-  const{billNumber , Product , dealer , quantity , rate , Productname} = req.body
+  const{billNumber , Product , dealer , quantity , rate , Productname , paymentType , gstRate , description} = req.body
   
   
   try{
-  if(!billNumber  || !dealer || !quantity|| !rate || !Productname ){
-    return res.status(400).json({
-      msg : "Invalid inputs"
-    })
-  }
+  // if(!billNumber  || !dealer || !quantity|| !rate || !Productname ){
+  //   return res.status(400).json({
+  //     msg : "Invalid inputs"
+  //   })
+  // }
 
-    const CheckifSaleexist = await Sales.findOne({ userid : uid ,  company : companyid , billNumber: billNumber})
-    if(CheckifSaleexist){
-      return res.status(409).json({
-        msg : "Bill number already exist"
-      })
-    }
+    // const CheckifSaleexist = await Sales.findOne({ userid : uid ,  company : companyid , billNumber: billNumber})
+    // if(CheckifSaleexist){
+    //   return res.status(409).json({
+    //     msg : "Bill number already exist"
+    //   })
+    // }
 
 
     const newSale = new Sales({
@@ -32,6 +32,9 @@ router.post('/:uid/:companyid' , async (req , res)=>{
       Productname : Productname,
       dealer : dealer ,
       quantity : quantity,
+      paymentType : paymentType ,
+      description,
+      gstRate,
       rate : rate,
       userid : uid,
       company : companyid

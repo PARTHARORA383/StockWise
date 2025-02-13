@@ -9,10 +9,12 @@ import { faIndianRupeeSign, faPlus, faSearch } from '@fortawesome/free-solid-svg
 const Totalpurchaseandsale = ({ purchase, sale }) => {
   const [purchases, setPurchases] = useState([]);
   const [sales, setSales] = useState([]);
-  const { selectedrange, setSelectedrange, totalPurchaseAmount, setTotalPurchaseAmount, totalSaleAmount, setTotalSaleAmount } = useCompany(); // Default to last 7 days
+  const [expenses, setExpenses] = useState([]);
+  const { selectedrange, setSelectedrange, totalPurchaseAmount, setTotalPurchaseAmount, totalSaleAmount, setTotalSaleAmount , totalExpenseAmount, setTotalExpenseAmount } = useCompany(); // Default to last 7 days
   const [loading, setLoading] = useState(true);
   const { selectedCompany } = useCompany()
-  const Profit_loss = totalSaleAmount-totalPurchaseAmount || 0
+  const totaldisplayexpense = totalExpenseAmount + totalPurchaseAmount
+  const Profit_loss = totalSaleAmount-(totaldisplayexpense)|| 0
 
   const [CheckProfitorLoss , setCheckProfitorLoss] = useState(false)
 const uid = JSON.parse(localStorage.getItem("uid"))
@@ -52,11 +54,23 @@ const uid = JSON.parse(localStorage.getItem("uid"))
     FetchSales();
   }, [])
 
+  useEffect(() => {
+    const FetchExpense = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/Expense/${uid}/${selectedCompany}`)
+        setExpenses(response.data.fetchExpenses)
+      } catch (e) {
+        alert("error fetching sales")
+      }
+    }
+    FetchExpense();
+  }, [])
+
   // Calculate total amount when the range or purchases change
   useEffect(() => {
     if (purchases.length > 0) {
       const filteredpurchase = filterPurchasesandSalesByDateRange(purchases, selectedrange);
-      const totalpurchase = filteredpurchase.reduce((sum, purchase) => sum + purchase.total_amount, 0);
+      const totalpurchase = filteredpurchase.reduce((sum, purchase) => sum + purchase.total_amount_postGst, 0);
       setTotalPurchaseAmount(totalpurchase);
     }
   }, [purchases, selectedrange]);
@@ -65,15 +79,23 @@ const uid = JSON.parse(localStorage.getItem("uid"))
   useEffect(() => {
     if (sales.length > 0) {
       const filteredsale = filterPurchasesandSalesByDateRange(sales, selectedrange)
-      const totalsale = filteredsale.reduce((sum, sale) => sum + sale.total_amount, 0)
+      const totalsale = filteredsale.reduce((sum, sale) => sum + sale.total_amount_postGst, 0)
       setTotalSaleAmount(totalsale)
     }
   }, [sales, selectedrange])
 
+  useEffect(() => {
+    if (expenses.length > 0) {
+      const filteredExpense = filterPurchasesandSalesByDateRange(expenses, selectedrange)
+      const totalexpense = filteredExpense.reduce((sum, exp) => sum + exp.expenseAmount, 0)
+      setTotalExpenseAmount(totalexpense)
+    }
+  }, [expenses, selectedrange])
+
   useEffect(()=>{
 
     handleProfitandLoss()
-  }, [purchases , selectedrange , sales])
+  }, [purchases , selectedrange , sales , expenses])
 
 
 
@@ -112,12 +134,14 @@ const uid = JSON.parse(localStorage.getItem("uid"))
 
   return (
     <div className="flex">
-      {purchase ? (<div
+      {purchase || expenses ? (<div
         className="h-32 bg-gradient-to-r  from-teal-800 to-teal-600 md:w-1/3  w-full m-5 mr-8 p-3 rounded-xl transition-transform transform hover:scale-105 ">
         <div className=" flex flex-col pl-3">
 
-          <h2 className="text-lg text-opacity-90 text-white pb-7 pt-2">PURCHASE</h2>
-          <h2 className=" text-3xl   text-white pb-2">  <FontAwesomeIcon icon = {faIndianRupeeSign}/>{ " "+ totalPurchaseAmount}</h2>
+          <h2 className="text-lg text-opacity-90 text-white pb-7 pt-2">EXPENSES</h2>
+          <h2 className=" text-3xl   text-white pb-2">  <FontAwesomeIcon icon = {faIndianRupeeSign}/>{ " "+
+           
+          totaldisplayexpense}</h2>
         </div>
       </div>) :
 
@@ -140,10 +164,11 @@ const uid = JSON.parse(localStorage.getItem("uid"))
         </div>
       )}
 
+
 <div className=" h-32 bg-gradient-to-r from-teal-800 to-teal-600 md:w-1/3  w-full  m-5 p-3 mr-8 rounded-xl transition-transform transform hover:scale-105">
 
 <div className=" flex flex-col pl-3">
-  <h2 className="text-lg text-opacity-90 text-white pb-7 pt-2">{CheckProfitorLoss ? (<h1> GROSS PROFIT</h1>) : (<h1> GROSS LOSS</h1>)
+  <h2 className="text-lg text-opacity-90 text-white pb-7 pt-2">{CheckProfitorLoss ? (<h1>  PROFIT</h1>) : (<h1>  LOSS</h1>)
 }</h2>
   <h2 className=" text-3xl   text-white pb-2 "> <FontAwesomeIcon icon = {faIndianRupeeSign}/>{ " "+ Profit_loss}</h2>
   </div>
