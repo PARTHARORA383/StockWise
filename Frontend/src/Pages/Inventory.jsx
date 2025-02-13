@@ -14,7 +14,7 @@ const Inventory = () => {
 
 
   const fetch = async () => {
-    const response = await axios.get(`${process.env.BACKEND_BASE_URL}/rawmaterial/${companyid}`)
+    const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/rawmaterial/${companyid}`)
     setRawmaterial(response.data);
 
   }
@@ -24,7 +24,7 @@ const Inventory = () => {
 
 
   const FetchProduct = async () => {
-    const response = await axios.get(`${process.env.BACKEND_BASE_URL}/ManufacturedProducts/${companyid}`)
+    const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/ManufacturedProducts/${companyid}`)
     setProduct(response.data)
     console.log(Product)
   }

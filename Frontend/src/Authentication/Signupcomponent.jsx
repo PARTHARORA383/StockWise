@@ -39,7 +39,7 @@ const Signupcomponent = () => {
 
 
       //Creating user in Local database
-      const response = await axios.post(`${process.env.BACKEND_BASE_URL}/auth/Signup`, {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/auth/Signup`, {
         uid: user.uid,
         email: user.email,
 

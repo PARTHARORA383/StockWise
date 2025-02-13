@@ -90,7 +90,7 @@ useEffect(()=>{
 
     try {
       const response = await axios.post(
-        `${process.env.BACKEND_BASE_URL}/ManufacturedProducts/${companyid}`,
+        `${process.env.REACT_APP_BACKEND_BASE_URL}/ManufacturedProducts/${companyid}`,
         productData
       );
       

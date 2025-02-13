@@ -35,7 +35,7 @@ const SelectCompany = () => {
 
   const getCompany = async () => {
     try {
-      const response = await axios.get(`${process.env.BACKEND_BASE_URL}/${uid}`);
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/${uid}`);
       if (response.status === 200) {
         setCompanies(response.data);
       }
@@ -58,7 +58,7 @@ const SelectCompany = () => {
       
       if (companyinfo.name.toUpperCase() === Deletecompanyname.toUpperCase()) {
 
-        const response = await axios.delete(`${process.env.BACKEND_BASE_URL}/company/${companyinfo._id}`)
+        const response = await axios.delete(`${process.env.REACT_APP_BACKEND_BASE_URL}/company/${companyinfo._id}`)
 
         if (response.status === 200) {
           alert('Company Deleted')
@@ -81,7 +81,7 @@ const SelectCompany = () => {
   const getselectedcompany = async (companyid) => {
     try {
 
-      const response = await axios.get(`${process.env.BACKEND_BASE_URL}/company/${companyid}`)
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/company/${companyid}`)
 
       if (response.status === 200) {
 
