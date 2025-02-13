@@ -36,6 +36,10 @@ app.use('/Expense'  , expense);
 app.use('/vendor' , vendor)
 require('./Routes/rescheduler');
 
+app.get('/' , async(req , res)=>{
+res.send("Hello mf")
+})
+
 
 
 app.listen(3000  , '0.0.0.0', ()=>{
