@@ -22,7 +22,7 @@ const Registercompany = () => {
     }
     console.log("uid id" + uid)
 
-    const response = await axios.post(`http://localhost:3000/company/${uid} `, requestbody,
+    const response = await axios.post(`${process.env.BACKEND_BASE_URL}/company/${uid} `, requestbody,
       {
           headers: {
           'Content-Type': 'application/json'

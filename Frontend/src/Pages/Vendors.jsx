@@ -38,7 +38,7 @@ const Vendors = () => {
 
   const handleFetchvendors = async () => {
 
-    const response = await axios.get(`http://localhost:3000/vendor/${uid}/${companyid}`)
+    const response = await axios.get(`${process.env.BACKEND_BASE_URL}/vendor/${uid}/${companyid}`)
     setVendorList(response.data.fetchVendors)
 
   }
@@ -64,7 +64,7 @@ const Vendors = () => {
 
     try{
 
-      const response = await axios.post(`http://localhost:3000/vendor/${uid}/${companyid}` , requestbody , {
+      const response = await axios.post(`${process.env.BACKEND_BASE_URL}/vendor/${uid}/${companyid}` , requestbody , {
       headers : {
         "Content-Type" : "application/json"
       }

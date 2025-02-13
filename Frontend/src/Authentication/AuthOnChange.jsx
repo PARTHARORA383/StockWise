@@ -18,7 +18,7 @@ const AuthOnChange = () => {
         const GetUserDetails = async () => {
           try {
             const response = await axios.get(
-              `http://localhost:3000/auth/${user.uid}/Signin`
+              `${process.env.BACKEND_BASE_URL}/auth/${user.uid}/Signin`
             );
 
             if (response.status === 200) {

@@ -38,6 +38,7 @@ require('./Routes/rescheduler');
 
 
 
-app.listen(3000 , ()=>{
+app.listen(3000  , '0.0.0.0', ()=>{
+  
   console.log('Application running on local host 3000')
 })

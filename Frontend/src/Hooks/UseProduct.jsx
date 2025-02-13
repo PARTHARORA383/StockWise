@@ -19,7 +19,7 @@ const GetProduct = ()=>{
 
 
   const FetchProduct = async ()=>{
-    const response = await axios.get(`http://localhost:3000/ManufacturedProducts/${companyid}`)
+    const response = await axios.get(`${process.env.BACKEND_BASE_URL}/ManufacturedProducts/${companyid}`)
     setProducts(response.data)
     console.log(response.data)
 

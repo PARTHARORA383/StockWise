@@ -12,7 +12,7 @@ const useCreateRawmaterial = (uid, companyid) => {
 
   const fetchRawMaterials = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/rawmaterial/${uid}/${companyid}`);
+      const response = await axios.get(`${process.env.BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}`);
       setRawmaterial(response.data);
 
       const uniqueCategories = [...new Set(response.data.map((item) => item.catogory))];
@@ -32,7 +32,7 @@ const useCreateRawmaterial = (uid, companyid) => {
         let existingsubmaterial = null;
   
         try {
-          existingsubmaterial = await axios.get(`http://localhost:3000/rawmaterial/${uid}/${companyid}/${category}/${item}`);
+          existingsubmaterial = await axios.get(`${process.env.BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}/${category}/${item}`);
         } catch (error) {
           if (error.response && error.response.status === 404) {
             console.log("Submaterial not found, adding new submaterial.");
@@ -53,7 +53,7 @@ const useCreateRawmaterial = (uid, companyid) => {
 
         } else {
           const response = await axios.put(
-            `http://localhost:3000/rawmaterial/${uid}/${companyid}/${existingCategory._id}`,
+            `${process.env.BACKEND_BASE_URL}/${uid}/${companyid}/${existingCategory._id}`,
             { subrawmaterial: [{ name: item.toLowerCase() }] }
           );
           if (response.status === 200) {
@@ -64,7 +64,7 @@ const useCreateRawmaterial = (uid, companyid) => {
           }
         }
       } else {
-        const response = await axios.post(`http://localhost:3000/rawmaterial/${uid}/${companyid}`, {
+        const response = await axios.post(`${process.env.BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}`, {
           catogory: category.toLowerCase(),
           subrawmaterial: [{ name: item.toLowerCase() }],
         });
@@ -82,7 +82,7 @@ const useCreateRawmaterial = (uid, companyid) => {
   
   const FetchParticularRawmaterial = async (category, item) => {
 
-    const response = await axios.get(`http://localhost:3000/rawmaterial/${uid}/${companyid}/${category}/${item}`)
+    const response = await axios.get(`${process.env.BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}/${category}/${item}`)
 
     if (response.status === 200) {
       setRawmaterialid(response.data.id)

@@ -68,7 +68,7 @@ const PurchaseForm = () => {
   //Adding Purchase
   const AddPurchase = async () => {
     try {
-      const response = await axios.post(`http://localhost:3000/purchase/${uid}/${companyid}`, {
+      const response = await axios.post(`${process.env.BACKEND_BASE_URL}/purchase/${uid}/${companyid}`, {
         billing_number: billingNumber,
         Product: {
           category: selectedrawmaterial?.catogory || category,
@@ -114,7 +114,7 @@ const PurchaseForm = () => {
 
   const handleFetchvendors = async () => {
 
-    const response = await axios.get(`http://localhost:3000/vendor/${uid}/${companyid}`)
+    const response = await axios.get(`${process.env.BACKEND_BASE_URL}/vendor/${uid}/${companyid}`)
     setVendorList(response.data.fetchVendors)
     console.log("vendors are " + Vendorslist)
 

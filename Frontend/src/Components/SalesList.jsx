@@ -25,7 +25,7 @@ const SalesList = () => {
 
       try {
 
-        const response = await axios.get(`http://localhost:3000/Sales/${uid}/${companyid}`)
+        const response = await axios.get(`${process.env.BACKEND_BASE_URL}/Sales/${uid}/${companyid}`)
         setSales(response.data);
 
       } catch (e) {

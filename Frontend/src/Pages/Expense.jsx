@@ -31,7 +31,7 @@ const Expenses = () => {
 
   const handlefetchexpense = async () => {
 
-    const response = await axios.get(`http://localhost:3000/Expense/${uid}/${companyid}`)
+    const response = await axios.get(`${process.env.BACKEND_BASE_URL}/Expense/${uid}/${companyid}`)
     setExpenseList(response.data.fetchExpenses)
     setExpenseType(response.data.fetchCategories)
 
@@ -56,7 +56,7 @@ const Expenses = () => {
 
     try{
 
-      const response = await axios.post(`http://localhost:3000/Expense/${uid}/${companyid}` , requestbody , {
+      const response = await axios.post(`${process.env.BACKEND_BASE_URL}/Expense/${uid}/${companyid}` , requestbody , {
       headers : {
         "Content-Type" : "application/json"
       }

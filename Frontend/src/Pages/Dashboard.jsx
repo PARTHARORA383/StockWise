@@ -18,7 +18,7 @@ const Dashboard = () => {
 
     const FetchCompany = async () => {
 
-      const response = await axios.get(`http://localhost:3000/company/${uid}/${selectedCompany}`)
+      const response = await axios.get(`${process.env.BACKEND_BASE_URL}/company/${uid}/${selectedCompany}`)
       setOwnername(response.data.owner)
 
     }

@@ -90,7 +90,7 @@ useEffect(()=>{
 
     try {
       const response = await axios.post(
-        `http://localhost:3000/ManufacturedProducts/${companyid}`,
+        `${process.env.BACKEND_BASE_URL}/ManufacturedProducts/${companyid}`,
         productData
       );
       

@@ -19,7 +19,7 @@ const Sidebar = () => {
 
 
   const fetchCompany = async ()=>{
-    const response = await axios.get(`http://localhost:3000/company/${uid}` )
+    const response = await axios.get(`${process.env.BACKEND_BASE_URL}/company/${uid}` )
 
     setCompanyName(response.data[0].name)
   }

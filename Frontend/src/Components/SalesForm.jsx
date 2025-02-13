@@ -81,7 +81,7 @@ const SalesForm = () => {
     }
 
     try {
-      const response = await axios.post(`http://localhost:3000/Sales/${uid}/${companyid}`, newsale)
+      const response = await axios.post(`${process.env.BACKEND_BASE_URL}/Sales/${uid}/${companyid}`, newsale)
       console.log(response.data)
 
       if (response.status == 200) {
@@ -110,7 +110,7 @@ const SalesForm = () => {
 
   
   const FetchProduct = async ()=>{
-    const response = await axios.get(`http://localhost:3000/ManufacturedProducts/${uid}/${companyid}`)
+    const response = await axios.get(`${process.env.BACKEND_BASE_URL}/ManufacturedProducts/${uid}/${companyid}`)
     setProductList(response.data)
     console.log(response.data)
 

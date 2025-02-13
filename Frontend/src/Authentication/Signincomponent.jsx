@@ -41,7 +41,7 @@ const Signincomponent = () => {
       console.log("User signed in:", user);
       
       const response =
-        await axios.get(`http://localhost:3000/auth/${user.uid}/Signin` )
+        await axios.get(`${process.env.BACKEND_BASE_URL}/auth/${user.uid}/Signin` )
        setUserObj(response.data.user)
        setSelectedCompany(response.data.user.companyid)
        localStorage.setItem("uid"  , JSON.stringify(user.uid))

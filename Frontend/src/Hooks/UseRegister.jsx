@@ -50,7 +50,7 @@ const UseRegister = (prop) => {
 
     console.log(requestbody)
     try {
-      const response = await axios.post("http://localhost:3000/company", requestbody, {
+      const response = await axios.post(`${process.env.BACKEND_BASE_URL}/company`, requestbody, {
 
         headers: {
           'Content-Type': 'application/json'

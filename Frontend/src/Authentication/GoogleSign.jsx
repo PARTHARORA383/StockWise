@@ -31,7 +31,7 @@ const handleSignin =  async ()=>{
   const isNewUser =   response.additionalUserInfo?.isNewUser;
 
   if (isNewUser) {
-    const response = await axios.post("http://localhost:3000/auth/Signup" , {
+    const response = await axios.post(`${process.env.BACKEND_BASE_URL}/auth/Signup`, {
       uid : user.uid ,
       email : user.email
     })
@@ -44,7 +44,7 @@ const handleSignin =  async ()=>{
     }
   } else {
 
-  const response = await axios.get(`http://localhost:3000/auth/${user.uid}/GoogleSignin` , {
+  const response = await axios.get(`${process.env.BACKEND_BASE_URL}/auth/${user.uid}/GoogleSignin` , {
   params : {
     email : user.email
   }
