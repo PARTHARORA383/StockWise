@@ -21,7 +21,7 @@ const expense = require('./Routes/Expense.js')
 const vendor = require('./Routes/Vendor.js')
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: '*' }));
 
 
 dbconnect();
