@@ -19,7 +19,7 @@ const Sidebar = () => {
 
 
   const fetchCompany = async ()=>{
-    const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/company/${uid}` )
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/company/${uid}` )
 
     setCompanyName(response.data[0].name)
   }

@@ -18,7 +18,7 @@ const AuthOnChange = () => {
         const GetUserDetails = async () => {
           try {
             const response = await axios.get(
-              `${process.env.REACT_APP_BACKEND_BASE_URL}/auth/${user.uid}/Signin`
+              `${import.meta.env.VITE_BACKEND_BASE_URL}/auth/${user.uid}/Signin`
             );
 
             if (response.status === 200) {

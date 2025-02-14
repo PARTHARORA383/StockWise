@@ -6,6 +6,8 @@ import { useCompany } from "./Companycontext";
 import useCreateRawmaterial from "../Hooks/useCreateRawmaterial";
 import CustomDatePicker from "./DatePicker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { createPortal } from "react-dom";
+
 import { faGreaterThan, faMinus, faMultiply, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Dealer from "../Hooks/useDealer";
 
@@ -32,6 +34,11 @@ const PurchaseForm = () => {
   const [confirmationbox, setConfirmationbox] = useState(false)
   const [AddMorePurchase, setAddMorePurchase] = useState(false)
   const [DatePickertrue, setDatePickertrue] = useState(false)
+  
+  const [showAddRawmaterial, setShowAddRawmaterial] = useState(false);
+  const [createcategory, setCreateCategory] = useState("");
+  const [createitem , setCreateItem] = useState("");
+
 
   const { companyid, uid } = useParams();
 
@@ -68,7 +75,7 @@ const PurchaseForm = () => {
   //Adding Purchase
   const AddPurchase = async () => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/purchase/${uid}/${companyid}`, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/purchase/${uid}/${companyid}`, {
         billing_number: billingNumber,
         Product: {
           category: selectedrawmaterial?.catogory || category,
@@ -82,8 +89,6 @@ const PurchaseForm = () => {
         paymentType: paymentType,
         gstRate: gstRate,
         description: description,
-
-
       });
 
 
@@ -114,7 +119,7 @@ const PurchaseForm = () => {
 
   const handleFetchvendors = async () => {
 
-    const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/vendor/${uid}/${companyid}`)
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/vendor/${uid}/${companyid}`)
     setVendorList(response.data.fetchVendors)
     console.log("vendors are " + Vendorslist)
 
@@ -129,7 +134,7 @@ const PurchaseForm = () => {
   // const AddtoInventory = async (rawmaterialid , submaterial)=>{
   //   console.log(rawmaterialid , submaterial)
   // try{
-  //   const response = await axios.put(`http://localhost:3000/rawmaterial/${uid}/${companyid}/${selectedrawmaterial._id || rawmaterialid}/${selectedsubrawmaterial._id || submaterial}` , {
+  //   const response = await axios.put(`http://${VITE_APP_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}/${selectedrawmaterial._id || rawmaterialid}/${selectedsubrawmaterial._id || submaterial}` , {
   //     updatedquantity : parseInt(quantity)
   //   })
 
@@ -212,14 +217,66 @@ const PurchaseForm = () => {
     setShowProductList(false)
   };
 
+   const renderAddRawmaterialModal = () =>
+      createPortal(
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white w-1/2 p-8 rounded-lg shadow-lg">
+            <h2 className="text-xl mb-6 text-center">Add Raw Material</h2>
+  
+            <div className="mb-4 flex items-center">
+              <label className="text-lg w-1/3">Category:</label>
+              <input
+                className="text-lg rounded-lg border-gray-300 p-3 w-2/3"
+                placeholder="Select or create a category"
+                list="category-list"
+                value={createcategory}
+                onChange={(e) => setCreateCategory(e.target.value)}
+              />
+              <datalist id="category-list">
+                {categories.map((cat, index) => (
+                  <option key={index} value={cat} />
+                ))}
+              </datalist>
+            </div>
+  
+            <div className="mb-4 flex items-center">
+              <label className="text-lg w-1/3">Product:</label>
+              <input
+                className="text-lg rounded-lg border-gray-300 p-3 w-2/3"
+                placeholder="Enter Product Name"
+                value={createitem}
+                onChange={(e) => setCreateItem(e.target.value)}
+              />
+            </div>
+  
+            <div className="text-center mt-6">
+              <button
+                onClick={() => {
+                  addRawMaterial(createcategory, createitem);
+                  setShowAddRawmaterial(false);
+                }}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      );
+
+
+
   return (<div className="relative ml-8 z-10">
 
 
 
     <div className="h-full bg-gray-100">
 
+    {showAddRawmaterial && renderAddRawmaterialModal()}
+
       <div></div>
-<div className=" sticky z-20 border-b-2 top-0 bg-white h-16 text-supabaseGray-dark text-2xl flex items-center justify-between">
+      <div className=" sticky z-20 border-b-2 top-0 bg-white h-16 text-supabaseGray-dark text-2xl flex items-center justify-between">
         <div className="w-1/4 ml-5">Add Purchase</div>
         <div className=" w-1/5 text-center mr-2">
 
@@ -559,42 +616,57 @@ const PurchaseForm = () => {
 
       {showProductList && (
 
-        <div className="fixed inset-0 bg-black bg-opacity-30 z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-30 z-30">
           <div className="hidden lg:block  h-full bg-white  shadow-md  w-1/4 transition delay-300 ease-in-out overflow-y-auto fixed right-0 top-15 z-50 pb-1 animate-slideIn">
             {/* This side section can display accounts or other relevant information */}
             <div className="text-2xl m-4 top-0 right-0 fixed hover:bg-gray-200 hover : bg-opacity-5 hover:text-red-500 cursor-pointer mr-5 mt-3 w-10 h-10 flex items-center justify-center  " onClick={() =>
               setShowProductList(false)
 
             } ><FontAwesomeIcon icon={faMultiply} />
+
+
+            </div>
+            <div className="ml-10 mb-4 mt-14 h-12 bg-blue-500 hover:bg-blue-700  rounded-xl flex items-center justify-center text-lg text-white cursor-pointer" style={{ width: "400px" }} onClick={()=>{
+              setShowAddRawmaterial(true)
+            }}>
+              <FontAwesomeIcon icon={faPlus} className="mr-2"/>
+              Create a New Rawmaterial
             </div>
 
-            {rawmaterial.map((item) => (
-              <div className="bg-white shadow-md overflow-hidden" key={item._id}>
-                <div className="bg-gradient-to-tr from-teal-800 to-teal-600 text-gray-200 text-xl font-medium p-4">
-                  {item.catogory}
-                </div>
-                <div className="divide-y divide-gray-200">
-                  {item.submaterial.length > 0 ? (
-                    item.submaterial.map((sub) => (
-                      <div
-                        className="p-4 hover:bg-blue-100 cursor-pointer"
-                        key={sub._id}
-                        onClick={() => {
-                          selectSubMaterial(sub, item)
-                        }
-                        }
-
-                      >
-                        <span className="text-blue-800 font-medium">{sub.name}</span>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="p-4 text-gray-500">No submaterials available.</div>
-                  )}
-                </div>
+            {rawmaterial.length > 0 ? (
+              <div>
+                {rawmaterial.map((item) => (
+                  <div className="bg-white shadow-md overflow-hidden" key={item._id}>
+                    <div className="bg-gradient-to-tr from-teal-800 to-teal-600 text-gray-200 text-xl font-medium p-4">
+                      {item.catogory}
+                    </div>
+                    <div className="divide-y divide-gray-200">
+                      {item.submaterial.length > 0 ? (
+                        item.submaterial.map((sub) => (
+                          <div
+                            className="p-4 hover:bg-blue-100 cursor-pointer"
+                            key={sub._id}
+                            onClick={() => {
+                              selectSubMaterial(sub, item)
+                            }
+                            }
+                          >
+                            <span className="text-blue-800 font-medium">{sub.name}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="p-4 text-gray-500"> No submaterials available. </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-            {/* Display product list or other data here */}
+            ) : (
+              <div className="text-xl text-center">
+                Please create a rawmaterial to continue
+              </div>
+            )
+            }
           </div>
         </div>
       )}

@@ -81,7 +81,7 @@ const SalesForm = () => {
     }
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/Sales/${uid}/${companyid}`, newsale)
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/Sales/${uid}/${companyid}`, newsale)
       console.log(response.data)
 
       if (response.status == 200) {
@@ -110,7 +110,7 @@ const SalesForm = () => {
 
   
   const FetchProduct = async ()=>{
-    const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/ManufacturedProducts/${uid}/${companyid}`)
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/ManufacturedProducts/${uid}/${companyid}`)
     setProductList(response.data)
     console.log(response.data)
 
@@ -171,7 +171,7 @@ const SalesForm = () => {
 
   const handleFetchvendors = async () => {
 
-    const response = await axios.get(`http://localhost:3000/vendor/${uid}/${companyid}`)
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/vendor/${uid}/${companyid}`)
     setVendorList(response.data.fetchVendors)
     console.log("vendors are " + VendorList)
 
@@ -501,10 +501,15 @@ const SalesForm = () => {
           
                       }} ><FontAwesomeIcon icon={faMultiply} />
                       </div>
-                      <div className="ml-10 mb-4 h-12 bg-blue-500 hover:bg-blue-700  rounded-xl flex items-center justify-center text-lg text-white cursor-pointer" style={{ width: "400px" }}>
+                      <div className="ml-10 mb-4 h-12 bg-blue-500 hover:bg-blue-700  rounded-xl flex items-center justify-center text-lg text-white cursor-pointer" style={{ width: "400px" }} onClick={(
+          
+        ) => {
+          setVendor(vendor)
+          setShowDealerList(false)
+        }}>
                         <FontAwesomeIcon icon={faPlus} className="mr-2" onClick={() => {
                           navigate(`/Vendors/${uid}/${companyid}`, { state: { from: `/PurchaseForm/${uid}/${companyid}` } })
-                        }} />
+                        }}  />
                         Create a New Vendor
           
           
@@ -512,12 +517,7 @@ const SalesForm = () => {
                       {VendorList.length > 0 ? (
                         <div>
                           {VendorList.map((vendor) => (
-                            <div className="bg-gradient-to-tr  text-black text-xl  p-4 hover:bg-blue-300 hover:bg-opacity-30 " key={vendor._id} onClick={(
-          
-                            ) => {
-                              setVendor(vendor)
-                              setShowDealerList(false)
-                            }}>
+                            <div className="bg-gradient-to-tr  text-black text-xl  p-4 hover:bg-blue-300 hover:bg-opacity-30 " key={vendor._id} >
                               {vendor.name}
                             </div>
                           ))}

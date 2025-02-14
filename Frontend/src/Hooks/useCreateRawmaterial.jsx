@@ -12,7 +12,7 @@ const useCreateRawmaterial = (uid, companyid) => {
 
   const fetchRawMaterials = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}`);
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}`);
       setRawmaterial(response.data);
 
       const uniqueCategories = [...new Set(response.data.map((item) => item.catogory))];
@@ -32,7 +32,7 @@ const useCreateRawmaterial = (uid, companyid) => {
         let existingsubmaterial = null;
   
         try {
-          existingsubmaterial = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}/${category}/${item}`);
+          existingsubmaterial = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}/${category}/${item}`);
         } catch (error) {
           if (error.response && error.response.status === 404) {
             console.log("Submaterial not found, adding new submaterial.");
@@ -44,7 +44,7 @@ const useCreateRawmaterial = (uid, companyid) => {
   
         if (existingsubmaterial && existingsubmaterial.status === 200) {
           await axios.put(
-            `http://localhost:3000/rawmaterial/${uid}/${companyid}/${existingsubmaterial.data.rawmaterialId}/${existingsubmaterial.data.submaterialId}`,
+            `http://${VITE_APP_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}/${existingsubmaterial.data.rawmaterialId}/${existingsubmaterial.data.submaterialId}`,
             { updatedquantity: Number(quantity) }
           );
           alert("Product successfully added");
@@ -53,7 +53,7 @@ const useCreateRawmaterial = (uid, companyid) => {
 
         } else {
           const response = await axios.put(
-            `${process.env.REACT_APP_BACKEND_BASE_URL}/${uid}/${companyid}/${existingCategory._id}`,
+            `${import.meta.env.VITE_BACKEND_BASE_URL}/${uid}/${companyid}/${existingCategory._id}`,
             { subrawmaterial: [{ name: item.toLowerCase() }] }
           );
           if (response.status === 200) {
@@ -64,7 +64,7 @@ const useCreateRawmaterial = (uid, companyid) => {
           }
         }
       } else {
-        const response = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}`, {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}`, {
           catogory: category.toLowerCase(),
           subrawmaterial: [{ name: item.toLowerCase() }],
         });
@@ -82,7 +82,7 @@ const useCreateRawmaterial = (uid, companyid) => {
   
   const FetchParticularRawmaterial = async (category, item) => {
 
-    const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}/${category}/${item}`)
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}/${category}/${item}`)
 
     if (response.status === 200) {
       setRawmaterialid(response.data.id)

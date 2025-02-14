@@ -30,7 +30,7 @@ const uid = JSON.parse(localStorage.getItem("uid"))
   useEffect(() => {
     const fetchPurchases = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/Purchase/${uid}/${selectedCompany}`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/Purchase/${uid}/${selectedCompany}`);
         setPurchases(response.data);
       } catch (error) {
         console.error("Error fetching purchase data:", error);
@@ -45,7 +45,7 @@ const uid = JSON.parse(localStorage.getItem("uid"))
   useEffect(() => {
     const FetchSales = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/Sales/${uid}/${selectedCompany}`)
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/Sales/${uid}/${selectedCompany}`)
         setSales(response.data)
       } catch (e) {
         alert("error fetching sales")
@@ -57,7 +57,7 @@ const uid = JSON.parse(localStorage.getItem("uid"))
   useEffect(() => {
     const FetchExpense = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/Expense/${uid}/${selectedCompany}`)
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/Expense/${uid}/${selectedCompany}`)
         setExpenses(response.data.fetchExpenses)
       } catch (e) {
         alert("error fetching sales")

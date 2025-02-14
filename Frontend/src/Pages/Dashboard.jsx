@@ -18,7 +18,7 @@ const Dashboard = () => {
 
     const FetchCompany = async () => {
 
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/company/${uid}/${selectedCompany}`)
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/company/${uid}/${selectedCompany}`)
       setOwnername(response.data.owner)
 
     }

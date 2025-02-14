@@ -37,7 +37,7 @@ const PurchaseList = () => {
 
     
       const fetch = async () => {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/purchase/${uid}/${companyid}`)
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/purchase/${uid}/${companyid}`)
         setPurchases(response.data);
       }
 
@@ -63,7 +63,7 @@ const PurchaseList = () => {
 
     try{
 
-      const DeletePurchase = await axios.delete(`${process.env.REACT_APP_BACKEND_BASE_URL}/purchase/${uid}/${companyid}/${selectedPurchase.billing_number}
+      const DeletePurchase = await axios.delete(`${import.meta.env.VITE_BACKEND_BASE_URL}/purchase/${uid}/${companyid}/${selectedPurchase.billing_number}
 `)
 
       if(DeletePurchase.status === 200){
@@ -83,7 +83,7 @@ const PurchaseList = () => {
     try{
 
       
-      const updatePurchase = await axios.put(`${process.env.REACT_APP_BACKEND_BASE_URL}/purchase/${companyid}/${selectedPurchase.billing_number}` ,{
+      const updatePurchase = await axios.put(`${import.meta.env.VITE_BACKEND_BASE_URL}/purchase/${companyid}/${selectedPurchase.billing_number}` ,{
         
         BillNumber : BillNumber,
         dealer : dealer,

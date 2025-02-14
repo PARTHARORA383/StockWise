@@ -82,7 +82,7 @@ function SidebarWrapper() {
      useEffect(() => {
     const fetchCompany = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/company/${selectedCompany}`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/company/${selectedCompany}`);
         // setCompanyname(response.data.name); // Set the company name from the response
         setCompanyname(response.data.name)
         console.log(response.data.name)

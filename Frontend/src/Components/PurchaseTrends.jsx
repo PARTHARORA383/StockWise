@@ -26,10 +26,10 @@ const PurchaseTrends = () => {
       try {
         // Fetch purchase and sales data
         const purchaseResponse = await axios.get(
-          `${process.env.REACT_APP_BACKEND_BASE_URL}/Purchase/${uid}/${selectedCompany}`
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/Purchase/${uid}/${selectedCompany}`
         );
         const salesResponse = await axios.get(
-          `${process.env.REACT_APP_BACKEND_BASE_URL}/Sales/${uid}/${selectedCompany}`
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/Sales/${uid}/${selectedCompany}`
         );
 
         // Group data by month

@@ -18,7 +18,7 @@ const handleFetchvendors = async ()=>{
 
   try{
 
-    const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/vendor/${uid}/${companyid}`)
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/vendor/${uid}/${companyid}`)
     setVendors(response.data.fetchVendors); 
   }catch(e){
     alert('error fetching vendors')

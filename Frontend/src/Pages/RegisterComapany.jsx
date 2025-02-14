@@ -22,7 +22,7 @@ const Registercompany = () => {
     }
     console.log("uid id" + uid)
 
-    const response = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/company/${uid} `, requestbody,
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/company/${uid} `, requestbody,
       {
           headers: {
           'Content-Type': 'application/json'
@@ -34,7 +34,7 @@ const Registercompany = () => {
      setSelectedCompany(companyid)
 
 
-     const response1 = await axios.put(`http://localhost:3000/auth/${uid}/Signup` ,
+     const response1 = await axios.put(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/${uid}/Signup` ,
       {
         companyid : companyid
       }
