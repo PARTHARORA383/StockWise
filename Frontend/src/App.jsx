@@ -25,10 +25,9 @@ import Navbar from './Components/Navbar';
 function App() {
   return (
     <CompanyProvider> 
-
       <BrowserRouter>
-      <AuthOnChange />
-        <div className="flex h-screen">
+        <AuthOnChange />
+        <div className="flex h-screen ">
           <div className="flex-grow overflow-y-auto">
             <Routes>
               <Route element={<WithSidebarLayout />}>
@@ -60,10 +59,8 @@ function App() {
 function WithSidebarLayout() {
   return (
     <div className="flex h-screen">
-      <div className="w-34 fixed h-full">
-        <SidebarWrapper />
-      </div>
-      <div className="ml-64 flex-grow overflow-y-auto">
+      <Sidebar />
+      <div className="flex-grow overflow-y-auto  ">
         <Outlet />
       </div>
     </div>
@@ -73,30 +70,6 @@ function WithSidebarLayout() {
 
 function WithoutSidebarLayout() {
   return <Outlet />;
-}
-
-function SidebarWrapper() {
-  const { companyid } = useParams(); // Get companyid from the URL
-  const [companyname, setCompanyname] = useState("");
-   const{selectedCompany} = useCompany()
-     useEffect(() => {
-    const fetchCompany = async () => {
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/company/${selectedCompany}`);
-        // setCompanyname(response.data.name); // Set the company name from the response
-        setCompanyname(response.data.name)
-        console.log(response.data.name)
-      } catch (error) {
-        console.error('Error fetching company name:', error);
-      }
-    };
-
-  
-      fetchCompany();
-  
-  }, []);
-
-  return <Sidebar companyname ={companyname} />;
 }
 
 export default App

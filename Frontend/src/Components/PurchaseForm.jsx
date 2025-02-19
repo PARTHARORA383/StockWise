@@ -38,7 +38,9 @@ const PurchaseForm = () => {
   const [showAddRawmaterial, setShowAddRawmaterial] = useState(false);
   const [createcategory, setCreateCategory] = useState("");
   const [createitem , setCreateItem] = useState("");
-
+  const [FreightCharge , setFreightCharge] = useState(0);
+  const[FreightName , setFreightName] = useState("")
+  const[gstFreight , setGstFreight] = useState(5)
 
   const { companyid, uid } = useParams();
 
@@ -55,6 +57,8 @@ const PurchaseForm = () => {
   const categoryref = useRef(null);
   const billingNumberref = useRef(null);
   const descriptionRef = useRef(null);
+  const freightNameRef = useRef(null);
+  const freightChargeRef = useRef(null);
 
   const ExpenseRef = useRef(null);
   const modalRef = useRef(null)
@@ -368,7 +372,7 @@ const PurchaseForm = () => {
         {
           //Pop up Form
         }
-        <div className=" col-span-10 relative bg-white shadow-lg rounded-lg p-10 flex flex-col w-full  inset-0 mt-14" style={{ height: "720px" }}>
+        <div className=" col-span-10 relative bg-white shadow-lg rounded-lg p-10 flex flex-col w-full  inset-0 mt-4" style={{ height: "720px" }}>
 
           <div className="text-2xl "> Register Purchase</div>
           <div className="text-xl mb-10 text-gray-500"> Easily register your daily purchases to keep your inventory updated</div>
@@ -522,7 +526,7 @@ const PurchaseForm = () => {
                 placeholder="Enter Quantity"
                 onChange={(e) => setQuantity(e.target.value)}
                 onKeyDown={(e) => {
-                  handleonkeydown(e, descriptionRef, rateRef)
+                  handleonkeydown(e, freightNameRef, rateRef)
                 }}
 
               />
@@ -582,6 +586,47 @@ const PurchaseForm = () => {
             </button>
           </div>
         </div>
+        <div className="mt-4 col-span-10 bg-white shadow-lg rounded-lg p-10 flex flex-col inset-0 space-y-4 justify-center items-start" style={{ height: "350px" }}>
+          <div className="text-xl font-medium">Freight Details:</div>
+          <div className="w-full flex space-x-4">
+            <div className="flex flex-col w-1/2">
+              <label className="text-lg mb-2">Name</label>
+              <input
+                type="text"
+                ref={freightNameRef}
+                value={FreightName}
+                onChange={(e) => setFreightName(e.target.value)}
+                className="border text-xl rounded-lg w-full p-3"
+                placeholder="Enter Name"
+                onKeyDown={(e) => handleonkeydown(e, freightChargeRef, quantityRef)}
+              />
+            </div>
+            <div className="flex flex-col w-1/2">
+              <label className="text-lg mb-2">Freight Amount</label>
+              <input
+                type="number"
+                ref={freightChargeRef}
+                value={FreightCharge}
+                onChange={(e) => setFreightCharge(parseFloat(e.target.value))}
+                className="border text-xl rounded-lg w-full p-3"
+                placeholder="Enter Amount"
+                onKeyDown={(e) => handleonkeydown(e, descriptionRef, freightNameRef)}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col w-full">
+            <label className="text-lg mb-2"> Freight GST Rate</label>
+            <select
+              value={gstFreight}
+              onChange={(e) => setGstFreight(parseFloat(e.target.value))}
+              className="border p-3 text-xl rounded-lg bg-supabaseGray-light text-white w-1/3"
+            >
+              <option value={5}>5%</option>
+              <option value={12}>12%</option>
+              <option value={18}>18%</option>
+            </select>
+          </div>
+        </div>
 
         <div className=" mt-4 col-span-10 bg-white shadow-lg rounded-lg p-10 flex  flex-col inset-0  justify-start items-start  space-y-2 " style={{ height: "250px" }}>
           <div className="text-xl font-medium">Description</div>
@@ -593,7 +638,7 @@ const PurchaseForm = () => {
             placeholder="Enter Description"
             onChange={(e) => setDescription(e.target.value)}
             onKeyDown={(e) => {
-              handleonkeydown(e, null, rateRef)
+              handleonkeydown(e, null, freightChargeRef)
             }}
 
           />

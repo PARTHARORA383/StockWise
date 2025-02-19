@@ -12,7 +12,7 @@ const Signin = () => {
 
     <div className="grid grid-cols-5 bg-gray-100 h-screen">
 
-      <div className="col-span-2 bg-white m-10 rounded-xl">
+      <div className="col-span-2 lg:col-span-2 col-span-5 bg-white m-10 rounded-xl">
         <div className="">
         <Signincomponent />
         </div>
@@ -29,7 +29,7 @@ const Signin = () => {
       
 
 
-      <div className="col-span-3 max-h-screen pl-20
+      <div className="hidden lg:block col-span-3 max-h-screen pl-20
        pt-10 pr-12 pb-10">
 
        <Qoute/>
@@ -41,4 +41,3 @@ const Signin = () => {
 
 
 export default Signin
-

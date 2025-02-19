@@ -101,7 +101,7 @@ const PurchaseTrends = () => {
   }
 
   return (
-    <div className="h-72 w-full max-w-7xl mx-auto overflow-hidden p-4 bg-gray-50 rounded-lg shadow-lg">
+    <div className="h-72 text-xl w-full max-w-6xl mx-auto overflow-hidden p-4 bg-gray-50 rounded-lg shadow-lg">
       <Bar
         data={chartData}
         options={{

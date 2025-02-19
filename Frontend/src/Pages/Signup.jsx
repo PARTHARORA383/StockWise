@@ -12,7 +12,7 @@ const Signup = () => {
 
     <div className="grid grid-cols-5 bg-gray-100 h-screen">
 
-      <div className="col-span-2 bg-white m-10 rounded-xl">
+      <div className="lg:col-span-2 col-span-5 bg-white m-10 rounded-xl">
         <div className="">
           <Signupcomponent />
         </div>
@@ -28,7 +28,7 @@ const Signup = () => {
 
 
 
-      <div className="col-span-3 h-screen pl-20
+      <div className="hidden lg:block col-span-3 h-screen pl-20
        pt-6 pr-12 pb-6">
 
        <Qoute/>

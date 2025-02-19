@@ -133,47 +133,44 @@ const uid = JSON.parse(localStorage.getItem("uid"))
   }
 
   return (
-    <div className="flex">
-      {purchase || expenses ? (<div
-        className="h-32 bg-gradient-to-r  from-teal-800 to-teal-600 md:w-1/3  w-full m-5 mr-8 p-3 rounded-xl transition-transform transform hover:scale-105 ">
-        <div className=" flex flex-col pl-3">
-
-          <h2 className="text-lg text-opacity-90 text-white pb-7 pt-2">EXPENSES</h2>
-          <h2 className=" text-3xl   text-white pb-2">  <FontAwesomeIcon icon = {faIndianRupeeSign}/>{ " "+
-           
-          totaldisplayexpense}</h2>
+    <div className="flex flex-col md:flex-row">
+      {purchase || expenses ? (
+        <div className="h-28 bg-gradient-to-r from-teal-800 to-teal-600 w-full md:w-1/3 mx-2 my-2 md:m-3 p-3 rounded-xl transition-transform transform hover:scale-105">
+          <div className="flex flex-col pl-2">
+            <h2 className="text-base lg:text-lg font-medium text-opacity-90 text-white pb-4 pt-1">EXPENSES</h2>
+            <h2 className="text-lg lg:text-2xl  text-white">
+              <FontAwesomeIcon icon={faIndianRupeeSign}/>{" " + Math.floor(totaldisplayexpense)}
+            </h2>
+          </div>
         </div>
-      </div>) :
-
-        (<div>
-
-
-        </div>)}
-
-
-
-      {sale ? (<div className=" h-32 bg-gradient-to-r from-teal-800 to-teal-600 md:w-1/3  w-full m-5 p-3 mr-8 rounded-xl transition-transform transform hover:scale-105">
-
-        <div className=" flex flex-col pl-3">
-
-          <h2 className="text-lg text-opacity-90 text-white pb-7 pt-2">SALES</h2>
-          <h2 className=" text-3xl   text-white pb-2 "> <FontAwesomeIcon icon = {faIndianRupeeSign}/>{ " "+ totalSaleAmount}</h2>
-        </div>
-      </div>) : (
-        <div>
-        </div>
+      ) : (
+        <div></div>
       )}
 
+      {sale ? (
+        <div className="h-28 bg-gradient-to-r from-teal-800 to-teal-600 w-full md:w-1/3 mx-2 my-2 md:m-3 p-3 rounded-xl transition-transform transform hover:scale-105">
+          <div className="flex flex-col pl-2">
+            <h2 className="text-base lg:text-lg font-medium  text-opacity-90 text-white pb-4 pt-1">SALES</h2>
+            <h2 className="text-lg lg:text-2xl text-white">
+              <FontAwesomeIcon icon={faIndianRupeeSign}/>{" " + Math.floor(totalSaleAmount)}
+            </h2>
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
 
-<div className=" h-32 bg-gradient-to-r from-teal-800 to-teal-600 md:w-1/3  w-full  m-5 p-3 mr-8 rounded-xl transition-transform transform hover:scale-105">
-
-<div className=" flex flex-col pl-3">
-  <h2 className="text-lg text-opacity-90 text-white pb-7 pt-2">{CheckProfitorLoss ? (<h1>  PROFIT</h1>) : (<h1>  LOSS</h1>)
-}</h2>
-  <h2 className=" text-3xl   text-white pb-2 "> <FontAwesomeIcon icon = {faIndianRupeeSign}/>{ " "+ Profit_loss}</h2>
-  </div>
-  </div>
-</div>
+      <div className="h-28 bg-gradient-to-r from-teal-800 to-teal-600 w-full md:w-1/3 mx-2 my-2 md:m-3 p-3 rounded-xl transition-transform transform hover:scale-105">
+        <div className="flex flex-col pl-2">
+          <h2 className="text-base lg:text-lg font-medium text-opacity-90 text-white pb-4 pt-1">
+            {CheckProfitorLoss ? <h1>PROFIT</h1> : <h1>LOSS</h1>}
+          </h2>
+          <h2 className="text-lg lg:text-2xl text-white">
+            <FontAwesomeIcon icon={faIndianRupeeSign}/>{" " + Math.floor(Profit_loss)}
+          </h2>
+        </div>
+      </div>
+    </div>
 
   );
 };

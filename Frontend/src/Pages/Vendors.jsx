@@ -48,6 +48,15 @@ const Vendors = () => {
     handleFetchvendors()
   }, [companyid])
 
+
+  const resetform = () => { 
+    setVendorName("")
+    setDescription("")
+    SetPhone_number()
+    setSelectValue("Purchase")
+    setVendorType("Purchase")
+  }
+
   const handlePostvendors = async ()=>{
 
 
@@ -73,6 +82,7 @@ const Vendors = () => {
     if(response.status === 200){
       setAddDealer(false)
       handleFetchvendors()
+      resetform()
       alert("Dealer Created")
       handleGoBack()
 
@@ -216,9 +226,8 @@ const Vendors = () => {
             setVendorName("")
             setDescription("")
             SetPhone_number()
-            setSelectValue("Purchase")
-            setVendorType("Purchase")
-            
+            setSelectValue("")
+            setVendorType("")
           }} ><FontAwesomeIcon icon={faMultiply} />
           </div>
           <div className="flex items-center justify-between">
@@ -275,7 +284,9 @@ const Vendors = () => {
             <select className="w-1/3 text-xl h-10 text-black border-2 cursor-pointer space-y-2  rounded-md p-1" value={selectvalue}
             onChange={(e)=>{
               setSelectValue(e.target.value)
-              setVendorType(selectvalue)
+              console.log("this is the selectvalue", e.target.value)
+              setVendorType(e.target.value)
+              console.log("this is the vendortype", vendortype)
               
             }}>
             <option>Purchase</option>

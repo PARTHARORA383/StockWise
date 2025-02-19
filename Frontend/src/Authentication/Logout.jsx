@@ -41,8 +41,8 @@ const confirmation = ()=>{
  return createPortal(
   <div className="absolute z-50 inset-0 h-screen w-full flex justify-center items-center bg-black bg-opacity-50 transition duration-300 ease-in-out" 
      tabIndex="0" >
-    <div className=" text-center bg-white p-5 rounded-lg shadow-lg w-96" >
-      <h2 className="text-xl mb-4">Are you sure you want to Logout?</h2>
+    <div className=" text-center bg-white p-5 rounded-lg shadow-lg  w-80 lg:w-96" >
+      <h2 className="text-lg lg:text-xl mb-4">Are you sure you want to Logout?</h2>
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:opacity-90"
         onClick={handleconfirm}
@@ -66,7 +66,7 @@ const confirmation = ()=>{
 }
 
   return <div>
-  <button className="text-white hover:text-white text-xl " onClick={()=>{setcomfirmationbox(true)}}>    Log Out</button>
+  <button className="text-white hover:text-white text-md " onClick={()=>{setcomfirmationbox(true)}}>    Log Out</button>
   {confirmationbox && confirmation()}
   </div>
 }
