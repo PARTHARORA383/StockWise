@@ -106,5 +106,53 @@ return res.status(400).json({
 })
 
 
-module.exports = 
-  router
+router.put("/:uid/:companyid/:id" , async(req,res)=>{
+
+  const {uid , companyid , id} = req.params;
+  const {Productname , quantity , rate , description , gstRate } = req.body;
+  
+  try{
+    const updatedSale = await Sales.findOneAndUpdate({_id : id , userid : uid , company : companyid} , {
+      Productname , quantity , rate , description , gstRate 
+    }, {new : true})
+
+    if(!updatedSale){
+      return res.status(400).json({
+        msg : "Sale not found"
+      })
+    } 
+    res.status(200).json({
+      msg : "Sale updated"
+    })
+  }
+  catch(e){
+    return res.status(400).json({
+      error : e.message
+    })
+  }
+  
+})
+
+router.delete("/:uid/:companyid/:id" , async(req,res)=>{
+
+  const {uid , companyid , id} = req.params;
+  
+  try{
+    const deletedSale = await Sales.findOneAndDelete({_id : id , userid : uid , company : companyid})
+    if(!deletedSale){
+      return res.status(400).json({
+        msg : "Sale not found"
+      })
+    }
+    res.status(200).json({
+      msg : "Sale deleted"
+    })
+  } 
+  catch(e){
+    return res.status(400).json({
+      error : e.message
+    })
+  }
+})  
+
+module.exports = router
