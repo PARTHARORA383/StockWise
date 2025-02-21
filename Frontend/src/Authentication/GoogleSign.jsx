@@ -74,10 +74,10 @@ else{
    },[selectedCompany ,userobj , navigate])
 
   return <div>
-    <button  className="text-xl border-2  rounded-xl w-2/3 h-12 border-gray-400 hover:bg-blue-500 hover:text-white" onClick={handleSignin}> <div className="flex justify-center items-center">
+    <button  className="text-lg border-2  rounded-xl w-2/3 h-11 border-gray-400 hover:bg-blue-500 hover:text-white" onClick={handleSignin}> <div className="flex justify-center items-center">
 
   
-    <FcGoogle className= "w-8 h-8 m-2"/>
+    <FcGoogle className= "w-7 h-7 m-2"/>
     <h2>Sign Up with Google</h2>
     </div>
      </button>

@@ -52,18 +52,18 @@ const CustomDatePicker = () => {
 
   return (<div className="relative " ref={ref}>
 
-<div className="flex justify-center items-center space-x-1 border border-gray-400  py-1.5 rounded-xl ">
+<div className="flex justify-center items-center lg:space-x-1 border border-gray-400  py-1.5 rounded-xl ">
         <input
           type="text"
           readOnly
           value={format(selectedDate, "dd/MM/yyyy")}
-          className="rounded  text-xl focus:outline-none  flex justify-end items-center " style={{width:"120px"}}
+          className="rounded text-md lg:text-md focus:outline-none  flex justify-end items-center " style={{width:"120px"}}
 
           onClick={()=>{
             setShowDatePicker(true)
           }}
           />
-          <FontAwesomeIcon icon={faCalendarAlt} className=" text-xl hover : cursor-pointer hover:text-blue-800 text-blue-600" onClick={()=>{
+          <FontAwesomeIcon icon={faCalendarAlt} className=" text-md lg:text-lg hover : cursor-pointer hover:text-blue-800 text-blue-600" onClick={()=>{
             setShowDatePicker(true)
           }}/>
         {/* <button

@@ -114,17 +114,20 @@ router.put("/:uid/:companyid/:id" , async(req,res)=>{
   const {uid , companyid , id} = req.params;
   const {Productname , quantity , rate , description , gstRate } = req.body;
 
+  
+
+  try{
+    
   const oldSale = await Sales.findOne({_id : id , userid : uid , company : companyid})
   
   const newrate = rate !== undefined ? rate : oldSale.rate;
   const newgstRate = gstRate !== undefined ? gstRate : oldSale.gstRate;
   const newquantity = quantity !== undefined ? quantity : oldSale.quantity;
 
-  
 
-  try{
+
     const updatedSale = await Sales.findOneAndUpdate({_id : id , userid : uid , company : companyid} , {
-      Productname , quantity , newrate , description , newgstRate , total_amount : newquantity * newrate,
+      Productname , quantity , rate , description , gstRate , total_amount : newquantity * newrate,
       total_amount_postGst : newquantity * newrate + (newquantity * newrate * newgstRate / 100),
     }, {new : true})
 

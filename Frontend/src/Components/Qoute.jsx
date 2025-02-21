@@ -13,12 +13,12 @@ return (
     {changepage ? (
       <>
         {/* Header Section */}
-        <div className="text-white text-5xl mb-3 leading-normal text-center mt-14 transition-transform animate-fadeIn duration-700 ">
+        <div className="text-white text-3xl mb-3 leading-normal text-center mt-14 transition-transform animate-fadeIn duration-700 ">
           Integrated Billing, Inventory, and Sales Management for Manufacturers
         </div>
 
         {/* Description Section */}
-        <div className="text-gray-100 text-2xl leading-normal text-center pl-6 pr-6 pb-6 pt-3 transition-transform animate-fadeIn duration-700">
+        <div className="text-gray-100 text-xl leading-normal text-center pl-6 pr-6 pb-6 pt-3 transition-transform animate-fadeIn duration-700">
           Designed specifically for manufacturers, Billventory combines all your essential business processes in one platform. From managing sales orders to tracking inventory and generating invoices, Billventory provides a comprehensive solution that adapts to your unique needs.
         </div>
 
@@ -34,12 +34,12 @@ return (
     ) : (
 <div className="w-full">
 
-    <div className="text-white text-6xl mb-3 leading-tight text-center mt-14 transition-transform animate-fadeIn  text-bold duration-700 h-full ">
+    <div className="text-white text-4xl mb-3 leading-tight text-center mt-14 transition-transform animate-fadeIn  text-bold duration-700 h-full ">
             Welcome Back ! 
         </div>
 
         {/* Description Section */}
-        <div className="text-gray-100 text-3xl leading-tight text-center pl-6 pr-6 pb-6 pt-3 transition-transform animate-fadeIn duration-300 font-sans">
+        <div className="text-gray-100 text-2xl leading-tight text-center pl-6 pr-6 pb-6 pt-3 transition-transform animate-fadeIn duration-300 font-sans">
         "Empowering Manufacturers with Smarter Billing and Inventory Solutions."
 
         </div>

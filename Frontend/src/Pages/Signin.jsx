@@ -22,7 +22,7 @@ const Signin = () => {
           <div className=" flex-grow border-t border-gray-500 mr-6"></div>
         </div>
         <div className="text-center"><GoogleSign/></div>
-        <div className="text-center m-6 text-xl text-gray-700
+        <div className="text-center m-6 text-lg text-gray-700
         ">Don't have an account ? <Link to ={"/Signup"} className=" hover:underline text-black">Signup</Link> </div>
 
       </div>
