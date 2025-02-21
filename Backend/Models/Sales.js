@@ -20,12 +20,14 @@ const SalesSchema = new mongoose.Schema({
   archived : {type : Boolean , default : false} ,
 })
 
-
+// Calculate totals before saving or updating
 SalesSchema.pre('save', function (next) {
   this.total_amount = this.quantity * this.rate;
-  this.total_amount_postGst =  this.total_amount + (this.total_amount * this.gstRate/100 )
+  this.total_amount_postGst = this.total_amount + (this.total_amount * this.gstRate / 100);
   next();
 });
+
+
 
 const Sales = mongoose.model('SalesSchema' , SalesSchema)
 

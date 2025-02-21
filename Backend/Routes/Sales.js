@@ -35,8 +35,11 @@ router.post('/:uid/:companyid' , async (req , res)=>{
       paymentType : paymentType ,
       description,
       gstRate,
+      total_amount : quantity * rate,
+      total_amount_postGst : quantity * rate + (quantity * rate * gstRate / 100),
       rate : rate,
       userid : uid,
+
       company : companyid
     })
     
@@ -110,13 +113,26 @@ router.put("/:uid/:companyid/:id" , async(req,res)=>{
 
   const {uid , companyid , id} = req.params;
   const {Productname , quantity , rate , description , gstRate } = req.body;
+
+  const oldSale = await Sales.findOne({_id : id , userid : uid , company : companyid})
   
+  const newrate = rate !== undefined ? rate : oldSale.rate;
+  const newgstRate = gstRate !== undefined ? gstRate : oldSale.gstRate;
+  const newquantity = quantity !== undefined ? quantity : oldSale.quantity;
+
+  
+
   try{
     const updatedSale = await Sales.findOneAndUpdate({_id : id , userid : uid , company : companyid} , {
-      Productname , quantity , rate , description , gstRate 
+      Productname , quantity , newrate , description , newgstRate , total_amount : newquantity * newrate,
+      total_amount_postGst : newquantity * newrate + (newquantity * newrate * newgstRate / 100),
     }, {new : true})
 
+    
+
+    
     if(!updatedSale){
+
       return res.status(400).json({
         msg : "Sale not found"
       })
