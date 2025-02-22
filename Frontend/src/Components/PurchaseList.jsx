@@ -88,7 +88,7 @@ const PurchaseList = () => {
         BillNumber : BillNumber,
         dealer : dealer,
         Product : {
-          item : item
+          category : item
         },
         rate : Number(rate),
         quantity : Number(quantity)
@@ -120,7 +120,7 @@ const PurchaseList = () => {
   const filteredPurchase = purchases.filter((purchase) => {
     return (
       purchase.dealer.toLowerCase().includes(search.toLowerCase()) ||
-      purchase.Product.item.toLowerCase().includes(search.toLowerCase())
+      purchase.Product.category.toLowerCase().includes(search.toLowerCase())
     );
   });
 
@@ -241,7 +241,7 @@ const PurchaseList = () => {
 
             <div className="flex justify-between items-center m-3 sm:m-4">
               <div className="text-base sm:text-md">Product:</div>
-              <div className="text-base sm:text-md mr-4 text-gray-700">{selectedPurchase.Product.item}</div>
+              <div className="text-base sm:text-md mr-4 text-gray-700">{selectedPurchase.Product.category}</div>
             </div>
 
             <div className="flex justify-between items-center m-3 sm:m-4">
@@ -348,7 +348,7 @@ const PurchaseList = () => {
                 <FontAwesomeIcon icon={faBuilding} className="mr-2" />
                 {purchase.dealer}
               </div>
-              <div>{purchase.Product.item}</div>
+              <div>{purchase.Product.category}</div>
               <div>
                 <FontAwesomeIcon icon={faIndianRupeeSign} className="mr-1" />
                 {purchase.rate}

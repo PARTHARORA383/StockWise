@@ -21,6 +21,7 @@ const PurchaseForm = () => {
   const [paymentType, setPaymentType] = useState("Cash")
   const [gstRate, setGstRate] = useState("5")
   const [isCustomGst, setisCustomGst] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const [quantity, setQuantity] = useState("");
   const [rate, setRate] = useState("");
@@ -37,7 +38,6 @@ const PurchaseForm = () => {
   
   const [showAddRawmaterial, setShowAddRawmaterial] = useState(false);
   const [createcategory, setCreateCategory] = useState("");
-  const [createitem , setCreateItem] = useState("");
   const [FreightCharge , setFreightCharge] = useState(0);
   const[FreightName , setFreightName] = useState("")
   const[gstFreight , setGstFreight] = useState(5)
@@ -83,7 +83,6 @@ const PurchaseForm = () => {
         billing_number: billingNumber,
         Product: {
           category: selectedrawmaterial?.catogory || category,
-          item: selectedsubrawmaterial?.name || item
         },
         dealer: vendor?.name || dealer,
         quantity: Number(quantity),
@@ -103,7 +102,7 @@ const PurchaseForm = () => {
 
       if (response.status == 200) {
         alert("Purchase added successfully!");
-        await CreateSubmaterial();
+        
         setAddMorePurchase(true)
         // AddtoInventory(rawmaterialid , submaterial);
       }
@@ -113,10 +112,7 @@ const PurchaseForm = () => {
     }
   };
 
-  const CreateSubmaterial = async () => {
-    addRawMaterial(category, item, quantity)
-    await fetchRawMaterials()
-  }
+ 
 
 
 
@@ -215,8 +211,7 @@ const PurchaseForm = () => {
 
 
 
-  const selectSubMaterial = (submaterial, rawmaterial) => {
-    setSelectedsubrawmaterial(submaterial);
+  const selectSubMaterial = ( rawmaterial) => {
     setSelectedrawmaterial(rawmaterial);
     setShowProductList(false)
   };
@@ -224,45 +219,64 @@ const PurchaseForm = () => {
    const renderAddRawmaterialModal = () =>
       createPortal(
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white w-1/2 p-8 rounded-lg shadow-lg">
+          
+            <div className="bg-white w-1/2 p-8 rounded-lg shadow-lg">
+            <div className="flex justify-end">
+              <button 
+                onClick={() => setShowAddRawmaterial(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <FontAwesomeIcon icon={faMultiply} className="text-xl" />
+              </button>
+            </div>
+        
             <h2 className="text-lg mb-6 text-center">Add Raw Material</h2>
   
             <div className="mb-4 flex items-center">
-              <label className="text-lg w-1/3">Category:</label>
+              <label className="text-lg w-1/3">Raw Material:</label>
               <input
                 className="text-lg rounded-lg border-gray-300 p-3 w-2/3"
-                placeholder="Select or create a category"
+                placeholder=" Create a raw material"
                 list="category-list"
                 value={createcategory}
                 onChange={(e) => setCreateCategory(e.target.value)}
               />
-              <datalist id="category-list">
-                {categories.map((cat, index) => (
-                  <option key={index} value={cat} />
-                ))}
-              </datalist>
+          
             </div>
   
-            <div className="mb-4 flex items-center">
-              <label className="text-lg w-1/3">Product:</label>
-              <input
-                className="text-lg rounded-lg border-gray-300 p-3 w-2/3"
-                placeholder="Enter Product Name"
-                value={createitem}
-                onChange={(e) => setCreateItem(e.target.value)}
-              />
-            </div>
+           
   
             <div className="text-center mt-6">
-              <button
-                onClick={() => {
-                  addRawMaterial(createcategory, createitem);
-                  setShowAddRawmaterial(false);
-                }}
-                className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg"
-              >
-                Save
-              </button>
+            
+
+
+
+
+<button
+  onClick={async () => {
+    setIsLoading(true);
+    try {
+      await addRawMaterial(createcategory);
+      await fetchRawMaterials();
+      setShowAddRawmaterial(false);
+    } catch (error) {
+      console.error("Error adding raw material:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }}
+  disabled={isLoading}
+  className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg"
+>
+  {isLoading ? (
+    <div className="flex items-center justify-center">
+      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+      Adding...
+    </div>
+  ) : (
+    'Save'
+  )}
+</button>
             </div>
           </div>
         </div>,
@@ -271,7 +285,7 @@ const PurchaseForm = () => {
 
 
 
-  return (<div className="relative  z-10">
+  return (<div className="relative z-10">
 
 
 
@@ -281,7 +295,7 @@ const PurchaseForm = () => {
 
       <div></div>
       <div className=" sticky z-20 border-b-2 top-0 bg-white h-16 text-supabaseGray-dark text-2xl flex items-center justify-between">
-        <div className="w-1/4 ml-5">Add Purchase</div>
+        <div className="w-1/4 ml-16 lg:ml-5">Add Purchase</div>
         <div className=" w-1/5 text-center mr-2 ">
 
           <button
@@ -432,18 +446,18 @@ const PurchaseForm = () => {
           <div className="w-full mb-4 ">
 
 
-            <div className="flex flex-col lg:flex-row lg:space-x-20 items-center lg:justify-between">
+            <div className="flex flex-col  lg:space-x-20 w-full items-center lg:justify-between">
 
-              <div className=" flex lg:flex-col space-y-2  w-full lg:w-1/2 lg:items-start items-center justify-between">
+              <div className=" flex flex-col space-y-2  w-full ">
 
-                <label className="lg:text-lg text-md w-1/3">Category :</label>
+                <label className="lg:text-lg text-md ">Category :</label>
 
                 <input
                   ref={categoryref}
                   className={`lg:text-lg text-md  rounded-lg border-gray-200  border p-2 focus:border-blue-500 focus:ring-1 focus : outline-blue-300 ${selectedrawmaterial ? "bg-gray-300 bg-opacity-20 " : "bg-white  "}`}
                   id="Product"
                   value={selectedrawmaterial?.catogory || category}
-                  placeholder="Select Catogory"
+                  placeholder="Select Rawmaterial"
 
                   onFocus={() => {
                     setisFocused(true)
@@ -462,33 +476,11 @@ const PurchaseForm = () => {
                     setCategory(e.target.value), setSelectedrawmaterial()
                   }
                   }
-                  onKeyDown={(e) => { handleonkeydown(e, itemRef, dealerRef) }}
+                  onKeyDown={(e) => { handleonkeydown(e, rateRef, dealerRef) }}
                 />
               </div>
 
-              <div className=" flex lg:flex-col space-y-2  w-full lg:w-1/2 lg:items-start items-center justify-between">
-                <label className="lg:text-lg text-md w-1/3">Item :</label>
-                <input
-                  className={`lg:text-lg text-md rounded-lg border-gray-200 border  p-2 focus:border-blue-500 focus:ring-1  focus:outline-blue-300 focus:ring-blue-500 ${selectedsubrawmaterial ? "bg-gray-300 bg-opacity-20" : "bg-white"}`}
-                  id="Product"
-                  ref={itemRef}
-                  value={selectedsubrawmaterial?.name || item}
-                  placeholder="Select Product"
-
-
-                  onFocus={() => {
-                    setisFocused(true)
-                    setShowProductList(true)
-                    setShowDealerList(false)
-                  }}
-                  onBlur={() => {
-                    setisFocused(false)
-
-                  }}
-                  onKeyDown={(e) => { handleonkeydown(e, rateRef, categoryref) }}
-                  onChange={(e) => { setItem(e.target.value), setSelectedsubrawmaterial() }}
-                />
-              </div>
+        
             </div>
           </div>
 
@@ -662,16 +654,16 @@ const PurchaseForm = () => {
       {showProductList && (
 
         <div className="fixed inset-0 bg-black bg-opacity-30 z-30">
-          <div className=" lg:block  h-full bg-white  shadow-md  lg:w-1/4 transition delay-300 ease-in-out overflow-y-auto fixed right-0 top-15 z-50 pb-1 animate-slideIn">
+          <div className=" lg:block  h-full bg-white  shadow-md  lg:w-1/4  transition delay-300 ease-in-out overflow-y-auto fixed right-0 top-15 z-50 pb-1 animate-slideIn" style={{width : "400px"}}>
             {/* This side section can display accounts or other relevant information */}
-            <div className="text-2xl m-4 top-0 right-0 fixed hover:bg-gray-200 hover : bg-opacity-5 hover:text-red-500 cursor-pointer mr-5 mt-3 w-10 h-10 flex items-center justify-center  " onClick={() =>
+            <div className="text-2xl m-4 top-0 right-0 fixed hover:bg-gray-200 hover : bg-opacity-5 hover:text-red-500 cursor-pointer lg:mr-5 lg:mt-3 m-2 mb-4 w-10 h-10 flex items-center justify-center  " onClick={() =>
               setShowProductList(false)
 
             } ><FontAwesomeIcon icon={faMultiply} />
 
 
             </div>
-            <div className="ml-10 mb-4 mt-14 h-12 bg-blue-500 hover:bg-blue-700  rounded-xl flex items-center justify-center text-lg text-white cursor-pointer" style={{ width: "400px" }} onClick={()=>{
+            <div className="ml-10 mb-4 mt-14 h-11  bg-blue-500 hover:bg-blue-700  rounded-xl flex items-center justify-center text-lg text-white cursor-pointer" style={{ width: "300px" }} onClick={()=>{
               setShowAddRawmaterial(true)
             }}>
               <FontAwesomeIcon icon={faPlus} className="mr-2"/>
@@ -682,27 +674,14 @@ const PurchaseForm = () => {
               <div>
                 {rawmaterial.map((item) => (
                   <div className="bg-white shadow-md overflow-hidden" key={item._id}>
-                    <div className="bg-gradient-to-tr from-teal-800 to-teal-600 text-gray-200 lg:text-lg text-md font-medium p-4">
+                    <div className="bg-gradient-to-tr hover:bg-blue-300 m-2 hover:bg-opacity-30 text-gray-800 rounded-lg lg:text-lg text-md p-2" onClick={()=>{
+                      selectSubMaterial(item)
+               
+                     
+                    }}>
                       {item.catogory}
                     </div>
-                    <div className="divide-y divide-gray-200">
-                      {item.submaterial.length > 0 ? (
-                        item.submaterial.map((sub) => (
-                          <div
-                            className="p-4 hover:bg-blue-100 cursor-pointer"
-                            key={sub._id}
-                            onClick={() => {
-                              selectSubMaterial(sub, item)
-                            }
-                            }
-                          >
-                            <span className="text-blue-800 font-medium">{sub.name}</span>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="p-4 text-gray-500"> No submaterials available. </div>
-                      )}
-                    </div>
+               
                   </div>
                 ))}
               </div>

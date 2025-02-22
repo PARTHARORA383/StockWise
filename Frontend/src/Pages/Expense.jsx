@@ -124,7 +124,7 @@ const Expenses = () => {
 
     {renderExpense && (
 
-      <div className={`z-10 fixed inset-0  h-screen bg-black bg-opacity-30 transition-transform duration-300 ${isClosing ? "animate-fadeOut" : "animate-fadeIn"}`}>
+      <div className={`z-50 fixed inset-0  h-screen bg-black bg-opacity-30 transition-transform duration-300 ${isClosing ? "animate-fadeOut" : "animate-fadeIn"}`}>
         <div className={`fixed z-30 top-0 right-0 h-screen bg-white overflow-y-auto  overflow-x-hidden shadow-lg ${isClosing ? "animate-slideOut" : "animate-slideIn"} `}style={{ width: "500px"}}>
 
           <div className="text-2xl m-4 top-0 right-0 fixed hover:bg-gray-200 hover : bg-opacity-5 hover:text-red-500 cursor-pointer mr-5 mt-3 w-10 h-10 flex items-center justify-center " onClick={() => {
@@ -164,7 +164,7 @@ const Expenses = () => {
     )}
 
     {showExpenseItem && (
-     <div className={`absolute inset-0 flex items-center justify-center  w-full h-screen z-30 bg-black bg-opacity-30 transition-transform duration-300 `}>
+     <div className={`absolute inset-0 flex items-center justify-center  w-full h-screen z-50 bg-black bg-opacity-30 transition-transform duration-300 `}>
       <div className="relative  bg-gradient-to-bl from-teal-600 to-teal-800 text-white w-1/4 rounded-xl">
       <div className="text-lg m-4 top-0 right-0 absolute hover:bg-teal-200 hover : bg-opacity-5 rounded-full cursor-pointer mr-5 mt-3 w-10 h-10 flex items-center justify-center " onClick={() => {
         setShowExpenseItem(false)
@@ -181,7 +181,7 @@ const Expenses = () => {
     )}
 
     {addExpense && (
-       <div className={`z-10 fixed inset-0  max-h-screen bg-black bg-opacity-30 transition-transform duration-300 ${isClosing ? "animate-fadeOut" : "animate-fadeIn"}`}>
+       <div className={`z-50 fixed inset-0  max-h-screen bg-black bg-opacity-30 transition-transform duration-300 ${isClosing ? "animate-fadeOut" : "animate-fadeIn"}`}>
      <div
       className={`bg-white h-screen fixed top-0 right-0 ${isClosing ? 'animate-slideOut' : 'animate-slideIn'}`}
       style={{ width: "450px" }}
@@ -295,7 +295,7 @@ const Expenses = () => {
               <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
             </svg>
           </div>
-          <input type="search" onChange={handleonSearch} value={search} id="default-search" className="block w-full p-2.5 ps-10 text-md lg:text-lg text-black font-semibold border border-gray-300 rounded-full bg-gray-100 focus:ring-blue-500 " placeholder="Search " required />
+          <input type="search" onChange={handleonSearch} value={search} id="default-search" className="block w-full p-2.5 ps-10 text-md lg:text-lg text-black font-medium border border-gray-300 rounded-full bg-gray-100 focus:ring-blue-500 " placeholder="Search " required />
 
         </div>
       </form>
@@ -315,18 +315,18 @@ const Expenses = () => {
 
     <div className=" flex justify-center bg-gray-100 rounded-lg shadow-lg  p-2 mb-6  ml-2 mr-2 lg:mr-8 lg:ml-4  text-gray-950 ">
       <div className="flex-1 mx-2">
-        <h2 className="text-lg font-semibold">Date</h2>
+        <h2 className="text-lg font-medium">Date</h2>
       </div>
       <div className="flex-1 mx-2">
-        <h2 className="text-lg font-semibold">Expense</h2>
+        <h2 className="text-lg font-medium">Expense</h2>
 
       </div>
 
       <div className="flex-1 mx-2">
-        <h2 className="text-lg font-semibold">Amount</h2>
+        <h2 className="text-lg font-medium">Amount</h2>
       </div>
       <div className="flex-1 mx-2">
-        <h2 className="text-lg font-semibold">Payment</h2>
+        <h2 className="text-lg font-medium">Payment</h2>
       </div>
     </div>
     {filteredExpense.map((exp, index) => (
@@ -338,24 +338,24 @@ const Expenses = () => {
           setRenderExpense(true)
         }} >
         <div className="flex-1 mx-1 md:mx-2 mb-2 md:mb-0">
-          <h2 className="text-base md:text-lg font-semibold">
+          <h2 className="text-base md:text-lg font-medium">
             <p>{new Date(exp.date).toLocaleDateString('en-CA')}</p>
           </h2>
         </div>
         <div className="flex-1 mx-1 md:mx-2 mb-2 md:mb-0">
-          <h2 className="text-base md:text-lg font-semibold">
+          <h2 className="text-base md:text-lg font-medium">
             <p><FontAwesomeIcon icon={faMoneyBillTrendUp} className="mr-1" />{exp.expensename}</p>
           </h2>
         </div>
 
         <div className="flex-1 mx-1 md:mx-2 mb-2 md:mb-0">
-          <h2 className="text-base md:text-lg font-semibold">
+          <h2 className="text-base md:text-lg font-medium">
             <p><FontAwesomeIcon icon={faIndianRupeeSign} className="mr-1" />{exp.expenseAmount}</p>
           </h2>
         </div>
 
         <div className="flex-1 mx-1 md:mx-2">
-          <h2 className="text-base md:text-lg font-semibold">
+          <h2 className="text-base md:text-lg font-medium">
             <p>{exp.paymentType}</p>
           </h2>
         </div>

@@ -24,61 +24,22 @@ const useCreateRawmaterial = (uid, companyid) => {
     }
   };
 
-  const addRawMaterial = async (category, item, quantity = 0) => {
-    const existingCategory = rawmaterial.find((mat) => mat.catogory.toLowerCase() === category.toLowerCase());
-  
+  const addRawMaterial = async (category) => {
     try {
-      if (existingCategory) {
-        let existingsubmaterial = null;
-  
-        try {
-          existingsubmaterial = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}/${category}/${item}`);
-        } catch (error) {
-          if (error.response && error.response.status === 404) {
-            console.log("Submaterial not found, adding new submaterial.");
-          } else {
-            console.error("Error fetching submaterial:", error);
-            return;
-          }
-        }
-  
-        if (existingsubmaterial && existingsubmaterial.status === 200) {
-          await axios.put(
-            `http://${VITE_APP_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}/${existingsubmaterial.data.rawmaterialId}/${existingsubmaterial.data.submaterialId}`,
-            { updatedquantity: Number(quantity) }
-          );
-          alert("Product successfully added");
-          fetchRawMaterials();
-          setForceupdate((prev)=>prev + 1)
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}`, {
+        catogory: category.toLowerCase(),
+      });
 
-        } else {
-          const response = await axios.put(
-            `${import.meta.env.VITE_BACKEND_BASE_URL}/${uid}/${companyid}/${existingCategory._id}`,
-            { subrawmaterial: [{ name: item.toLowerCase() }] }
-          );
-          if (response.status === 200) {
-            alert("Product successfully added");
-            fetchRawMaterials();
-            setForceupdate((prev)=>prev + 1)
-
-          }
-        }
-      } else {
-        const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}`, {
-          catogory: category.toLowerCase(),
-          subrawmaterial: [{ name: item.toLowerCase() }],
-        });
-        if (response.status === 201) {
-          alert("Product successfully added");
-           fetchRawMaterials();
-           setForceupdate((prev)=>prev + 1)
-          FetchParticularRawmaterial(category, item);
-        }
+      if (response.status === 201) {
+        alert("Raw material added successfully");
+        fetchRawMaterials();
+        setForceupdate((prev)=>prev + 1)
       }
-    } catch (e) {
+    }catch (error) {
       alert("Error adding raw material. Try again.");
     }
-  };
+  } 
+
   
   const FetchParticularRawmaterial = async (category, item) => {
 

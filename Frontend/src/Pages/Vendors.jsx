@@ -149,10 +149,10 @@ const Vendors = () => {
 
     {rendervendor && (
 
-      <div className={`z-10 fixed inset-0  h-screen bg-black bg-opacity-30 transition-transform duration-300 ${isClosing ? "animate-fadeOut" : "animate-fadeIn"}`}>
+      <div className={`z-50 fixed inset-0  h-screen bg-black bg-opacity-30 transition-transform duration-300 ${isClosing ? "animate-fadeOut" : "animate-fadeIn"}`}>
         <div className={`fixed z-30 top-0 right-0 h-screen bg-white overflow-y-auto  overflow-x-hidden shadow-lg ${isClosing ? "animate-slideOut" : "animate-slideIn"} `}style={{ width: "500px"}}>
 
-          <div className="text-md lg:text-2xl m-4 top-0 right-0 fixed hover:bg-gray-200 hover : bg-opacity-5 hover:text-red-500 cursor-pointer mr-5 mt-3 w-10 h-9 flex items-center justify-center " onClick={() => {
+          <div className="text-md lg:text-xl m-4 top-0 right-0 fixed hover:bg-gray-200 hover : bg-opacity-5 hover:text-red-500 cursor-pointer mr-5 mt-3 w-10 h-9 flex items-center justify-center " onClick={() => {
             handleanimating(setRenderVendor)
             setVendorName("")
             setDescription("")
@@ -160,43 +160,40 @@ const Vendors = () => {
             setSelectValue("Purchase")
             setVendorType("Purchase")
           }} ><FontAwesomeIcon icon={faMultiply} /></div>
-          <div className="text-md lg:text-2xl text-center mt-10">
+          <div className="text-md lg:text-xl text-center mt-10">
             Vendor Details
           </div>
 
-          <div className="text-md lg:text-2xl ml-4 mt-4 mb-1s font-bold">{vendorname}</div>
+          <div className="text-md lg:text-xl ml-4 mt-4 mb-1s font-bold">{vendorname}</div>
          
 
       
 
           <div className="flex justify-between items-center m-4">
-            <div className="text-md lg:text-xl "> Vendor GSTIN :</div>
-            <div className="text-md lg:text-xl mr-4  text-gray-700"> {GSTIN}</div>
+            <div className="text-md lg:text-lg "> Vendor GSTIN :</div>
+            <div className="text-md lg:text-lg mr-4  text-gray-700"> {GSTIN}</div>
           </div>
           <div className="flex justify-between items-center m-4">
-            <div className="text-md lg:text-xl "> Vendor Contact No. :</div>
-            <div className="text-md lg:text-xl mr-4  text-gray-700"> {Phone_number}</div>
+            <div className="text-md lg:text-lg "> Vendor Contact No. :</div>
+            <div className="text-md lg:text-lg mr-4  text-gray-700"> {Phone_number}</div>
           </div>
           <div className="flex justify-between items-center m-4">
-            <div className="text-md lg:text-xl "> Vendor Type :</div>
-            <div className="text-md lg:text-xl mr-4  text-gray-700"> {vendortype}</div>
+            <div className="text-md lg:text-lg "> Vendor Type :</div>
+            <div className="text-md lg:text-lg mr-4  text-gray-700"> {vendortype}</div>
           </div>
           <div className="flex justify-between items-center m-4">
-            <div className="text-md lg:text-xl "> Registered On :</div>
-            <div className="text-md lg:text-xl mr-4  text-gray-700"> {new Date(selectedDealer.date).toLocaleDateString('en-CA')}</div>
+            <div className="text-md lg:text-lg "> Registered On :</div>
+            <div className="text-md lg:text-lg mr-4  text-gray-700"> {new Date(selectedDealer.date).toLocaleDateString('en-CA')}</div>
           </div>
 
           <div className="m-4">
-            <div className="text-md lg:text-xl "> Description : </div>
-            <div className="text-md lg:text-xl mr-4   break-words text-justify text-gray-700 "> {description}</div>
+            <div className="text-md lg:text-lg "> Description : </div>
+            <div className="text-md lg:text-lg mr-4   break-words text-justify text-gray-700 "> {description}</div>
           </div>
           <div className="flex justify-between items-center m-4 mt-5 border-t-2 border-gray-700">
-            <div className="text-md lg:text-xl mt-2">Balance</div>
-            <div className="text-md lg:text-xl mr-4 mt-2  text-gray-700"> {currentbalance}</div>
+            <div className="text-md lg:text-lg mt-2">Balance</div>
+            <div className="text-md lg:text-lg mr-4 mt-2  text-gray-700"> {currentbalance}</div>
           </div>
-
-
-
 
         </div>
       </div>
@@ -220,7 +217,7 @@ const Vendors = () => {
     )} */}
 
     {addDealer && (
-       <div className={`z-10 fixed inset-0  h-screen bg-black bg-opacity-30 transition-transform duration-300 ${isClosing ? "animate-fadeOut" : "animate-fadeIn"}`}>
+       <div className={`z-50 fixed inset-0  h-screen bg-black bg-opacity-30 transition-transform duration-300 ${isClosing ? "animate-fadeOut" : "animate-fadeIn"}`}>
      <div
       className={`bg-white h-screen fixed top-0 right-0 ${isClosing ? 'animate-slideOut' : 'animate-slideIn'}`}
       style={{ width: "470px" }}
@@ -346,7 +343,7 @@ const Vendors = () => {
               <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
             </svg>
           </div>
-          <input type="search" onChange={handleonSearch} value={search} id="default-search" className="block w-full p-2.5 ps-10 text-md text-black font-semibold border border-gray-300 rounded-full bg-gray-100 focus:ring-blue-500 " placeholder="Search " required />
+          <input type="search" onChange={handleonSearch} value={search} id="default-search" className="block w-full p-2.5 ps-10 text-md text-black font-medium border border-gray-300 rounded-full bg-gray-100 focus:ring-blue-500 " placeholder="Search Vendor Name" required />
 
         </div>
       </form>
@@ -355,7 +352,7 @@ const Vendors = () => {
         <div className="text-lg mr-10  " onClick={() => {
           setAddDealer(true)
         }}>
-          <button type="button" className="py-2.5 px-7 w-full me-2 mb-2 text-md font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10   dark:focus:ring-gray-700 dark:bg-teal-800 dark:text-white  dark:hover:text-white dark:hover:bg-gray-700 " ><FontAwesomeIcon icon={faPlus} className="text-lg" /> Add Vendor</button>
+          <button type="button" className="py-2 px-4 w-full me-2 mb-2 text-md font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10   dark:focus:ring-gray-700 dark:bg-teal-800 dark:text-white  dark:hover:text-white dark:hover:bg-gray-700 " ><FontAwesomeIcon icon={faPlus} className="text-lg" /> Add Vendor</button>
         </div>
 
       </div>
@@ -365,15 +362,15 @@ const Vendors = () => {
 
     <div className=" flex justify-center bg-gray-100 rounded-lg shadow-lg  p-4 mb-6 mr-2 ml-2  text-gray-950 ">
       <div className="flex-1 mx-2">
-        <h2 className="text-md lg:text-lg font-semibold">Name</h2>
+        <h2 className="text-md lg:text-lg font-medium">Name</h2>
       </div>
   
       <div className="flex-1 mx-2">
-        <h2 className="text-md lg:text-lg font-semibold">Vendor Type</h2>
+        <h2 className="text-md lg:text-lg font-medium">Vendor Type</h2>
       </div>
 
       <div className="flex-1 mx-2">
-        <h2 className="text-md lg:text-lg font-semibold">Balance</h2>
+        <h2 className="text-md lg:text-lg font-medium">Balance</h2>
       </div>
     </div>
     {filteredvendor.map((exp, index) => (
@@ -386,20 +383,20 @@ const Vendors = () => {
         }} >
       
         <div className="flex-1 mx-2">
-          <h2 className="text-md lg:text-lg font-semibold">
-            <p><FontAwesomeIcon icon={faBuildingFlag} />{" " + exp.name}</p>
+          <h2 className="text-md lg:text-lg font-medium">
+            <p><FontAwesomeIcon icon={faBuilding} />{" " + exp.name}</p>
           </h2>
         </div>
 
         
         <div className="flex-1 mx-2">
-          <h2 className="text-md lg:text-lg font-semibold">
+          <h2 className="text-md lg:text-lg font-medium">
             <p>{"  " + exp.dealer_type}</p>
           </h2>
         </div>
 
         <div className="flex-1 mx-2">
-          <h2 className="text-md lg:text-lg font-semibold">
+          <h2 className="text-md lg:text-lg font-medium">
             <p><FontAwesomeIcon icon={faIndianRupeeSign} />{"  " + exp.current_balance}</p>
           </h2>
         </div>
