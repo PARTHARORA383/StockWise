@@ -8,9 +8,6 @@ const PurchaseSchema = new mongoose.Schema({
   Product: { 
     category: {
     type : String  , required: true
-  },
-  item: {
-    type : String 
   }
 } ,
   dealer: { type: String, ref : "vendor" },

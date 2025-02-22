@@ -36,8 +36,7 @@ router.post("/:uid/:companyid", async function (req, res) {
       billing_number,
       dealer,
       Product: {
-        category,
-        item,
+        category
       },
       rate,
       quantity,
@@ -95,7 +94,7 @@ router.put("/:uid/:companyid/:billing_number", async (req, res) => {
 
   const { companyid, billing_number } = req.params
   const { BillNumber, dealer, quantity, rate, Product  } = req.body;
-  const { category, item } = Product || {};
+  const { category } = Product || {};
 
   try {
 
@@ -108,7 +107,6 @@ router.put("/:uid/:companyid/:billing_number", async (req, res) => {
       dealer,
       Product: {
         category,
-        item,
       },
       rate,
       quantity,
