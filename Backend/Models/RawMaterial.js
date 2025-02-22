@@ -21,7 +21,6 @@ const RawMaterial = new mongoose.Schema({
 
 catogory : {type : String , required : true},
 userid : {type : String , ref : 'user' },
-submaterial : [{type : mongoose.Schema.Types.ObjectId , ref : 'submaterial'}],
 company : {type : String , ref : 'company'}
   
 })

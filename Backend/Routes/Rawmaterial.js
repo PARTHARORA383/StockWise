@@ -6,7 +6,7 @@ const router = express.Router();
 //CREATING A RAW MATERIAL 
 router.post("/:uid/:companyid", async (req, res) => {
   const { companyid, uid } = req.params;
-  const { catogory, subrawmaterial } = req.body;
+  const { catogory } = req.body;
 
   try {
     // Check if the raw material already exists for the company
@@ -20,38 +20,6 @@ router.post("/:uid/:companyid", async (req, res) => {
       });
 
       // Save the raw material
-      await newRawmaterial.save();
-
-      const newSubmaterials = [];
-
-      // Loop through the subrawmaterial array
-      for (const sub of subrawmaterial) {
-        // Check if the submaterial already exists
-        let subrawmaterialsexist = await submaterial.findOne({ name: sub.name, rawmaterial: newRawmaterial._id });
-
-        if (!subrawmaterialsexist) {
-          // Create a new submaterial if it doesn't exist
-          const submaterialnew = new submaterial({
-            name: sub.name,
-            quantity: sub.quantity,
-            unit: sub.unit,
-            rawmaterial: newRawmaterial._id,
-            company: companyid
-          });
-
-
-          //Save the submaterial to the database
-          await submaterialnew.save();
-
-          //Add the submaterial to the newSubmaterials array
-          newSubmaterials.push(submaterialnew._id);
-        } else {
-          newSubmaterials.push(subrawmaterialsexist._id)
-        }
-      }
-
-      // Create the new raw material with submaterials
-      newRawmaterial.submaterial = newSubmaterials
       await newRawmaterial.save();
 
       res.status(201).json({ msg: "Raw material created successfully" });
@@ -68,7 +36,6 @@ router.post("/:uid/:companyid", async (req, res) => {
   }
 });
 
-//UPDATE RAW MATERIAL TO ADD A NEW SUB MATERIAL 
 router.put('/:uid/:companyid/:rawmaterialid', async (req, res) => {
 
   const { companyid, rawmaterialid, uid } = req.params
@@ -182,10 +149,7 @@ router.get('/:uid/:companyid', async (req, res) => {
     // Find rawmaterial for the given company and populate submaterial details
     const getRawmaterial = await rawmaterial
       .find({ userid: uid, company: companyid })
-      .populate({
-        path: 'submaterial', // Populate the 'submaterial' field
-        model: 'submaterial', // Use the submaterial model to get submaterial data
-      });
+      
 
     res.status(200).json(getRawmaterial);
   } catch (e) {
