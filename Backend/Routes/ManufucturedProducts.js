@@ -19,16 +19,16 @@ router.post('/:uid/:companyid' , async (req , res)=>{
       const existproduct = await 
       manufacturedProducts.findOne({ userid : uid , company : companyid , Productname : Productname})
       
-      if(!existproduct){
+      if(existproduct){
         res.status(404).json({
           msg : "Product already exist choose a different name "
         })
 
       }else{
         
-  
           const Product = new manufacturedProducts({
             Productname : Productname,
+            quantity : quantity,
             userid : uid,
             company : companyid
           })
@@ -52,6 +52,7 @@ router.post('/:uid/:companyid' , async (req , res)=>{
 router.get("/:uid/:companyid" , async(req , res)=>{
 
   const {companyid , uid} = req.params
+  try{
 
   const existproduct = await manufacturedProducts.find({ userid : uid ,company : companyid})
   
@@ -63,15 +64,18 @@ router.get("/:uid/:companyid" , async(req , res)=>{
       msg : " Products doesn't exist"
     })
   }
+}catch(e){
+  res.status(400).json({
+    error : e.message
+  })
+}
 })
 
 
 
 router.put('/:uid/:companyid/:manufacturingid' , async(req , res)=>{
-
   const {companyid , manufacturingid  , uid} = req.params;
   const {updatedquantity} = req.body
-
   try{
 
     const checkifexistproduct = await manufacturedProducts.findOne({ userid : uid , company : companyid  , _id : manufacturingid})
@@ -79,7 +83,6 @@ router.put('/:uid/:companyid/:manufacturingid' , async(req , res)=>{
     if(checkifexistproduct){
       
       const updatedProductQuantity =  await manufacturedProducts.findOneAndUpdate({ company : companyid , _id : manufacturingid } , { 
-        
         $inc: {quantity : updatedquantity}
       },  { new: true })
       
@@ -92,8 +95,27 @@ router.put('/:uid/:companyid/:manufacturingid' , async(req , res)=>{
       error : e.message
     })
   }
-    
 })
 
+router.delete('/:uid/:companyid/:manufacturingid' , async(req , res)=>{
+
+  const {companyid , manufacturingid  , uid} = req.params;
+
+  try{
+
+    const checkifexistproduct = await manufacturedProducts.findOne({ userid : uid , company : companyid  , _id : manufacturingid})
+    
+  if(checkifexistproduct){
+    await manufacturedProducts.findOneAndDelete({ company : companyid , _id : manufacturingid})
+    return res.status(200).json({ message: 'Product deleted' })
+  }else{
+    return res.status(401).json({ message: 'Failed to delete product' })
+  }
+}catch(e){
+  res.status(400).json({
+    error : e.message
+  })
+}
+})      
 
 module.exports = router;

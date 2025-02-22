@@ -29,11 +29,6 @@ const GetProduct = ()=>{
   },[])
 
 
-  const selectProduct = (selectedid , selectedproduct)=>{
-    setSelectedProduct(selectedproduct)
-    setSelectedProductid(selectedid)
-    console.log(selectedProductid)
-  }
   return <div className='w-full'>
 
       <div className='bg-gradient-to-r from-teal-800 to-teal-600 h-10 text-xl text-white p-2 '> List of all Products </div>
