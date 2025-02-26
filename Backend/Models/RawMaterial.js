@@ -21,8 +21,8 @@ const RawMaterial = new mongoose.Schema({
 
 catogory : {type : String , required : true},
 userid : {type : String , ref : 'user' },
-company : {type : String , ref : 'company'}
-  
+company : {type : String , ref : 'company'},
+quantity : {type : Number}
 })
 
 const rawmaterial = mongoose.model('rawmaterial' , RawMaterial)

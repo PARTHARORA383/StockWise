@@ -36,94 +36,20 @@ router.post("/:uid/:companyid", async (req, res) => {
   }
 });
 
-router.put('/:uid/:companyid/:rawmaterialid', async (req, res) => {
-
-  const { companyid, rawmaterialid, uid } = req.params
-  const { subrawmaterial } = req.body
 
 
-  try {
+router.put("/:uid/:companyid/:rawmaterialid", async (req, res) => {
 
-    //Check if the rawmaterial exists or not
-    const rawmaterialexist = await rawmaterial.findOne({ userid: uid, company: companyid, _id: rawmaterialid })
-
-
-    if (!rawmaterialexist) {
-      res.status(400).json({
-        msg: "Raw material does not exist"
-      })
-
-    }
-
-    //Loop through the inputs 
-    for (const sub of subrawmaterial) {
-
-      const subrawmaterialsexist = await submaterial.findOne({ userid: uid, company: companyid, rawmaterial: rawmaterialid, name: sub.name })
-
-      if (!subrawmaterialsexist) {
-
-        const updatesubmaterial = new submaterial({
-          name: sub.name,
-          quantity: sub.quantity,
-          unit: sub.unit,
-          rawmaterial: rawmaterialid,
-          userid: uid,
-          company: companyid
-
-        })
-
-        await updatesubmaterial.save()
-
-
-        if (!Array.isArray(rawmaterialexist.submaterial)) {
-          console.log("not an array")
-          return res.status(400)
-        }
-        rawmaterialexist.submaterial.push(updatesubmaterial._id);
-
-        await rawmaterialexist.save();
-
-        return res.status(200).json({
-          msg: "Raw material updated"
-        })
-      }
-      else {
-        return res.status(409).json({
-          msg: "submaterial already exist"
-        })
-      }
-    }
-  } catch (e) {
-    res.status(400).json({
-      msg: "Cannot add submaterial",
-      error: e.message
-    })
-  }
-})
-
-
-//UPDATE SUBMATERIAL FOR ITS QUANTITY WHEN I ADD A NEW PURCHASE OR I SELL A PRODUCT
-
-router.put("/:uid/:companyid/:rawmaterialid/:subrawmaterialid", async (req, res) => {
-
-  const { uid, companyid, rawmaterialid, subrawmaterialid } = req.params
+  const { uid, companyid, rawmaterialid } = req.params
   const { updatedquantity } = req.body
 
   try{
-
-    const existingsubmaterial = await submaterial.findOne({ userid: uid, company: companyid, rawmaterial: rawmaterialid, _id: subrawmaterialid })
-    
-    if (!existingsubmaterial) {
-      return res.status(404).json({
-      msg: "Submaterial doesn't exist"
-    })
-  }
   
-  const updatesubmaterial = await submaterial.findOneAndUpdate({ userid: uid, company: companyid, rawmaterial: rawmaterialid, _id: subrawmaterialid }, {
+  const updatedrawmaterial = await rawmaterial.findOneAndUpdate({ userid: uid, company: companyid, _id: rawmaterialid }, {
     $inc: { quantity: updatedquantity }
   }, { new: true })
 
-  if (updatesubmaterial) {
+  if (updatedrawmaterial) {
     return res.status(200).json({
       msg: "Quantity Updated successfully"
     })
@@ -135,7 +61,8 @@ router.put("/:uid/:companyid/:rawmaterialid/:subrawmaterialid", async (req, res)
   }
 }catch(e){
 res.status(400).json({
-  msg : "Error updating quantity"
+  msg : "Error updating quantity",
+  error : e.message
 })
 }
 })
