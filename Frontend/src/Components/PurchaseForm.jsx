@@ -73,6 +73,36 @@ const PurchaseForm = () => {
     }
 
   }
+  
+
+  const AddExpense = async () => {
+    try {
+
+      
+    const requestbody = {
+      date : selectedDates,
+      expensename : FreightName,
+      expenseAmount : FreightCharge,
+      paymentType : "Purchase",
+      description : "Freight Charges" 
+    }
+
+
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/Expense/${uid}/${companyid}`, requestbody , {
+        headers : {
+          "Content-Type" : "application/json"
+        }
+      })
+     
+ 
+
+      if (response.status === 200) {
+        console.log("Freight expense added successfully");
+      }
+    } catch (error) {
+      console.error("Error adding freight expense:", error);
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -96,15 +126,13 @@ const PurchaseForm = () => {
 
 
 
-
-
       console.log(response.data);
 
       if (response.status == 200) {
         alert("Purchase added successfully!");
         
         setAddMorePurchase(true)
-        // AddtoInventory(rawmaterialid , submaterial);
+         AddtoInventory();
       }
     } catch (e) {
       console.error("Error adding purchase:", e);
@@ -131,24 +159,22 @@ const PurchaseForm = () => {
 
 
   // //Adding to Inventory
-  // const AddtoInventory = async (rawmaterialid , submaterial)=>{
-  //   console.log(rawmaterialid , submaterial)
-  // try{
-  //   const response = await axios.put(`http://${VITE_APP_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}/${selectedrawmaterial._id || rawmaterialid}/${selectedsubrawmaterial._id || submaterial}` , {
-  //     updatedquantity : parseInt(quantity)
-  //   })
+  const AddtoInventory = async ()=>{
+  console.log(selectedrawmaterial._id)
+   try{
+    const response = await axios.put(`${import.meta.env.VITE_BACKEND_BASE_URL}/rawmaterial/${uid}/${companyid}/${selectedrawmaterial._id}` , {
+     updatedquantity : parseInt(quantity)
+   })
 
-  //   if(response.status == 200){
-  //     setSelectedrawmaterial();
-  //     setSelectedsubrawmaterial();
-  //     setAddMorePurchase(true)
+  if(response.status == 200){
+      setSelectedrawmaterial();
+       setAddMorePurchase(true)
+   }
 
-  //   }
-
-  // }catch(e){
-  // alert("Error updating inventory")
-  // }
-  // }
+ }catch(e){
+ alert("Error updating inventory")
+  }
+   }
 
   const handleconfirm = () => {
     AddPurchase()
@@ -296,11 +322,11 @@ const PurchaseForm = () => {
       <div></div>
       <div className=" sticky z-20 border-b-2 top-0 bg-white h-16 text-supabaseGray-dark text-2xl flex items-center justify-between">
         <div className="w-1/4 ml-16 lg:ml-5">Add Purchase</div>
-        <div className=" w-1/5 text-center mr-2 ">
+        <div className=" lg:w-1/5 w-1/3 text-center mr-2 ">
 
           <button
             onClick={() => { setConfirmationbox(true) }}
-            className="bg-blue-500 hover:bg-blue-600 text-white text-lg py-1.5  rounded-lg shadow-md  transition duration-300  w-full "
+            className="bg-blue-500 hover:bg-blue-600 text-white text-lg lg:py-1.5 py-0.5  rounded-lg shadow-md  transition duration-300  w-full "
           >
             Add Purchase
           </button>
@@ -381,12 +407,12 @@ const PurchaseForm = () => {
       {//PurchaseForm Component
       }
 
-      <div className="grid grid-cols-12 h-full  border-r-2 bg-gray-100  pb-24 pt-10 pr-4 pl-4  lg:ml-10 lg:pr-20">
+      <div className="grid grid-cols-12 h-full  border-r-2 bg-gray-100  pb-24 pt-10 pr-2 pl-2  lg:ml-10 lg:pr-20">
 
         {
           //Pop up Form
         }
-        <div className=" lg:col-span-10 col-span-12 relative bg-white shadow-lg rounded-lg p-10 flex flex-col w-full  inset-0 mt-4" style={{ height: "720px" }}>
+        <div className=" lg:col-span-10 col-span-12 relative bg-white shadow-lg rounded-lg p-4 lg:p-10 flex flex-col w-full  inset-0 mt-4" style={{ height: "100%"  , maxHeight: "720px" }}>
 
           <div className="text-2xl "> Register Purchase</div>
           <div className="lg:text-lg text-md mb-10 text-gray-500"> Easily register your daily purchases to keep your inventory updated</div>
@@ -578,47 +604,7 @@ const PurchaseForm = () => {
             </button>
           </div>
         </div>
-        <div className="mt-4 lg:col-span-10 col-span-12 bg-white shadow-lg rounded-lg p-4 lg:p-10 flex flex-col inset-0 space-y-4 justify-center items-start" style={{ height: "350px" }}>
-          <div className="lg:text-lg text-md font-medium">Freight Details:</div>
-          <div className="w-full flex space-x-4">
-            <div className="flex flex-col w-1/2">
-              <label className="text-lg mb-2">Name</label>
-              <input
-                type="text"
-                ref={freightNameRef}
-                value={FreightName}
-                onChange={(e) => setFreightName(e.target.value)}
-                className="border lg:text-lg text-md rounded-lg w-full p-3"
-                placeholder="Enter Name"
-                onKeyDown={(e) => handleonkeydown(e, freightChargeRef, quantityRef)}
-              />
-            </div>
-            <div className="flex flex-col w-1/2">
-              <label className="text-lg mb-2">Freight Amount</label>
-              <input
-                type="number"
-                ref={freightChargeRef}
-                value={FreightCharge}
-                onChange={(e) => setFreightCharge(parseFloat(e.target.value))}
-                className="border lg:text-lg text-md rounded-lg w-full p-3"
-                placeholder="Enter Amount"
-                onKeyDown={(e) => handleonkeydown(e, descriptionRef, freightNameRef)}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col w-full">
-            <label className="text-lg mb-2"> Freight GST Rate</label>
-            <select
-              value={gstFreight}
-              onChange={(e) => setGstFreight(parseFloat(e.target.value))}
-              className="border p-3 lg:text-lg text-md rounded-lg bg-supabaseGray-light text-white w-1/3"
-            >
-              <option value={5}>5%</option>
-              <option value={12}>12%</option>
-              <option value={18}>18%</option>
-            </select>
-          </div>
-        </div>
+     
 
         <div className="mt-4 lg:col-span-10 col-span-12 bg-white shadow-lg rounded-lg p-4 lg:p-10 flex  flex-col inset-0  justify-start items-start  space-y-2 " style={{ height: "250px" }}>
           <div className="lg:text-lg text-md font-medium">Description</div>

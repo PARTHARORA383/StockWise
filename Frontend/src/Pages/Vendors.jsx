@@ -150,7 +150,7 @@ const Vendors = () => {
     {rendervendor && (
 
       <div className={`z-50 fixed inset-0  h-screen bg-black bg-opacity-30 transition-transform duration-300 ${isClosing ? "animate-fadeOut" : "animate-fadeIn"}`}>
-        <div className={`fixed z-30 top-0 right-0 h-screen bg-white overflow-y-auto  overflow-x-hidden shadow-lg ${isClosing ? "animate-slideOut" : "animate-slideIn"} `}style={{ width: "500px"}}>
+        <div className={`fixed z-30 top-0 right-0 h-screen bg-white overflow-y-auto  overflow-x-hidden shadow-lg ${isClosing ? "animate-slideOut" : "animate-slideIn"} `}style={{ width: "100%", maxWidth: "500px"}}>
 
           <div className="text-md lg:text-xl m-4 top-0 right-0 fixed hover:bg-gray-200 hover : bg-opacity-5 hover:text-red-500 cursor-pointer mr-5 mt-3 w-10 h-9 flex items-center justify-center " onClick={() => {
             handleanimating(setRenderVendor)
@@ -220,7 +220,7 @@ const Vendors = () => {
        <div className={`z-50 fixed inset-0  h-screen bg-black bg-opacity-30 transition-transform duration-300 ${isClosing ? "animate-fadeOut" : "animate-fadeIn"}`}>
      <div
       className={`bg-white h-screen fixed top-0 right-0 ${isClosing ? 'animate-slideOut' : 'animate-slideIn'}`}
-      style={{ width: "470px" }}
+      style={{ width: "100%", maxWidth: "470px" }}
      >
 
           <div className="text-md lg:text-lg m-4 top-0 right-0 fixed hover:bg-gray-200 hover : bg-opacity-5 hover:text-red-500 cursor-pointer mr-5 mt-3 w-10 h-9 flex items-center justify-center  " onClick={() => {

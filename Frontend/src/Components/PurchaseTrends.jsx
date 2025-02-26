@@ -120,7 +120,7 @@ const PurchaseTrends = () => {
   }
 
   return (
-    <div className="h-full w-full max-w-6xl mx-auto p-6 bg-gradient-to-br from-teal-50 to-white rounded-xl shadow-xl border border-teal-100">
+    <div className="h-full w-full max-w-6xl mx-auto p-6 bg-gray-100 rounded-xl shadow-xl border border-teal-100">
       
       <Bar
         data={chartData}

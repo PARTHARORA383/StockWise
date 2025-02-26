@@ -25,7 +25,7 @@ const SalesForm = () => {
   const [ ProductList , setProductList] = useState([])
   const [addproduct , setAddProduct] = useState(false)
   const [newproduct , setNewProduct] = useState("")
-  
+  const [createbillbox , setCreateBillBox] = useState(false)
   const [showProductList, setShowProductList] = useState(false);
   const [showDealerList, setShowDealerList] = useState(false);
   const [confirmationbox, setConfirmationbox] = useState(false)
@@ -185,12 +185,21 @@ const SalesForm = () => {
     }
   }
 
+  const handlecreatebill = () => {
+    setCreateBillBox(true)
+  }
+
+  const handlenotcreatebill = () => {
+    setCreateBillBox(false)
+  } 
+
   useEffect(() => {
     handleFetchvendors()
     handleFetchProducts()
   }, [companyid])
 
   return <div className="relative z-10">
+
     <div className="h-full">
     <div></div>
       <div className=" sticky z-20 border-b-2 top-0 bg-white h-16 text-supabaseGray-dark text-2xl flex items-center justify-between">
@@ -205,6 +214,36 @@ const SalesForm = () => {
           </button>
         </div>
       </div>
+
+      {createbillbox && (
+        
+        <div className="absolute z-50 inset-0 h-screen w-full flex justify-center items-center bg-black bg-opacity-50 transition duration-300 ease-in-out"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handlecreatebill()
+            }
+            if (e.key === "Escape") {
+              handlenotcreatebill() 
+            }
+          }}
+          tabIndex="0">
+          <div className="text-center bg-white p-5 rounded-lg shadow-lg w-96">
+            <h2 className="text-lg mb-4">Do you want to create bill for this sale?</h2>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:opacity-90"
+              onClick={handlecreatebill}
+            >
+              Create Bill
+            </button>
+            <button
+              className="bg-blue-500 hover:opacity-90 text-white px-4 py-2 rounded mr-2" 
+              onClick={handlenotcreatebill}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      )}
 
       {confirmationbox && (
         <div className="absolute z-50 inset-0 h-screen w-full flex justify-center items-center bg-black bg-opacity-50 transition duration-300 ease-in-out  "
@@ -269,9 +308,9 @@ const SalesForm = () => {
         </div>
       )}
 
-<div className="grid  grid-cols-12 h-full  border-r-2 bg-gray-200  pb-24 pt-10 pr-4  pl-4   lg:pr-20 lg:pl-10 ">
+<div className="grid  grid-cols-12 h-full  border-r-2 bg-gray-200  pl-2 pr-2 pb-24 pt-10 lg:pr-20 lg:pl-10 ">
 
-        <div className=" col-span-12 lg:col-span-10 relative bg-white shadow-lg rounded-lg p-4 lg:p-10 flex flex-col w-full  inset-0" style={{ height: "720px" }}>
+        <div className=" col-span-12 lg:col-span-10 relative bg-white shadow-lg rounded-lg  pl-4 pr-4 lg:p-10 flex flex-col w-full  inset-0" style={{ height: "100%"  , maxHeight: "720px" }}>
 
 <div className="text-2xl "> Register Sale</div>
 <div className="lg:text-lg text-md mb-10 text-gray-500"> Easily register your daily Sales to know your accurate analytics</div>

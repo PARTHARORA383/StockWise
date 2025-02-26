@@ -72,15 +72,7 @@ const Sidebar = () => {
             <div className="pl-3 text-md">Inventory</div>
           </div>
 
-          <div className="flex hover:cursor-pointer w-60 rounded-xl justify-start hover:bg-teal-700 hover:text-white p-4 items-center" 
-            onClick={() => {
-              navigate(`/ProductForm/${uid}/${selectedCompany}`)
-              setShowSidebar(false)
-            }}>
-            <FontAwesomeIcon icon={faHome} className="text-md" />
-            <div className="pl-3 text-md">ProductForm</div>
-          </div>
-
+         
           <div className="flex hover:cursor-pointer w-60 rounded-xl justify-start hover:bg-teal-700 hover:text-white p-4 items-center" 
             onClick={() => {
               navigate(`/Sales/${uid}/${selectedCompany}`)
