@@ -31,6 +31,7 @@ const SalesForm = () => {
   const [confirmationbox, setConfirmationbox] = useState(false)
   const [AddMoreSale, setAddMoreSale] = useState(false)
   const [selectedProductId, setSelectedProductId] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState("");
   const { vendor , setVendor} = useCompany()
 
   
@@ -59,7 +60,7 @@ const SalesForm = () => {
   const AddSale = async () => {
     const newsale = {
       billNumber: BillNumber,
-      Product: selectedProductid || null,
+      Product: selectedProductId || null,
       Productname : selectedProduct || Product,
       dealer: vendor?.name || dealer,
       gstRate : gstRate ,
@@ -73,7 +74,7 @@ const SalesForm = () => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/Sales/${uid}/${companyid}`, newsale)
       console.log(response.data)
-
+      
       if (response.status == 200) {
         setConfirmationbox(false)
         alert("Sale listed")
@@ -84,8 +85,9 @@ const SalesForm = () => {
       alert("error Listing sale")
       setConfirmationbox(false)
       setSelectedProduct(null)
-      setSelectedProductid(null)
+      setSelectedProductId(null)
     }
+
   }
 
   const handleconfirm = () => {
@@ -111,7 +113,7 @@ const SalesForm = () => {
     setDealer("")
     setProduct('')
     setSelectedProduct(null)
-    setSelectedProductid(null)
+    setSelectedProductId(null)
     setRate("")
     setQuantity('')
   }
@@ -363,9 +365,11 @@ const SalesForm = () => {
     className={`lg:text-lg text-md  w-full rounded-lg border-gray-200 border p-2 focus:border-blue-500 focus:outline-none focus:ring-blue-500 ${Product.length > 0 ? "bg-gray-300 bg-opacity-20" : "bg-white"}`}
     ref={Productref}
     id="Product"
-    value={Product}
+    value={selectedProduct}
     placeholder="Enter Product Name"
-    onChange={(e) => setProduct(e.target.value)}
+    onChange={(e) => {
+      setProduct(e.target.value)
+    }}
     onFocus={() => {
       setShowProductList(true)
       setShowDealerList(false)
@@ -541,8 +545,8 @@ const SalesForm = () => {
                         className="bg-gradient-to-tr text-black text-lg p-2 rounded-lg hover:bg-blue-300 hover:bg-opacity-30 flex justify-between items-center" 
                         key={product._id}
                         onClick={() => {
-                          setProduct(product.Productname);
-                       
+                        
+                          setSelectedProduct(product.Productname);
                           setShowProductList(false);
                         }}
                       >
