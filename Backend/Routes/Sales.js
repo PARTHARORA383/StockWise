@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/:uid/:companyid' , async (req , res)=>{
 
   const {companyid , uid } = req.params;
-  const{billNumber , Product , dealer , quantity , rate , Productname , paymentType , gstRate , description} = req.body
+  const{billNumber , Product , dealer , quantity , rate , Productname , paymentType , gstRate , description , date } = req.body
   
   
   try{
@@ -27,6 +27,7 @@ router.post('/:uid/:companyid' , async (req , res)=>{
 
 
     const newSale = new Sales({
+      date : date,
       billNumber : billNumber,
       Product:Product || null,
       Productname : Productname,
