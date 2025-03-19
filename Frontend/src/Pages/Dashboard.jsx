@@ -17,7 +17,7 @@ const Dashboard = () => {
 
     const FetchCompany = async () => {
 
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/company/${uid}/${selectedCompany}`)
+      const response = await  axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/company/${uid}/${selectedCompany}`)
     setOwnername(response.data.name);
     }
 
@@ -82,7 +82,7 @@ const Dashboard = () => {
     </div>
 
     <div className=" flex lg:flex-row flex-col lg:mr-5 h-80 mb-20">
-      <div className="lg:w-2/3 w-full rounded-lg bg-white m-3 lg:ml-6 h-full bg-gray-400  bg-opacity-20  shadow-lg rounded-lg">
+      <div className="lg:w-2/3 w-full rounded-lg  m-3 lg:ml-6 h-full bg-gray-400  bg-opacity-20  shadow-lg ">
       
       <h2 className="text-lg font-semibold mt-5 mr-3 ml-3" style={{fontFamily: 'Poppins' , color: 'rgb(30 , 30 , 30)'}}>
           "Take the Stress Out of Finance - Our Software Makes Managing Your Money Simple and Efficient".

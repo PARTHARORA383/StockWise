@@ -135,7 +135,7 @@ const uid = JSON.parse(localStorage.getItem("uid"))
   return (
     <div className="flex flex-col md:flex-row">
       {purchase || expenses ? (
-        <div className="h-28 bg-gradient-to-r from-teal-800 to-teal-600 w-full md:w-1/3 mx-2 my-2 md:m-3 p-3 rounded-xl transition-transform transform hover:scale-105">
+        <div className="h-28 bg-gradient-to-r from-teal-800 to-teal-600 w-full md:w-1/3 mx-2 my-2 md:m-3 p-3 rounded-xl transition-transform transform hover:scale-105 hover:bg-gradient-to-l duration-300 cursor-pointer">
           <div className="flex flex-col pl-2">
             <h2 className="text-base lg:text-lg font-medium text-opacity-90 text-white pb-4 pt-1">EXPENSES</h2>
             <h2 className="text-lg lg:text-2xl  text-white">
@@ -148,7 +148,7 @@ const uid = JSON.parse(localStorage.getItem("uid"))
       )}
 
       {sale ? (
-        <div className="h-28 bg-gradient-to-r from-teal-800 to-teal-600 w-full md:w-1/3 mx-2 my-2 md:m-3 p-3 rounded-xl transition-transform transform hover:scale-105">
+        <div className="h-28 bg-gradient-to-r from-teal-800 to-teal-600 w-full md:w-1/3 mx-2 my-2 md:m-3 p-3 rounded-xl transition-transform transform hover:scale-105 hover:bg-gradient-to-l duration-300 cursor-pointer">
           <div className="flex flex-col pl-2">
             <h2 className="text-base lg:text-lg font-medium  text-opacity-90 text-white pb-4 pt-1">SALES</h2>
             <h2 className="text-lg lg:text-2xl text-white">
@@ -160,7 +160,7 @@ const uid = JSON.parse(localStorage.getItem("uid"))
         <div></div>
       )}
 
-      <div className="h-28 bg-gradient-to-r from-teal-800 to-teal-600 w-full md:w-1/3 mx-2 my-2 md:m-3 p-3 rounded-xl transition-transform transform hover:scale-105">
+      <div className="h-28 bg-gradient-to-r from-teal-800 to-teal-600 w-full md:w-1/3 mx-2 my-2 md:m-3 p-3 rounded-xl transition-transform transform hover:scale-105 hover:bg-gradient-to-l duration-300 cursor-pointer">
         <div className="flex flex-col pl-2">
           <h2 className="text-base lg:text-lg font-medium text-opacity-90 text-white pb-4 pt-1">
             {CheckProfitorLoss ? <h1>PROFIT</h1> : <h1>LOSS</h1>}

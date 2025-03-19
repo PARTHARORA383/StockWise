@@ -20,6 +20,7 @@ import AuthOnChange from './Authentication/AuthOnChange';
 import Expenses from './Pages/Expense';
 import Vendors from './Pages/Vendors';
 import Navbar from './Components/Navbar';
+import StockWiseLanding from './Pages/Landingpage';
 
 
 function App() {
@@ -42,7 +43,8 @@ function App() {
                 <Route path="/Vendors/:uid/:companyid" element={<Vendors />} />
               </Route>
 
-              <Route element={<WithoutSidebarLayout />}>
+              <Route>
+              <Route path="/" element = {<StockWiseLanding/>} />
                 <Route path="/Signup" element={<Signup />} />
                 <Route path="/Signin" element={<Signin />} />
                 <Route path="/getting_started/:uid" element={<Registercompany />} />

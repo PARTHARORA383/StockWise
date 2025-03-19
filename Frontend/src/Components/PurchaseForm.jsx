@@ -109,6 +109,7 @@ const PurchaseForm = () => {
   //Adding Purchase
   const AddPurchase = async () => {
     try {
+      console.log("Purhcase form selected date is " + selectedDates)
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/purchase/${uid}/${companyid}`, {
         billing_number: billingNumber,
         Product: {

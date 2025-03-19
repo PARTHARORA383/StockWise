@@ -14,12 +14,12 @@ return (
       <>
         {/* Header Section */}
         <div className="text-white text-3xl mb-3 leading-normal text-center mt-14 transition-transform animate-fadeIn duration-700 ">
-          Integrated Billing, Inventory, and Sales Management for Manufacturers
+          Listing Expenses , Inventory, and Sales Management for Manufacturers
         </div>
 
         {/* Description Section */}
         <div className="text-gray-100 text-xl leading-normal text-center pl-6 pr-6 pb-6 pt-3 transition-transform animate-fadeIn duration-700">
-          Designed specifically for manufacturers, Billventory combines all your essential business processes in one platform. From managing sales orders to tracking inventory and generating invoices, Billventory provides a comprehensive solution that adapts to your unique needs.
+          Designed specifically for manufacturers, StockWise combines all your essential business processes in one platform. From managing sales orders to tracking inventory  and listing sales, Stockwise provides a comprehensive solution that adapts to your unique needs.
         </div>
 
         {/* Image Section */}
@@ -40,7 +40,7 @@ return (
 
         {/* Description Section */}
         <div className="text-gray-100 text-2xl leading-tight text-center pl-6 pr-6 pb-6 pt-3 transition-transform animate-fadeIn duration-300 font-sans">
-        "Empowering Manufacturers with Smarter Billing and Inventory Solutions."
+        "Empowering Manufacturers with Smarter Purchases and Inventory Solutions."
 
         </div>
        

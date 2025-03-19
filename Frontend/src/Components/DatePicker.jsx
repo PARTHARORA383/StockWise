@@ -26,7 +26,9 @@ const CustomDatePicker = () => {
 
   const handleDateChange = (day) => {
     const newDate = new Date(selectedYear, selectedMonth, day);
-    setSelectedDate(newDate);
+    setSelectedDate(newDate)
+    setSelectedDates(newDate);
+    console.log(newDate)
     setShowDatePicker(false)
   };
 
@@ -52,7 +54,7 @@ const CustomDatePicker = () => {
 
   return (<div className="relative " ref={ref}>
 
-<div className="flex justify-center items-center lg:space-x-1 border border-gray-400  py-1.5 rounded-xl ">
+        <div className="flex justify-center items-center lg:space-x-1 border border-gray-400  py-1.5 rounded-xl ">
         <input
           type="text"
           readOnly

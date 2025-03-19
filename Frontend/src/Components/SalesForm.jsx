@@ -32,7 +32,7 @@ const SalesForm = () => {
   const [AddMoreSale, setAddMoreSale] = useState(false)
   const [selectedProductId, setSelectedProductId] = useState("");
   const [selectedProduct, setSelectedProduct] = useState("");
-  const { vendor , setVendor} = useCompany()
+  const { vendor , setVendor , selectedDates , setSelectedDates} = useCompany()
 
   
   const { companyid  } = useParams()
@@ -58,12 +58,14 @@ const SalesForm = () => {
   }
 
   const AddSale = async () => {
+    console.log(selectedDates + "this is the selected date for sales")
     const newsale = {
       billNumber: BillNumber,
       Product: selectedProductId || null,
       Productname : selectedProduct || Product,
       dealer: vendor?.name || dealer,
       gstRate : gstRate ,
+      date : selectedDates,
       paymentType : paymentType,
       description: description,
       quantity: Number(quantity),
