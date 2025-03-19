@@ -46,7 +46,7 @@ const AuthOnChange = () => {
         GetUserDetails();
       } else {
         localStorage.removeItem("uid");
-        navigate("/signin");
+        navigate("/");
       }
     });
 
