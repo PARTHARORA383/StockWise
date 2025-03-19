@@ -29,9 +29,11 @@ const StockWiseLanding = () => {
         <div className="max-w-8xl mx-auto ">
           <div className="flex justify-between items-center h-16 w-full ">
 
-            <div className=" ml-5">
+            <div className=" ml-5" onClick={()=>{
+                navigate('/')
+              }}>
 
-              <span className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-200 mr-10">StockWise</span>
+              <span className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-200 mr-10" >StockWise</span>
             </div>
        
 
