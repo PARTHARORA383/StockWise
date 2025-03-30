@@ -7,8 +7,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Roboto', 'sans-serif'],
-        poppins : ['Poppins' , 'sans-serif']
+      
+        poppins : ['Poppins' , 'sans-serif'],
+        poetsen: ["Poetsen One", "sans-serif"],
       },
       colors: {
         'custom-lavender': '#b1a4d8',  // Adding your color with a custom name
